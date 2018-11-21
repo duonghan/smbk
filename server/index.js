@@ -26,6 +26,8 @@ const survey = require('./routers/api/survey');
 const question = require('./routers/api/question');
 const answer = require('./routers/api/answer');
 
+const auth = require('./routers/auth');
+
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -55,6 +57,7 @@ app.use('/api/form', form);
 app.use('/api/survey', survey);
 app.use('/api/question', question);
 app.use('/api/answer', answer);
+app.use('/auth', auth);
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {

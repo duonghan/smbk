@@ -13,6 +13,9 @@ const transporter = require('../../utils/auth/sendMail');
 const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
 
+// Load email secret key
+const emailConfig = require('../../config/email');
+
 // Load user model
 const User = require('../../models/User');
 const keys = require('../../config/keys');
@@ -30,8 +33,6 @@ const options = {
   viewPath: 'server/views/email/',
   extName: '.hbs',
 };
-
-const EMAIL_SECRET = 'asdf1093KMnzxcvnkljvasdu09123nlasdasdf';
 
 /**
  * @function: GET /api/users/test
@@ -78,21 +79,25 @@ router.post('/register', (req, res) => {
       role: roles.default,
     });
 
+    // encrypt password with bcrypt
     bcrypt.genSalt(10, (e, salt) => {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
         if (err) throw err;
         newUser.password = hash;
+
+        // then save new user into db
         newUser
           .save()
           .then(user => {
             res.json(user);
             console.log(`User is ${JSON.stringify(user)}`);
-            // async email
+
+            // send email to validate email
             jwt.sign(
               {
                 user: _.pick(user, 'id'),
               },
-              EMAIL_SECRET,
+              emailConfig.EMAIL_SECRET,
               {
                 expiresIn: '1d',
               },
@@ -131,10 +136,10 @@ router.post('/register', (req, res) => {
 
 router.get('/register/confirmation/:token', (req, res) => {
   try {
-    const { user } = jwt.verify(req.params.token, EMAIL_SECRET);
+    const { user } = jwt.verify(req.params.token, emailConfig.EMAIL_SECRET);
     const { id } = user;
 
-    // Update
+    // Update email validation status
     User.findOneAndUpdate({ _id: id }, { $set: { confirmed: true } }).then(
       user => res.redirect('/'),
     );

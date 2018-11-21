@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import Captcha from 'components/Register/Captcha';
 import isEmpty from 'utils/validation/isEmpty';
@@ -49,13 +50,15 @@ class LoginForm extends React.Component {
       isRemember: this.state.isRemember,
     };
     this.setState({ loading: true });
-    debugger;
     this.props.onSignIn(user);
   };
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value, captchaErr: '' });
-    this.state.loading && this.setState({ loading: false });
+
+    if (this.state.loading) {
+      this.setState({ loading: false });
+    }
   };
 
   // Router to right page follow role of user
@@ -78,7 +81,6 @@ class LoginForm extends React.Component {
   render() {
     const { formatMessage } = this.props.intl;
     const { errors } = this.props;
-    debugger;
 
     const formItemLayout = {
       wrapperCol: {
@@ -175,9 +177,9 @@ class LoginForm extends React.Component {
               <Checkbox checked={this.state.isRemember}>
                 <FormattedMessage {...messages.remember} />
               </Checkbox>
-              <a className="login-form-forgot" href="/forgot">
+              <Link to="/forgot-password">
                 <FormattedMessage {...messages.forgotPassword} />
-              </a>
+              </Link>
             </FormItem>
 
             <FormItem {...formItemLayout}>

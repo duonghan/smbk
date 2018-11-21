@@ -7,13 +7,10 @@
  */
 
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 // import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { Layout } from 'antd';
 // Import decode token package
 import jwtDecode from 'jwt-decode';
@@ -27,11 +24,9 @@ import MainApp from 'components/MainApp';
 import NotFoundPage from 'components/NotFoundPage';
 import AdminPage from 'modules/admin/components/DashBoard';
 import AddNewSurvey from 'components/AddNewSurvey';
-import saga from 'containers/Authentication/saga';
+import ForgotPassword from 'components/ForgotPassword';
+import ResetPassword from 'components/ResetPassword';
 import LoginPage from 'containers/Authentication/Login';
-import injectSaga from 'utils/injectSaga';
-import { compose } from 'redux';
-// import messages from './messages';
 import './styles.css';
 
 const { Content } = Layout;
@@ -42,9 +37,7 @@ const Container = styled.div`
 `;
 
 class App extends React.Component {
-  isLogged = () => {
-    return Cookies.get('token');
-  };
+  isLogged = () => Cookies.get('token');
 
   isAdmin = () => {
     if (Cookies.get('token')) {
@@ -66,26 +59,22 @@ class App extends React.Component {
             <Route
               exact
               path="/"
-              render={() =>
-                this.isAdmin() ? (
-                  <AdminPage />
-                ) : this.isLogged() ? (
-                  <MainApp />
-                ) : (
-                  <Landing />
-                )
-              }
+              render={() => {
+                if (this.isAdmin()) {
+                  return <AdminPage />;
+                }
+                if (this.isLogged()) {
+                  return <MainApp />;
+                }
+                return <Landing />;
+              }}
             />
             <Container>
               <Switch>
                 <Route path="/register" component={RegisterPage} />
                 <Route path="/login" component={LoginPage} />
-                {/*<Route*/}
-                  {/*path="/home"*/}
-                  {/*render={() => (this.isAdmin() ? <AdminPage /> : <MainApp />)}*/}
-                {/*/>*/}
-                {/*<Route path="/home" component={MainApp} />*/}
-                {/*<Route path="/admin" component={AdminPage} />*/}
+                <Route path="/forgot-password" component={ForgotPassword} />
+                <Route path="/reset-password" component={ResetPassword} />
                 <Route path="/add" component={AddNewSurvey} />
                 <Route component={NotFoundPage} />
               </Switch>

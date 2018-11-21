@@ -9,20 +9,20 @@
 
 <div align="center">
   <!-- Dependency Status -->
-  <a href="https://david-dm.org/duonghan/smbk-admin">
-    <img src="https://david-dm.org/duonghan/smbk-admin.svg" alt="Dependency Status" />
+  <a href="https://david-dm.org/duonghan/smbk">
+    <img src="https://david-dm.org/duonghan/smbk.svg" alt="Dependency Status" />
   </a>
   <!-- devDependency Status -->
-  <a href="https://david-dm.org/duonghan/smbk-admin#info=devDependencies">
-    <img src="https://david-dm.org/duonghan/smbk-admin/dev-status.svg" alt="devDependency Status" />
+  <a href="https://david-dm.org/duonghan/smbk#info=devDependencies">
+    <img src="https://david-dm.org/duonghan/smbk/dev-status.svg" alt="devDependency Status" />
   </a>
   <!-- Build Status -->
-  <a href="https://travis-ci.org/duonghan/smbk-admin">
-    <img src="https://travis-ci.org/duonghan/smbk-admin.svg" alt="Build Status" />
+  <a href="https://travis-ci.org/duonghan/smbk">
+    <img src="https://travis-ci.org/duonghan/smbk.svg" alt="Build Status" />
   </a>
   <!-- Test Coverage -->
-  <a href="https://coveralls.io/r/duonghan/smbk-admin">
-    <img src="https://coveralls.io/repos/github/duonghan/smbk-admin/badge.svg" alt="Test Coverage" />
+  <a href="https://coveralls.io/r/duonghan/smbk">
+    <img src="https://coveralls.io/repos/github/duonghan/smbk/badge.svg" alt="Test Coverage" />
   </a>
 </div>
 
@@ -84,7 +84,7 @@ There’s also a <a href="https://vimeo.com/168648012">fantastic video</a> on ho
 ## Quick start
 
 1.  Make sure that you have Node.js v8.10 and npm v5 or above installed.
-2.  Clone this repo using `git clone --depth=1 https://github.com/duonghan/smbk-admin.git <YOUR_PROJECT_NAME>`
+2.  Clone this repo using `git clone --depth=1 https://github.com/duonghan/smbk.git <YOUR_PROJECT_NAME>`
 3.  Move to the appropriate directory: `cd <YOUR_PROJECT_NAME>`.<br />
 4.  Run `npm run setup` in order to install dependencies and clean the git repo.<br />
     _At this point you can run `npm start` to see the example app at `http://localhost:3000`._
