@@ -1,0 +1,214 @@
+<html>
+
+<head>
+    <title>{{name}} - Confirm your account!</title>
+    <style>
+        @font-face {
+            font-family: 'Avenir';
+            src: url('https://www.letsgohatch.com/assets/fonts/avenirltstd-heavy-webfont.eot');
+            src: url('https://www.letsgohatch.com/assets/fonts/avenirltstd-heavy-webfont.eot?#iefix') format('embedded-opentype'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-heavy-webfont.woff2') format('woff2'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-heavy-webfont.woff') format('woff'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-heavy-webfont.ttf') format('truetype'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-heavy-webfont.svg#webfontregular') format('svg');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Avenir';
+            src: url('https://www.letsgohatch.com/assets/fonts/avenirltstd-medium-webfont.eot');
+            src: url('https://www.letsgohatch.com/assets/fonts/avenirltstd-medium-webfont.eot?#iefix') format('embedded-opentype'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-medium-webfont.woff2') format('woff2'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-medium-webfont.woff') format('woff'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-medium-webfont.ttf') format('truetype'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-medium-webfont.svg#webfontregular') format('svg');
+            font-weight: normal;
+            font-style: normal;
+
+        }
+
+        @font-face {
+            font-family: 'Avenir';
+            src: url('https://www.letsgohatch.com/assets/fonts/avenirltstd-light-webfont.eot');
+            src: url('https://www.letsgohatch.com/assets/fonts/avenirltstd-light-webfont.eot?#iefix') format('embedded-opentype'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-light-webfont.woff2') format('woff2'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-light-webfont.woff') format('woff'),
+                url('https://www.letsgohatch.com/assets/fonts/avenirltstd-light-webfont.ttf') format('truetype'),
+                url('https://www.letsgohatch.com/fonts/avenirltstd-light-webfont.svg#webfontregular') format('svg');
+            font-weight: 100;
+            font-style: normal;
+        }
+
+        body {
+            background: #ffffff;
+            margin: 0px;
+            text-align: center;
+            font-family: 'Avenir', 'Open Sans', Arial, sans-serif;
+        }
+
+        .head {
+            background: #488dfb;
+            color: #ffffff;
+        }
+
+        .head h1 {
+            font-size: 50px;
+            font-weight: normal;
+            line-height: 100px;
+            margin-top: 100px;
+        }
+
+        .button {
+            background: #39ce00;
+            color: #ffffff;
+            line-height: 50px;
+            text-decoration: none;
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .button a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        a {
+            color: #fff;
+        }
+
+        p a {
+            color: #565656;
+        }
+
+        .black a {
+            color: #000;
+        }
+    </style>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+</head>
+
+<body bgcolor="#ffffff">
+    <table bgcolor="#efefef" cellpadding="0" cellspacing="0" border-collapse="collapse" width="100%">
+        <tr>
+            <td align="center" style="padding: 30px;">
+                <table bgcolor="#efefef" cellpadding="0" cellspacing="0" border-collapse="collapse" width="700px">
+                    <tr>
+                        <td align="center">
+                            <table bgcolor="#efefef" cellpadding="0" cellspacing="0" border-collapse="collapse" width="100%">
+                                <tr>
+                                    <td width="50%" style="text-transform: uppercase; color: #868686; font-weight: bold;">{{today}}</td>
+                                    <td width="50%" style="text-align: right;">
+                                        <!--<a href="#" style="color: #868686;">View in Browser</a>-->
+                                    </td>
+                                </tr>
+                            </table>
+                            <img src="https://i.imgur.com/c73g5kU.png" alt="Hatch" border="0"
+                                height="50" style="margin-top: 50px; margin-bottom: 50px;" />
+                            <table bgcolor="#488dfb" class="head" style="background: #488dfb;" cellpadding="0"
+                                cellspacing="0" border="0" border-collapse="collapse" width="100%">
+                                <tr>
+                                    <td style="text-align: center;" colspan="3">
+                                        <h1>Chào mừng đến với SMBK</h1>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding: 0px 80px; font-size: 20px; text-align: center;">Xin chào 
+                                        {{name}}, Chào mừng đến với SMBK. Vui lòng xác nhận email để tiếp tục.</td>
+                                </tr>
+                                <tr>
+                                    <td width="30%">&nbsp;</td>
+                                    <td style="text-align: center;" width="40%">
+                                        <table cellpadding="0" cellspacing="0" border-collapse="collapse" class="button"
+                                            width="100%">
+                                            <tr>
+                                                <td>
+                                                    <a href={{urlConfirm}} style="font-size: 15px;">Xác thực email</a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="30%">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                            <table cellpadding="0" cellspacing="0" border="0" border-collapse="collapse" width="100%">
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                            <table bgcolor="#ffffff" class="head" style="background: #ffffff;" cellpadding="0"
+                                cellspacing="0" border="0" border-collapse="collapse" width="100%">
+                                <tr>
+                                    <td style="text-align: center;" colspan="3">
+                                        <h1 style="color: #000000">FAQ?</h1>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding: 0px 80px; font-size: 20px; text-align: center; color: #595f63;  font-size: 20px;">Nếu bạn có thắc mắc hoặc đóng góp ý kiến. Làm ơn liên hệ với tôi qua địa chỉ. </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 40px;" align="center">
+                                        <a href="mailto:duong.hv155296@sis.hust.edu.vn" style="color: #488dfb; text-decoration: none; margin-bottom: 40px; font-size: 20px;">duong.hv155296@sis.hust.edu.vn</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    <table width="100%" bgcolor="#ffffff" style="background: #ffffff;" cellpadding="0" cellspacing="0" border="0"
+        border-collapse="collapse" width="100%">
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td align="center">
+                <table width="600">
+                    <tr>
+                        <td style="font-size: 14px;" class="black">Email này được gửi đến {{email}} </td>
+                        <td style="text-align: right;">
+                            <a href="#" style="color: #000; text-decoration: none; font-size: 14px;">Hủy đăng ký</a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    <img src="http://trk.letsgohatch.com/wf/open?upn=eLFMrKDT8iBxZ-2Fbnk-2BZqvRm7gLQf0EF1gz9NAjgHD5WTiYuNE2jIsCyRP5I2tmF8hG4i8aFN1Oiun3zqRadDjYrzpuNEE0XiWvv6k-2Bu277ViJ8AK4LPswxiERLb4phDt3PEtozhOwmLJRyFmiPk9H9qw5S36JLwDluRG0ownUItTdCK61tgLQejMUlTgYNQ2k-2FKgkbAG7Q3L5KqqHqBGRqUxqdo0nj2vSQ7hZr-2BJL74-3D"
+        alt="" width="1" height="1" border="0" style="height:1px !important;width:1px !important;border-width:0 !important;margin-top:0 !important;margin-bottom:0 !important;margin-right:0 !important;margin-left:0 !important;padding-top:0 !important;padding-bottom:0 !important;padding-right:0 !important;padding-left:0 !important;" />
+</body>
+
+</html>

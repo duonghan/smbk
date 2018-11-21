@@ -1,0 +1,96 @@
+.dark {
+  background-color: #000;
+  color: rgba(255, 255, 255, 0.65);
+}
+.dark a {
+  color: rgba(255, 255, 255, 0.9);
+}
+.dark h2 {
+  color: #ffffff;
+}
+.dark h2 > span {
+  color: #ffffff;
+}
+.dark,
+.bottom-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+  text-align: center;
+}
+
+.light {
+  background-color: #fff;
+  padding: 10;
+}
+
+.content {
+  height: 1000px;
+}
+
+.home-page-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-wrapper {
+  overflow: initial;
+  position: relative;
+  z-index: 1;
+}
+
+.banner-wrapper .text-wrapper {
+  width: 54%;
+  max-width: 600px;
+  min-height: 320px;
+  color: #0d1a26;
+}
+
+.banner-wrapper .text-wrapper h1 {
+  font-size: 68px;
+  font-weight: 600;
+  line-height: 76px;
+  margin: 8px 0 28px;
+  letter-spacing: 0;
+  font-family: 'Avenir-Heavy', 'SF UI Display', 'Helvetica Neue For Number',
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
+}
+
+.banner-wrapper .text-wrapper p {
+  font-size: 20px;
+  line-height: 40px;
+  color: #314659;
+}
+
+.banner-wrapper .text-wrapper .img-wrapper {
+  width: 46%;
+  max-width: 482px;
+  position: absolute;
+  right: 0;
+  bottom: 26px;
+}
+
+.ant-carousel .slick-slide {
+  text-align: center;
+  min-height: 100%;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+}
+
+.backgroundHeHe:before{
+  content: "";
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  opacity: 0;
+}
