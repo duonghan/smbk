@@ -7,21 +7,9 @@ const QuestionSchema = new Schema({
     type: String,
     required: true,
   },
-  parent: {
+  questionGroup: {
     type: Schema.Types.ObjectId,
-    ref: 'questions',
-  },
-  survey: {
-    type: Schema.Types.ObjectId,
-    ref: 'surveys',
-  },
-  inputType: {
-    type: String,
-    required: true,
-  },
-  optionChoice: {
-    type: [{}],
-    required: true,
+    ref: 'questionGroups',
   },
 });
 

@@ -32,12 +32,14 @@ router.get('/test', (req, res) => {
  * @desc: Forgot password
  * @access: public
  */
-router.post('/forgot_password', (req, res) => {
+router.post('/forgot-password', (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) {
         return res.status(400).json({ msg: 'userNotFound' });
       }
+
+      res.json(user);
 
       // send email to reset password
       jwt.sign(
@@ -51,7 +53,7 @@ router.post('/forgot_password', (req, res) => {
         (err, emailToken) => {
           const url = `${req.protocol}://${req.get(
             'host',
-          )}/auth/reset_password/${emailToken}`;
+          )}/auth/reset-password/${emailToken}`;
 
           transporter.sendMail({
             to: user.email,
@@ -70,11 +72,11 @@ router.post('/forgot_password', (req, res) => {
 });
 
 /**
- * @function: GET /auth/reset_password
+ * @function: GET /auth/reset-password
  * @desc: Reset password
  * @access: public
  */
-router.post('/reset_password/:token', (req, res) => {
+router.post('/reset-password/:token', (req, res) => {
   try {
     const { user } = jwt.verify(req.params.token, emailConfig.EMAIL_SECRET);
     const { password } = req.body;
@@ -83,6 +85,8 @@ router.post('/reset_password/:token', (req, res) => {
     // Update password
     User.findById(id)
       .then(user => {
+        res.json({ user });
+
         // encrypt password
         bcrypt.genSalt(10, (e, salt) => {
           bcrypt.hash(password, salt, (err, hash) => {
@@ -100,8 +104,6 @@ router.post('/reset_password/:token', (req, res) => {
                     name: user.name,
                   },
                 });
-
-                res.redirect('/change-password-successfully');
               })
               .catch(err =>
                 res.status(400).json({ errors: 'Cannot find user' }),

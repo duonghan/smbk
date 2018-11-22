@@ -9,7 +9,6 @@ import { SIGNIN_REQUEST, SIGNOUT_REQUEST } from './constants';
 import { signInFailed, signInSuccess, signoutSuccess } from './actions';
 
 function* doSignOut() {
-  debugger;
   // remove token from localStorage
   Cookies.remove('token');
 
@@ -17,17 +16,22 @@ function* doSignOut() {
   setAuthToken(false);
 
   // set current user to empty object
-  yield put(signoutSuccess);
+  yield put(signoutSuccess());
+  yield put(push('/'));
 }
 
 function* doSignIn(userData) {
   try {
-    debugger;
     const res = yield call(axios.post, '/api/users/login', userData.payload);
     const { token } = res.data;
 
     // save to cookies
-    Cookies.set('token', token, { expires: 7 });
+    // if user check remember session, set expire cookie in 1w
+    if (userData.payload.isRemember) {
+      Cookies.set('token', token, { expires: 7 });
+    } else {
+      Cookies.set('token', token);
+    }
     // localStorage.setItem('jwtToken', token);
 
     // set token to Auth header

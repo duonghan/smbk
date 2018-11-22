@@ -2,7 +2,7 @@
 
 <br />
 
-<div align="center"><strong>SMBK</strong></div>
+<div align="center"><h2>SMBK</h2></div>
 <div align="center">Survey Management System support to vocational guidance</div>
 
 <br />
@@ -23,6 +23,10 @@
   <!-- Test Coverage -->
   <a href="https://coveralls.io/r/duonghan/smbk">
     <img src="https://coveralls.io/repos/github/duonghan/smbk/badge.svg" alt="Test Coverage" />
+  </a>
+  <!-- Github License -->
+  <a href="https://badges.mit-license.org/">
+    <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="MIT License" />
   </a>
 </div>
 

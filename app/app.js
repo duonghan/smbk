@@ -41,23 +41,14 @@ const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
-// if (Cookies.get('token')) {
-//   // decode token and set current user
-//   const userInfo = jwtDecode(Cookies.get('token'));
-//
-//   // set user and isAuthenticated
-//   store.dispatch(signInSuccess(userInfo));
-//
-//   // switch (userInfo.role) {
-//   //   case 'DEFAULT':
-//   //     history.push('/');
-//   //     break;
-//   //   case 'ADMIN':
-//   //     history.push('/admin');
-//   //     break;
-//   //   default:
-//   // }
-// }
+// Detect user when re-open webpage
+if (Cookies.get('token')) {
+  // decode token and set current user
+  const userInfo = jwtDecode(Cookies.get('token'));
+
+  // set user and isAuthenticated
+  store.dispatch(signInSuccess(userInfo));
+}
 
 const render = messages => {
   ReactDOM.render(

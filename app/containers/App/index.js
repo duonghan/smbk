@@ -16,16 +16,17 @@ import { Layout } from 'antd';
 import jwtDecode from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-import Landing from 'components/Landing';
-import MyHeader from 'components/MyHeader';
-import MyFooter from 'components/MyFooter';
-import RegisterPage from 'components/Register';
-import MainApp from 'components/MainApp';
-import NotFoundPage from 'components/NotFoundPage';
+import Landing from 'components/pages/Landing';
+import MyHeader from 'components/layout/MyHeader';
+import MyFooter from 'components/layout/MyFooter';
+import RegisterPage from 'components/auth/Register';
+import MainApp from 'components/pages/MainApp';
+import NotFoundPage from 'components/pages/NotFoundPage';
 import AdminPage from 'modules/admin/components/DashBoard';
-import AddNewSurvey from 'components/AddNewSurvey';
-import ForgotPassword from 'components/ForgotPassword';
-import ResetPassword from 'components/ResetPassword';
+import AddNewSurvey from 'components/pages/survey/AddNewSurvey';
+import ForgotPassword from 'components/auth/ForgotPassword';
+import ResetPassword from 'components/auth/ResetPassword';
+import Setting from 'components/pages/Setting';
 import LoginPage from 'containers/Authentication/Login';
 import './styles.css';
 
@@ -73,9 +74,13 @@ class App extends React.Component {
               <Switch>
                 <Route path="/register" component={RegisterPage} />
                 <Route path="/login" component={LoginPage} />
-                <Route path="/forgot-password" component={ForgotPassword} />
-                <Route path="/reset-password" component={ResetPassword} />
+                <Route
+                  path="/auth/forgot-password"
+                  component={ForgotPassword}
+                />
+                <Route path="/auth/reset-password" component={ResetPassword} />
                 <Route path="/add" component={AddNewSurvey} />
+                <Route path="/setting" component={Setting} />
                 <Route component={NotFoundPage} />
               </Switch>
             </Container>

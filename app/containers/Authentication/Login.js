@@ -1,4 +1,4 @@
-import Login from 'components/LoginForm';
+import Login from 'components/auth/LoginForm';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
