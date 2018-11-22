@@ -9,10 +9,6 @@ import { defineMessages } from 'react-intl';
 export const scope = 'app.components.MyHeader';
 
 export default defineMessages({
-  header: {
-    id: `${scope}.header`,
-    defaultMessage: 'This is the Header component !',
-  },
   login: {
     id: `${scope}.login`,
     defaultMessage: 'Đăng nhập',
@@ -32,10 +28,6 @@ export default defineMessages({
   changePass: {
     id: `${scope}.main.header.account.changePass`,
     defaultMessage: 'Đổi mật khẩu',
-  },
-  changeInfo: {
-    id: `${scope}.main.header.account.changeInfo`,
-    defaultMessage: 'Cập nhật thông tin',
   },
   logout: {
     id: `${scope}.main.header.account.logout`,

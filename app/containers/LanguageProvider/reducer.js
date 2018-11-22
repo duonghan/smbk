@@ -10,7 +10,7 @@ import { CHANGE_LOCALE } from './constants';
 import { DEFAULT_LOCALE } from '../../i18n';
 
 export const initialState = fromJS({
-  locale: DEFAULT_LOCALE,
+  locale: localStorage.getItem('lang') || DEFAULT_LOCALE,
 });
 
 function languageProviderReducer(state = initialState, action) {

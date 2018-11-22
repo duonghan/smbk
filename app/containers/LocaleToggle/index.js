@@ -20,13 +20,19 @@ const { Option } = Select;
 
 export class LocaleToggle extends React.PureComponent {
   // eslint-disable-line react/prefer-stateless-function
+  handleLocaleToggle = value => {
+    // save current locale into localStorage
+    localStorage.setItem('lang', value);
+    this.props.onLocaleToggle(value);
+  };
+
   render() {
     return (
       <div>
         <Select
           defaultValue={this.props.locale}
           style={{ width: 120 }}
-          onChange={this.props.onLocaleToggle}
+          onChange={this.handleLocaleToggle}
           size="small"
         >
           {appLocales.map(appLocale => (
