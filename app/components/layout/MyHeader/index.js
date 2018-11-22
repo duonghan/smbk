@@ -1,13 +1,11 @@
 import React from 'react';
-import { Layout, Menu, Avatar, Row, Col, Icon } from 'antd';
+import { Layout, Menu, Avatar, Row, Col } from 'antd';
 import Logo from 'images/logo.svg';
 import LogoText from 'images/logo_text.svg';
 
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import styled from 'styled-components';
 import { connect } from 'react-redux';
-import ChangePassModal from 'components/pages/Setting/ChangePassModal';
 import { signoutRequest } from 'containers/Authentication/actions';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
@@ -16,38 +14,18 @@ import reducer from 'containers/Authentication/reducer';
 import { compose } from 'redux';
 import messages from './messages';
 import { styles } from './styles';
-import {
-  PROFILE,
-  SETTING,
-  LOGOUT,
-  CHANGE_PASS,
-  UPDATE_INFO,
-} from './constants';
+import { PROFILE, LOGOUT, UPDATE_INFO } from './constants';
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
 
 class MainHeader extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOpenChangePass: false,
-    };
-  }
-
-  handleSelect = ({ item, key }) => {
-    switch (key) {
-      case LOGOUT:
-        return this.props.doSignOut();
-      default:
-    }
-  };
+  handleSelect = ({ item, key }) => key === 'LOGOUT' && this.props.doSignOut();
 
   render() {
     return (
       <Row>
         <Header style={{ background: '#1373CC', color: 'white' }}>
-          <ChangePassModal visible={this.state.isOpenChangePass} />
           <Col xs={12} md={12}>
             <Link to="/">
               <img alt="logo" src={Logo} style={styles.logoImg} />
@@ -67,7 +45,7 @@ class MainHeader extends React.Component {
                 selectable={false}
                 onSelect={this.handleSelect}
               >
-                <Menu.Item key="1" className="mymenu">
+                <Menu.Item key="1">
                   <Link to="/login">
                     <FormattedMessage {...messages.login} />
                   </Link>
@@ -105,7 +83,7 @@ class MainHeader extends React.Component {
                 >
                   <Menu.Item key={UPDATE_INFO}>
                     <Link to="/setting">
-                      <FormattedMessage {...messages.changeInfo} />
+                      <FormattedMessage {...messages.setting} />
                     </Link>
                   </Menu.Item>
                   <Menu.Item key={LOGOUT}>
@@ -121,8 +99,6 @@ class MainHeader extends React.Component {
   }
 }
 
-// export default MainHeader;
-
 const mapDispatchToProps = dispatch => ({
   doSignOut: () => dispatch(signoutRequest()),
 });
@@ -130,11 +106,6 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   auth: state.get('auth'),
 });
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(MainHeader);
 
 const withConnect = connect(
   mapStateToProps,

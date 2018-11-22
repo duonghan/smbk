@@ -1,8 +1,9 @@
 <img src="https://i.imgur.com/QgcQ77z.jpg" alt="react boilerplate banner" align="center" />
 
 <br />
+<br />
 
-<div align="center"><h2>SMBK</h2></div>
+<div align="center"><h1><strong>SMBK</strong></h1></div>
 <div align="center">Survey Management System support to vocational guidance</div>
 
 <br />
@@ -36,8 +37,9 @@
   <sub>Created by <a href="https://twitter.com/0xddff">Duong Han</a> and maintained with ❤️ </sub>
 </div>
 
-## Features
+<br />
 
+<div align="center"><h2>Features</h2></div>
 <dl>
   <dt>Quick scaffolding</dt>
   <dd>Create components, containers, routes, selectors and sagas - and their tests - right from the CLI!</dd>
@@ -85,7 +87,9 @@ There’s also a <a href="https://vimeo.com/168648012">fantastic video</a> on ho
 
 <sub><i>Keywords: React.js, Redux, Hot Reloading, ESNext, Babel, react-router, Offline First, ServiceWorker, `styled-components`, redux-saga, FontFaceObserver</i></sub>
 
-## Quick start
+<br />
+
+<div align="center"><h2>Quick start</h2></div>
 
 1.  Make sure that you have Node.js v8.10 and npm v5 or above installed.
 2.  Clone this repo using `git clone --depth=1 https://github.com/duonghan/smbk.git <YOUR_PROJECT_NAME>`
@@ -97,7 +101,9 @@ Now you're ready to rumble!
 
 > Please note that this boilerplate is **production-ready and not meant for beginners**! If you're just starting out with react or redux, please refer to https://github.com/petehunt/react-howto instead. If you want a solid, battle-tested base to build your next product upon and have some experience with react, this is the perfect start for you.
 
-## Documentation
+<br />
+
+<div align="center"><h2>Documentation</h2></div>
 
 - [**The Hitchhikers Guide to `react-boilerplate`**](docs/general/introduction.md): An introduction for newcomers to this boilerplate.
 - [Overview](docs/general): A short overview of the included tools
@@ -108,6 +114,8 @@ Now you're ready to rumble!
   asynchronicity helpers, etc.
 - [**Troubleshooting**](docs/general/gotchas.md): Solutions to common problems faced by developers.
 
-## License
+<br />
 
-This project is licensed under the MIT license, Copyright (c) 2018 Duong Han. For more information see `LICENSE.md`.
+<div align="center"><h2>License</h2></div>
+
+This project is licensed under the MIT license, Copyright (c) 2018 Duong Han. For more information see [`LICENSE.md`](LICENSE.md).

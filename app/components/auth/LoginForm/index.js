@@ -58,12 +58,15 @@ class LoginForm extends React.Component {
     this.setState({
       [e.target.name]: e.target.value,
       captchaErr: '',
-      isRemember: e.target.checked,
     });
 
     if (this.state.loading) {
       this.setState({ loading: false });
     }
+  };
+
+  toggleRemember = e => {
+    this.setState({ isRemember: e.target.checked });
   };
 
   // Router to right page follow role of user
@@ -172,9 +175,8 @@ class LoginForm extends React.Component {
 
             <FormItem {...formItemLayout}>
               <Checkbox
-                name="isRemember"
                 checked={this.state.isRemember}
-                onChange={this.onChange}
+                onChange={this.toggleRemember}
               >
                 <FormattedMessage {...messages.remember} />
               </Checkbox>

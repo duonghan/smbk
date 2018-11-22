@@ -11,7 +11,7 @@ export const scope = 'app.components.LoginForm';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the LoginForm component !',
+    defaultMessage: 'Đăng nhập',
   },
 
   title: {

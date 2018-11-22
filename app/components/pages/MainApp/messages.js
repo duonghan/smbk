@@ -6,9 +6,11 @@
 
 import { defineMessages } from 'react-intl';
 
+export const scope = 'app.components.MainApp';
+
 export default defineMessages({
   header: {
-    id: 'app.components.MainApp.header',
+    id: `${scope}.header`,
     defaultMessage: 'This is the MainApp component !',
   },
 });

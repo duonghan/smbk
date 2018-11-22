@@ -17,10 +17,6 @@ export default defineMessages({
     id: `${scope}.introduce`,
     defaultMessage: 'Chào mừng đến với hệ thống quản lý khảo sát SMBK',
   },
-  explore: {
-    id: `${scope}.explore`,
-    defaultMessage: 'Khám phá',
-  },
   guestLogin: {
     id: `${scope}.guestLogin`,
     defaultMessage: 'Đăng nhập với tư cách khách',

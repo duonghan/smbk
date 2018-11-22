@@ -36,6 +36,11 @@ export default defineMessages({
     defaultMessage: 'Nhập mật khẩu hiện tại',
   },
 
+  newPassword: {
+    id: `${scope}.newPassword`,
+    defaultMessage: 'Nhập mật khẩu mới',
+  },
+
   requiredPassword: {
     id: `${scope}.requiredPassword`,
     defaultMessage: 'Vui lòng nhập mật khẩu',
@@ -48,17 +53,17 @@ export default defineMessages({
 
   requiredPassword2: {
     id: `${scope}.requiredPassword2`,
-    defaultMessage: 'Vui lòng xác nhận mật khẩu',
+    defaultMessage: 'Vui lòng xác nhận mật khẩu mới',
   },
 
   validatePassword2: {
     id: `${scope}.validatePassword2`,
-    defaultMessage: 'Mật khẩu không khớp',
+    defaultMessage: 'Mật khẩu mới không khớp',
   },
 
   labelPassword2: {
     id: `${scope}.labelPassword2`,
-    defaultMessage: 'Xác nhận mật khẩu',
+    defaultMessage: 'Xác nhận mật khẩu mới',
   },
 
   validateEmail: {
@@ -79,5 +84,10 @@ export default defineMessages({
   requiredName: {
     id: `${scope}.requiredName`,
     defaultMessage: 'Vui lòng nhập họ tên đầy đủ của bạn',
+  },
+
+  btnSubmit: {
+    id: `${scope}.btnSubmit`,
+    defaultMessage: 'Cập nhật',
   },
 });
