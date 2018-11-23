@@ -30,7 +30,7 @@ router.get('/test', (req, res) =>
  */
 router.post('/add', (req, res) => {
   const newQuestion = new Question({
-    content: req.body.content,
+    content: req.body.content.trim(),
   });
 
   newQuestion

@@ -24,8 +24,10 @@ import MyFooter from 'components/layout/MyFooter';
 import RegisterPage from 'components/auth/Register';
 import MainApp from 'components/pages/MainApp/Loadable';
 import NotFoundPage from 'components/pages/NotFoundPage/Loadable';
-import AdminPage from 'modules/admin/components/DashBoard';
+// import AdminPage from 'modules/admin/components/DashBoard';
+import AdminPage from 'modules/admin/components/AdminPage';
 import AddNewSurvey from 'components/pages/survey/AddNewSurvey';
+import Survey from 'components/pages/survey/Survey';
 import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
 import ResetPassword from 'components/auth/ResetPassword/Loadable';
 import Setting from 'containers/SettingContainer/Loadable';
@@ -82,6 +84,7 @@ class App extends React.Component {
                 />
                 <Route path="/auth/reset-password" component={ResetPassword} />
                 <Route exact path="/add" component={AddNewSurvey} />
+                <Route exact path="/take-survey" component={Survey} />
                 <Route
                   exact
                   path="/setting"

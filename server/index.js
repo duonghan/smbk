@@ -56,7 +56,7 @@ app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/form', form);
 app.use('/api/survey', survey);
-app.use('/api/survey/question-group', questionGroup);
+app.use('/api/survey/question-groups', questionGroup);
 app.use('/api/survey/questions', questions);
 app.use('/api/survey/answers', answers);
 app.use('/auth', auth);

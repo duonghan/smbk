@@ -10,8 +10,9 @@ const QuestionSchema = new Schema({
   survey: {
     type: Schema.Types.ObjectId,
     ref: 'surveys',
+    required: true,
   },
-  child: [
+  childs: [
     {
       type: Schema.Types.ObjectId,
       ref: 'questionGroups',
@@ -29,9 +30,10 @@ const QuestionSchema = new Schema({
     required: true,
     default: 'radio',
   },
-  optionAnswer: [
+  optionAnswers: [
     {
-      type: String,
+      text: String,
+      score: Number,
     },
   ],
 });
