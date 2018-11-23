@@ -7,10 +7,6 @@ const QuestionSchema = new Schema({
     type: String,
     required: true,
   },
-  questionGroup: {
-    type: Schema.Types.ObjectId,
-    ref: 'questionGroups',
-  },
 });
 
 const Question = mongoose.model('questions', QuestionSchema);

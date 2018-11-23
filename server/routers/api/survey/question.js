@@ -28,7 +28,16 @@ router.get('/test', (req, res) =>
  * @desc: Add question
  * @access: public
  */
-router.post('/add', (req, res) => res.json(res.body));
+router.post('/add', (req, res) => {
+  const newQuestion = new Question({
+    content: req.body.content,
+  });
+
+  newQuestion
+    .save()
+    .then(question => res.json(question))
+    .catch(err => res.status(400).json(err));
+});
 
 /**
  * @function: GET /api/Question/list

@@ -7,4 +7,4 @@
 
 import loadable from 'loadable-components';
 
-export default loadable(() => import('.'));
+export default loadable(() => import('./index'));

@@ -11,10 +11,12 @@ const QuestionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'surveys',
   },
-  parent: {
-    type: Schema.Types.ObjectId,
-    ref: 'questionGroups',
-  },
+  child: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'questionGroups',
+    },
+  ],
   questions: [
     {
       type: Schema.Types.ObjectId,

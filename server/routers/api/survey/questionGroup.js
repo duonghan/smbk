@@ -43,7 +43,7 @@ router.post('/add', (req, res) => {
   const newQuestionGroup = new QuestionGroup({
     name: req.body.name,
     survey: mongoose.Types.ObjectId(req.body.surveyId),
-    parent: req.body.parentId,
+    child: req.body.childId,
     questions: req.body.questions,
     inputType: req.body.inputType,
     optionAnswer: req.body.optionAnswer,

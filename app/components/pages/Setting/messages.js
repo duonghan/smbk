@@ -41,9 +41,19 @@ export default defineMessages({
     defaultMessage: 'Nhập mật khẩu mới',
   },
 
-  requiredPassword: {
-    id: `${scope}.requiredPassword`,
-    defaultMessage: 'Vui lòng nhập mật khẩu',
+  requiredCurrentPassword: {
+    id: `${scope}.requiredCurrentPassword`,
+    defaultMessage: 'Vui lòng nhập mật khẩu hiện tại',
+  },
+
+  incorrectCurrentPassword: {
+    id: `${scope}.incorrectCurrentPassword`,
+    defaultMessage: 'Mật khẩu hiện tại không đúng',
+  },
+
+  requiredNewPassword: {
+    id: `${scope}.requiredNewPassword`,
+    defaultMessage: 'Vui lòng nhập mật khẩu mới',
   },
 
   validatePassword: {

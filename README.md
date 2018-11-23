@@ -22,9 +22,9 @@
     <img src="https://travis-ci.org/duonghan/smbk.svg" alt="Build Status" />
   </a>
   <!-- Test Coverage -->
-  <a href="https://coveralls.io/r/duonghan/smbk">
-    <img src="https://coveralls.io/repos/github/duonghan/smbk/badge.svg" alt="Test Coverage" />
-  </a>
+<a href='https://coveralls.io/github/duonghan/smbk?branch=master'>
+  <img src='https://coveralls.io/repos/github/duonghan/smbk/badge.svg?branch=master' alt='Coverage Status' />
+</a>
   <!-- Github License -->
   <a href="https://badges.mit-license.org/">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="MIT License" />

@@ -225,6 +225,62 @@ router.get(
 );
 
 /**
+ * @function: POST /api/users/update
+ * @desc: Update user info
+ * @access: private
+ */
+router.post(
+  '/update',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const newProfile = {
+      email: req.body.email,
+      name: req.body.name,
+    };
+
+    const { id } = req.body;
+    const errors = {};
+
+    User.findById(id)
+      .then(user => {
+        if (!req.body.currentPassword) {
+          User.findByIdAndUpdate(id, { $set: newProfile }).then(user =>
+            res.json(newProfile),
+          );
+        } else {
+          const { currentPassword } = req.body;
+
+          // Check current password
+          bcrypt.compare(currentPassword, user.password).then(isMatch => {
+            if (isMatch) {
+              newProfile.password = req.body.newPassword;
+
+              // encrypt password with bcrypt
+              bcrypt.genSalt(10, (e, salt) => {
+                bcrypt.hash(newProfile.password, salt, (err, hash) => {
+                  if (err) throw err;
+                  newProfile.password = hash;
+
+                  // then update new user into db
+                  User.findByIdAndUpdate(id, {
+                    $set: newProfile,
+                  }).then(user => {
+                    res.json(newProfile);
+                  });
+                });
+              });
+            } else {
+              errors.password = 'incorrectCurrentPassword';
+              return res.status(400).json(errors);
+            }
+          });
+        }
+      })
+      .catch(err => res.json({ other: err }));
+  },
+);
+
+/**
  * @function: GET /api/users/list
  * @desc: Return list user in db
  * @access: private

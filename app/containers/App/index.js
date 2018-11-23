@@ -10,24 +10,27 @@ import React from 'react';
 // import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
+
 // Import decode token package
 import jwtDecode from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-import Landing from 'components/pages/Landing';
+// Import pages
+import Landing from 'components/pages/Landing/Loadable';
 import MyHeader from 'components/layout/MyHeader';
 import MyFooter from 'components/layout/MyFooter';
 import RegisterPage from 'components/auth/Register';
-import MainApp from 'components/pages/MainApp';
-import NotFoundPage from 'components/pages/NotFoundPage';
+import MainApp from 'components/pages/MainApp/Loadable';
+import NotFoundPage from 'components/pages/NotFoundPage/Loadable';
 import AdminPage from 'modules/admin/components/DashBoard';
 import AddNewSurvey from 'components/pages/survey/AddNewSurvey';
-import ForgotPassword from 'components/auth/ForgotPassword';
-import ResetPassword from 'components/auth/ResetPassword';
-import Setting from 'components/pages/Setting';
+import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
+import ResetPassword from 'components/auth/ResetPassword/Loadable';
+import Setting from 'containers/SettingContainer/Loadable';
 import LoginPage from 'containers/Authentication/Login';
+
 import './styles.css';
 
 const { Content } = Layout;
@@ -50,8 +53,6 @@ class App extends React.Component {
   };
 
   render() {
-    debugger;
-
     return (
       <Layout>
         <MyHeader />
@@ -75,12 +76,22 @@ class App extends React.Component {
                 <Route path="/register" component={RegisterPage} />
                 <Route path="/login" component={LoginPage} />
                 <Route
+                  exact
                   path="/auth/forgot-password"
                   component={ForgotPassword}
                 />
                 <Route path="/auth/reset-password" component={ResetPassword} />
-                <Route path="/add" component={AddNewSurvey} />
-                <Route path="/setting" component={Setting} />
+                <Route exact path="/add" component={AddNewSurvey} />
+                <Route
+                  exact
+                  path="/setting"
+                  render={() => {
+                    if (this.isLogged()) {
+                      return <Setting />;
+                    }
+                    return <Redirect to="/" />;
+                  }}
+                />
                 <Route component={NotFoundPage} />
               </Switch>
             </Container>

@@ -32,7 +32,6 @@ function* doSignIn(userData) {
     } else {
       Cookies.set('token', token);
     }
-    // localStorage.setItem('jwtToken', token);
 
     // set token to Auth header
     setAuthToken(token);
@@ -42,9 +41,7 @@ function* doSignIn(userData) {
 
     // set current user
     yield put(signInSuccess(plainData));
-    // yield put(push('/home'));
   } catch (err) {
-    // set error message
     yield put(signInFailed(fromJS(err.response.data)));
   }
 }

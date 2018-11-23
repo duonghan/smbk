@@ -22,24 +22,53 @@ const Title = styled.h1`
 `;
 
 class SettingForm extends React.Component {
-  state = {
-    confirmDirty: false,
-    isChangePass: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      confirmDirty: false,
+      isChangePass: false,
+    };
+  }
+
+  componentWillMount() {
+    this.props.onFetchProfile();
+  }
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        const id = this.props.auth.getIn(['user', 'id']);
+        const newProfile = {
+          id,
+          email: values.email,
+          name: values.name,
+        };
+
+        if (this.state.isChangePass) {
+          newProfile.currentPassword = values.currentPassword;
+          newProfile.newPassword = values.newPassword;
+        }
+
+        // update profile through saga
+        this.props.onUpdateProfile(newProfile);
       }
     });
+  };
+
+  compareToFirstPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && value !== form.getFieldValue('newPassword')) {
+      callback('Two passwords that you enter is inconsistent!');
+    } else {
+      callback();
+    }
   };
 
   validateToNextPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
+      form.validateFields(['confirmNewPassword'], { force: true });
     }
     callback();
   };
@@ -51,6 +80,7 @@ class SettingForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { formatMessage } = this.props.intl;
+    const { profile, errors } = this.props;
 
     const formItemLayout = {
       labelCol: {
@@ -98,6 +128,7 @@ class SettingForm extends React.Component {
                   message: formatMessage(messages.requiredEmail),
                 },
               ],
+              initialValue: profile.get('email'),
             })(<Input />)}
           </FormItem>
 
@@ -109,6 +140,7 @@ class SettingForm extends React.Component {
                   message: formatMessage(messages.requiredName),
                 },
               ],
+              initialValue: profile.get('name'),
             })(<Input />)}
           </FormItem>
 
@@ -129,11 +161,12 @@ class SettingForm extends React.Component {
             {getFieldDecorator('currentPassword', {
               rules: [
                 {
-                  required: true,
-                  message: formatMessage(messages.requiredPassword),
+                  required: this.state.isChangePass,
+                  message: formatMessage(messages.requiredCurrentPassword),
                 },
                 {
-                  validator: this.validateToNextPassword,
+                  validate: errors && errors.get('password'),
+                  message: formatMessage(messages.incorrectCurrentPassword),
                 },
               ],
             })(<Input disabled={!this.state.isChangePass} type="password" />)}
@@ -146,11 +179,12 @@ class SettingForm extends React.Component {
             {getFieldDecorator('newPassword', {
               rules: [
                 {
-                  required: true,
-                  message: formatMessage(messages.requiredPassword),
+                  required: this.state.isChangePass,
+                  message: formatMessage(messages.requiredNewPassword),
                 },
                 {
-                  validator: this.validateToNextPassword,
+                  validator:
+                    this.state.isChangePass && this.validateToNextPassword,
                 },
               ],
             })(<Input disabled={!this.state.isChangePass} type="password" />)}
@@ -163,11 +197,12 @@ class SettingForm extends React.Component {
             {getFieldDecorator('confirmNewPassword', {
               rules: [
                 {
-                  required: true,
+                  required: this.state.isChangePass,
                   message: formatMessage(messages.requiredPassword2),
                 },
                 {
-                  validator: this.compareToFirstPassword,
+                  validator:
+                    this.state.isChangePass && this.compareToFirstPassword,
                   message: formatMessage(messages.validatePassword2),
                 },
               ],

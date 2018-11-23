@@ -30,39 +30,7 @@ const surveys = [
   {
     title: 'Survey3',
     content: 'asdadasd',
-  },
-  {
-    title: 'Survey4',
-    content: 'asdadasd',
-  },
-  {
-    title: 'Survey5',
-    content: 'asdadasd',
-  },
-  {
-    title: 'Survey6',
-    content: 'asdadasd',
-  },
-  {
-    title: 'Survey7',
-    content: 'asdadasd',
-  },
-  {
-    title: 'Survey8',
-    content: 'asdadasd',
-  },
-  {
-    title: 'Survey9',
-    content: 'asdadasd',
-  },
-  {
-    title: 'Survey10',
-    content: 'asdadasd',
-  },
-  {
-    title: 'Survey11',
-    content: 'asdadasd',
-  },
+  }
 ];
 
 /* eslint-disable react/prefer-stateless-function */
@@ -81,19 +49,6 @@ class MainApp extends React.Component {
     return (
       <Layout>
         <Row gutter={16} type="flex" justify="space-around" align="middle">
-          <Col className="gutter-row" xs={24} sm={12} md={6}>
-            <Card
-              hoverable
-              style={{ textAlign: 'center' }}
-              title="Add new survey"
-            >
-              <Icon
-                type="plus-circle"
-                style={{ fontSize: 50 }}
-                onClick={this.onAddNewSurvey}
-              />
-            </Card>
-          </Col>
           {surveys.map(item => {
             return (
               <Col

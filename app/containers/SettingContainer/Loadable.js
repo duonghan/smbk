@@ -1,7 +1,7 @@
 /**
  * Author: Duong Han
  * HUST
- * Asynchronously loads the component for ForgotPassword
+ * Asynchronously loads the component for SettingContainer
  *
  */
 

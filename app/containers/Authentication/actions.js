@@ -31,7 +31,6 @@ export const signInFailed = err => ({
 
 // sign out actions
 export const signoutRequest = () => {
-  debugger;
   return {
     type: SIGNOUT_REQUEST,
   };
