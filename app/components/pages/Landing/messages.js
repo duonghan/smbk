@@ -11,7 +11,7 @@ export const scope = 'app.components.Landing';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the Landing component !',
+    defaultMessage: 'SMBK : Chào mừng',
   },
   introduce: {
     id: `${scope}.introduce`,

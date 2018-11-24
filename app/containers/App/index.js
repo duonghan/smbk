@@ -22,21 +22,23 @@ import Landing from 'components/pages/Landing/Loadable';
 import MyHeader from 'components/layout/MyHeader';
 import MyFooter from 'components/layout/MyFooter';
 import RegisterPage from 'components/auth/Register';
-import MainApp from 'components/pages/MainApp/Loadable';
 import NotFoundPage from 'components/pages/NotFoundPage/Loadable';
 // import AdminPage from 'modules/admin/components/DashBoard';
-import AdminPage from 'modules/admin/components/AdminPage';
-import AddNewSurvey from 'components/pages/survey/AddNewSurvey';
+
+import QuestionTest from 'components/pages/survey/Question';
+import AdminPage from 'modules/admin/components/AdminPage/Loadable';
 import Survey from 'components/pages/survey/Survey';
 import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
 import ResetPassword from 'components/auth/ResetPassword/Loadable';
 import Setting from 'containers/SettingContainer/Loadable';
+import MainApp from 'containers/SurveyContainer/Loadable';
 import LoginPage from 'containers/Authentication/Login';
+
+import PrivateRouter from './PrivateRouter';
 
 import './styles.css';
 
 const { Content } = Layout;
-const height = window.innerHeight;
 
 const Container = styled.div`
   margin: 85px 75px;
@@ -58,17 +60,26 @@ class App extends React.Component {
     return (
       <Layout>
         <MyHeader />
-        <Content style={{ minHeight: height }}>
+        <Content style={{ minHeight: window.innerHeight - 64 }}>
           <Switch>
             <Route
               exact
               path="/"
               render={() => {
                 if (this.isAdmin()) {
-                  return <AdminPage />;
+                  return <Redirect to="/admin" />;
                 }
                 if (this.isLogged()) {
                   return <MainApp />;
+                }
+                return <Landing />;
+              }}
+            />
+            <Route
+              path="/admin"
+              render={() => {
+                if (this.isAdmin()) {
+                  return <AdminPage />;
                 }
                 return <Landing />;
               }}
@@ -83,18 +94,13 @@ class App extends React.Component {
                   component={ForgotPassword}
                 />
                 <Route path="/auth/reset-password" component={ResetPassword} />
-                <Route exact path="/add" component={AddNewSurvey} />
-                <Route exact path="/take-survey" component={Survey} />
-                <Route
+                <PrivateRouter exact path="/test" component={QuestionTest} />
+                <PrivateRouter
                   exact
-                  path="/setting"
-                  render={() => {
-                    if (this.isLogged()) {
-                      return <Setting />;
-                    }
-                    return <Redirect to="/" />;
-                  }}
+                  path="/take-survey/:name"
+                  component={Survey}
                 />
+                <PrivateRouter exact path="/setting" component={Setting} />
                 <Route component={NotFoundPage} />
               </Switch>
             </Container>

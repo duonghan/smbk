@@ -15,12 +15,14 @@ import { compose } from 'redux';
 import messages from './messages';
 import { styles } from './styles';
 import { PROFILE, LOGOUT, UPDATE_INFO } from './constants';
+import { Helmet } from 'react-helmet';
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
 
 class MainHeader extends React.Component {
   handleSelect = ({ item, key }) => key === 'LOGOUT' && this.props.doSignOut();
+  debugger;
 
   render() {
     return (
@@ -81,11 +83,14 @@ class MainHeader extends React.Component {
                     </span>
                   }
                 >
-                  <Menu.Item key={UPDATE_INFO}>
-                    <Link to="/setting">
-                      <FormattedMessage {...messages.setting} />
-                    </Link>
-                  </Menu.Item>
+                  {!(this.props.auth.getIn(['user', 'role']) === 'GUEST') && (
+                    <Menu.Item key={UPDATE_INFO}>
+                      <Link to="/setting">
+                        <FormattedMessage {...messages.setting} />
+                      </Link>
+                    </Menu.Item>
+                  )}
+
                   <Menu.Item key={LOGOUT}>
                     <FormattedMessage {...messages.logout} />
                   </Menu.Item>

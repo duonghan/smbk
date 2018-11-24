@@ -72,7 +72,7 @@ class LoginForm extends React.Component {
   // Router to right page follow role of user
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.get('isAuthorized')) {
-      return this.props.history.push('/');
+      return nextProps.history.push('/');
     }
     if (
       nextProps.errors.get('email') ||

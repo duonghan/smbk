@@ -11,6 +11,6 @@ export const scope = 'app.components.MainApp';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the MainApp component !',
+    defaultMessage: 'Trang chủ',
   },
 });

@@ -11,7 +11,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router/immutable';
-import { signInSuccess } from 'containers/Authentication/actions';
+import { setCurrentUser } from 'containers/Authentication/actions';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
 import 'antd/dist/antd.css';
@@ -47,7 +47,7 @@ if (Cookies.get('token')) {
   const userInfo = jwtDecode(Cookies.get('token'));
 
   // set user and isAuthenticated
-  store.dispatch(signInSuccess(userInfo));
+  store.dispatch(setCurrentUser(userInfo));
 }
 
 const render = messages => {

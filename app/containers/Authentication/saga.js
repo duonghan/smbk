@@ -5,8 +5,8 @@ import setAuthToken from 'utils/setAuthToken';
 import jwtDecode from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { push } from 'connected-react-router/immutable';
-import { SIGNIN_REQUEST, SIGNOUT_REQUEST } from './constants';
-import { signInFailed, signInSuccess, signoutSuccess } from './actions';
+import { SIGNIN_GUEST, SIGNIN_REQUEST, SIGNOUT_REQUEST } from './constants';
+import { signInFailed, setCurrentUser, signoutSuccess } from './actions';
 
 function* doSignOut() {
   // remove token from localStorage
@@ -38,9 +38,8 @@ function* doSignIn(userData) {
 
     // decode token to get user data
     const plainData = jwtDecode(token);
-
     // set current user
-    yield put(signInSuccess(plainData));
+    yield put(setCurrentUser(plainData));
   } catch (err) {
     yield put(signInFailed(fromJS(err.response.data)));
   }
@@ -49,6 +48,7 @@ function* doSignIn(userData) {
 export default function* authSaga() {
   yield all([
     takeLatest(SIGNIN_REQUEST, doSignIn),
+    takeLatest(SIGNIN_GUEST, doSignIn),
     takeLatest(SIGNOUT_REQUEST, doSignOut),
   ]);
 }

@@ -38,7 +38,6 @@ export const fetchFailed = err => ({
 
 // fetch current profile
 export const updateProfile = newProfile => {
-  debugger;
   return {
     type: UPDATE_PROFILE,
     newProfile,

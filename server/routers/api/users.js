@@ -154,35 +154,11 @@ router.get('/register/confirmation/:token', (req, res) => {
  * @access: public
  */
 router.post('/login', (req, res) => {
-  const { errors, isValid } = validateLoginInput(req.body);
-
-  // Check validation
-  if (!isValid) {
-    res.status(400).json(errors);
-  }
-
-  const { email, password } = req.body;
-
-  // Find user email
-  User.findOne({ email }).then(user => {
-    // Check for user
-    if (!user) {
-      errors.email = 'notfoundEmail';
-      return res.status(404).json(errors);
-    }
-
-    // Check password
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (isMatch) {
-        // res.json({ msg: 'Success' });
-        // User matched
-        const { confirmed } = user;
-
-        if (!confirmed) {
-          errors.confirmed = 'confirmEmail';
-          return res.status(400).json(errors);
-        }
-
+  const { isGuest } = req.body;
+  // Login with Guest
+  if (isGuest) {
+    User.findOne({ name: 'Guest' })
+      .then(user => {
         const payload = {
           id: user.id,
           name: user.name,
@@ -191,20 +167,64 @@ router.post('/login', (req, res) => {
         }; // Create JWT payload
 
         // Sign token
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          { expiresIn: 3600 },
-          (err, token) => {
-            res.json({ success: true, token: `Bearer ${token}` });
-          },
+        jwt.sign(payload, keys.secretOrKey, { expiresIn: '1d' }, (err, token) =>
+          res.json({ success: true, token: `Bearer ${token}` }),
         );
-      } else {
-        errors.password = 'incorrectPassword';
-        return res.status(400).json(errors);
+      })
+      .catch(err => res.json(err));
+  } else {
+    const { errors, isValid } = validateLoginInput(req.body);
+
+    // Check validation
+    if (!isValid) {
+      res.status(400).json(errors);
+    }
+
+    const { email, password, isRemember } = req.body;
+
+    // Find user email
+    User.findOne({ email }).then(user => {
+      // Check for user
+      if (!user) {
+        errors.email = 'notfoundEmail';
+        return res.status(404).json(errors);
       }
+
+      // Check password
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (isMatch) {
+          // res.json({ msg: 'Success' });
+          // User matched
+          const { confirmed } = user;
+
+          if (!confirmed) {
+            errors.confirmed = 'confirmEmail';
+            return res.status(400).json(errors);
+          }
+
+          const payload = {
+            id: user.id,
+            name: user.name,
+            avatar: user.avatar,
+            role: user.role,
+          }; // Create JWT payload
+
+          // Sign token
+          jwt.sign(
+            payload,
+            keys.secretOrKey,
+            { expiresIn: isRemember ? '1w' : '1d' },
+            (err, token) => {
+              res.json({ success: true, token: `Bearer ${token}` });
+            },
+          );
+        } else {
+          errors.password = 'incorrectPassword';
+          return res.status(400).json(errors);
+        }
+      });
     });
-  });
+  }
 });
 
 /**
@@ -293,7 +313,17 @@ router.get(
     if (req.user.role === 'ADMIN') {
       User.find()
         .sort({ date: -1 })
-        .then(users => res.json(users))
+        .then(users =>
+          res.json(
+            users.map(user => ({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              role: user.role,
+              date: user.date,
+            })),
+          ),
+        )
         .catch(err => res.status(404).json(err));
     } else {
       res.status(403).send('You have no rights to visit this page');

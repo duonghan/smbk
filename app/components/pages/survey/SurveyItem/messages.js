@@ -15,4 +15,29 @@ export default defineMessages({
     id: `${scope}.header`,
     defaultMessage: 'This is the SurveyItem component!',
   },
+
+  userCount: {
+    id: `${scope}.userCount`,
+    defaultMessage: 'Người tham gia',
+  },
+
+  type: {
+    id: `${scope}.type`,
+    defaultMessage: 'Kiểu',
+  },
+
+  date: {
+    id: `${scope}.date`,
+    defaultMessage: 'Ngày tạo',
+  },
+
+  lastUpdate: {
+    id: `${scope}.lastUpdate`,
+    defaultMessage: 'Cập nhật lần cuối',
+  },
+
+  takeSurvey: {
+    id: `${scope}.takeSurvey`,
+    defaultMessage: 'Tham gia',
+  },
 });

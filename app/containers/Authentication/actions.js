@@ -7,10 +7,11 @@
 
 import {
   SIGNIN_REQUEST,
-  SIGNIN_SUCCESS,
+  SET_CURRENT_USER,
   SIGNIN_FAILURE,
   SIGNOUT_REQUEST,
   SIGNOUT_SUCCESS,
+  SIGNIN_GUEST,
 } from './constants';
 
 // sign in actions
@@ -19,8 +20,13 @@ export const signInRequest = userData => ({
   payload: userData,
 });
 
-export const signInSuccess = userInfo => ({
-  type: SIGNIN_SUCCESS,
+export const signInGuest = () => ({
+  type: SIGNIN_GUEST,
+  payload: { isGuest: true },
+});
+
+export const setCurrentUser = userInfo => ({
+  type: SET_CURRENT_USER,
   userInfo,
 });
 

@@ -5,25 +5,39 @@
  */
 
 import React from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { Button } from 'antd';
 
-import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
+
 import BackgroundImage from 'images/landing-background.jpg';
+import { signInGuest } from 'containers/Authentication/actions';
+import { withRouter } from 'react-router-dom';
+
 import Introduction from './Introduction';
 import LandingBackground from './LandingBackground';
 import LandingContainer from './LandingContainer';
 import messages from './messages';
+import { Helmet } from 'react-helmet';
 
 /* eslint-disable react/prefer-stateless-function */
 class Landing extends React.Component {
-  handleLoginGuest = () => {};
+  // Router to right page follow role of user
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.get('isAuthorized')) {
+      return nextProps.history.push('/');
+    }
+    return null;
+  }
 
   render() {
+    const { formatMessage } = this.props.intl;
+
     return (
       <LandingContainer>
+        <Helmet title={formatMessage(messages.header)} />
         <LandingBackground src={BackgroundImage} alt="background" />
-
         <Introduction>
           <FormattedMessage {...messages.introduce} />
           <br />
@@ -31,7 +45,7 @@ class Landing extends React.Component {
             type="primary"
             htmlType="submit"
             style={{ marginTop: 10 }}
-            onClick={this.handleLoginGuest}
+            onClick={this.props.onSignInGuest}
           >
             <FormattedMessage {...messages.guestLogin} />
           </Button>
@@ -41,6 +55,18 @@ class Landing extends React.Component {
   }
 }
 
-Landing.propTypes = {};
+Landing.propTypes = {
+  intl: intlShape.isRequired,
+};
 
-export default Landing;
+const mapStateToProps = state => ({
+  auth: state.get('auth'),
+});
+const mapDispatchToProps = dispatch => ({
+  onSignInGuest: () => dispatch(signInGuest()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(injectIntl(Landing)));

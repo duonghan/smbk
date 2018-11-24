@@ -78,7 +78,7 @@ class Survey extends React.Component {
             ))}
           </Steps>
         </Col>
-        <Col span={16}>
+        <Col span={20}>
           <div className="steps-content">
             {steps[current].content}
             <Table
@@ -88,16 +88,6 @@ class Survey extends React.Component {
               scroll={{ y: 240 }}
             />
           </div>
-        </Col>
-        <Col span={4}>
-          <Anchor>
-            <Link href="#components-anchor-demo-basic" title="Basic demo" />
-            <Link href="#components-anchor-demo-fixed" title="Fixed demo" />
-            <Link href="#API" title="API">
-              <Link href="#Anchor-Props" title="Anchor Props" />
-              <Link href="#Link-Props" title="Link Props" />
-            </Link>
-          </Anchor>
         </Col>
         <BackTop />
       </Row>

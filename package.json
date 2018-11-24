@@ -93,6 +93,7 @@
     "prop-types": "15.6.2",
     "react": "16.6.0",
     "react-captcha-generator": "^1.6.3",
+    "react-countup": "^4.0.0",
     "react-dnd": "^6.0.0",
     "react-dnd-html5-backend": "^6.0.0",
     "react-dom": "16.6.0",

@@ -1,6 +1,7 @@
 import { call, all, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import Cookies from 'js-cookie';
+
+import config from 'utils/validation/config';
 import {
   fetchFailed,
   fetchSuccess,
@@ -11,7 +12,7 @@ import { FETCH_PROFILE, UPDATE_PROFILE } from './constants';
 
 function* doFetchProfile() {
   try {
-    const res = yield call(axios.get, '/api/users/current');
+    const res = yield call(axios.get, '/api/users/current', config);
     const profile = res.data;
     yield put(fetchSuccess(profile));
   } catch (err) {
@@ -22,11 +23,7 @@ function* doFetchProfile() {
 
 function* doUpdateProfile(newProfile) {
   try {
-    debugger;
-    const res = yield call(axios.post, '/api/users/update', newProfile);
-
-    debugger;
-
+    const res = yield call(axios.post, '/api/users/update', config, newProfile);
     const updatedProfile = res.data;
     yield put(updateSuccess(updatedProfile));
   } catch (err) {

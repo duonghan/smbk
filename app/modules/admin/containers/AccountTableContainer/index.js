@@ -11,7 +11,7 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import AccountTable from '../../components/AccountTable';
+import AccountTable from '../../components/pages/AccountPage';
 import reducer from './reducer';
 import saga from './saga';
 import { fetchRequest } from './actions';
