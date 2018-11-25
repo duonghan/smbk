@@ -46,8 +46,8 @@ class Question extends React.Component {
         <h3>{data.name}</h3>
         <br />
         <RadioGroup onChange={this.onChange} value={this.state.value}>
-          {data.answers.map(item => (
-            <Radio style={radioStyle} value={1}>
+          {data.answers.map((item, index) => (
+            <Radio style={radioStyle} value={index}>
               {item}
             </Radio>
           ))}

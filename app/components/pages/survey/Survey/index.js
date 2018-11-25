@@ -9,9 +9,10 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { Row, Col, Steps, BackTop, Anchor, Table } from 'antd';
+import { Row, Col, Steps, BackTop, Anchor, Affix } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+import QuestionGroup from '../QuestionGroup';
 
 const { Step } = Steps;
 const steps = [
@@ -72,21 +73,18 @@ class Survey extends React.Component {
     return (
       <Row>
         <Col span={4}>
-          <Steps current={1} direction="vertical" size="small" status="error">
-            {steps.map(item => (
-              <Step key={item.title} title={item.title} />
-            ))}
-          </Steps>
+          <Affix offsetTop={20}>
+            <Steps current={1} direction="vertical" size="small" status="error">
+              {steps.map(item => (
+                <Step key={item.title} title={item.title} />
+              ))}
+            </Steps>
+          </Affix>
         </Col>
         <Col span={20}>
           <div className="steps-content">
             {steps[current].content}
-            <Table
-              columns={columns}
-              dataSource={data}
-              pagination={{ pageSize: 50 }}
-              scroll={{ y: 240 }}
-            />
+            <QuestionGroup />
           </div>
         </Col>
         <BackTop />

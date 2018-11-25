@@ -25,7 +25,7 @@ import RegisterPage from 'components/auth/Register';
 import NotFoundPage from 'components/pages/NotFoundPage/Loadable';
 // import AdminPage from 'modules/admin/components/DashBoard';
 
-import QuestionTest from 'components/pages/survey/Question';
+import QuestionGroup from 'components/pages/survey/QuestionGroup';
 import AdminPage from 'modules/admin/components/AdminPage/Loadable';
 import Survey from 'components/pages/survey/Survey';
 import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
@@ -94,7 +94,7 @@ class App extends React.Component {
                   component={ForgotPassword}
                 />
                 <Route path="/auth/reset-password" component={ResetPassword} />
-                <PrivateRouter exact path="/test" component={QuestionTest} />
+                <PrivateRouter exact path="/test" component={QuestionGroup} />
                 <PrivateRouter
                   exact
                   path="/take-survey/:name"

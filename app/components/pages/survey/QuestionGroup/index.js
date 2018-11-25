@@ -11,18 +11,24 @@ import React from 'react';
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+import Question from '../Question';
+
+const data = [];
 
 /* eslint-disable react/prefer-stateless-function */
-class SurveyList extends React.Component {
+class QuestionGroup extends React.Component {
   render() {
     return (
       <div>
-        <FormattedMessage {...messages.header} />
+        <Question />
+        <Question />
+        <Question />
+        <Question />
       </div>
     );
   }
 }
 
-SurveyList.propTypes = {};
+QuestionGroup.propTypes = {};
 
-export default SurveyList;
+export default QuestionGroup;
