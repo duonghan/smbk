@@ -41,7 +41,7 @@ import './styles.css';
 const { Content } = Layout;
 
 const Container = styled.div`
-  margin: 85px 75px;
+  margin: 15px 15px;
 `;
 
 class App extends React.Component {

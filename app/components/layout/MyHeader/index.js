@@ -28,13 +28,13 @@ class MainHeader extends React.Component {
     return (
       <Row>
         <Header style={{ background: '#1373CC', color: 'white' }}>
-          <Col xs={12} md={12}>
+          <Col span="12">
             <Link to="/">
               <img alt="logo" src={Logo} style={styles.logoImg} />
               <img alt="logo" src={LogoText} style={styles.logoImg} />
             </Link>
           </Col>
-          <Col xs={12} md={12}>
+          <Col span="12">
             {!this.props.auth.get('isAuthorized') ? (
               <Menu
                 mode="horizontal"

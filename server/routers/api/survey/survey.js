@@ -18,11 +18,6 @@ router.get('/test', (req, res) =>
   }),
 );
 
-router.post('/test', (req, res) => {
-  const array = req.body.array;
-  return res.json({ array });
-});
-
 /**
  * @function: POST /api/survey
  * @desc: Create survey
@@ -96,11 +91,6 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(404).json(err));
 });
 
-/**
- * @function: GET /api/survey/list
- * @desc: Return list survey in db
- * @access: private
- */
 router.get('/groups/:surveyid', (req, res) => {
   QuestionGroup.find({ survey: req.params.surveyid })
     .then(groups => {

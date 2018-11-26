@@ -68,7 +68,7 @@ router.post('/add', (req, res) => {
     childs: req.body.childs,
     questions: req.body.questions,
     inputType: req.body.inputType,
-    optionAnswers: req.body.optionAnswers,
+    optionAnswers: JSON.parse(req.body.optionAnswers),
   });
 
   console.log(JSON.stringify(newQuestionGroup));

@@ -9,6 +9,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import axios from 'axios';
+import Helmet from 'react-helmet';
 
 import {
   Row,
@@ -18,8 +19,8 @@ import {
   Anchor,
   Tree,
   Spin,
-  Icon,
   Collapse,
+  Button,
 } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
@@ -78,7 +79,6 @@ class Survey extends React.Component {
     this.setState({ loading: true });
     axios.get(`/api/survey/question-groups/questions/${groupId}`).then(res => {
       this.setState({
-        currentGroup: res.data,
         loading: false,
       });
     });
@@ -102,11 +102,10 @@ class Survey extends React.Component {
   };
 
   render() {
-    const { current } = this.state;
-    console.log(this.state.groups.length);
     return (
       <Row>
         <Spin spinning={this.state.loading}>
+          <Helmet title={this.state.surveyTitle} />
           <Col
             md={{ span: 14, offset: 5 }}
             sm={{ span: 20, offset: 2 }}
@@ -140,11 +139,18 @@ class Survey extends React.Component {
                       </Collapse>
                     ))
                   ) : (
-                    <QuestionGroup id={item._id} prefix={`${index}`} />
+                    <QuestionGroup id={item._id} prefix={`${index + 1}`} />
                   )}
                 </Panel>
               </Collapse>
             ))}
+
+            <Button
+              type="primary"
+              style={{ marginTop: 10, textAlign: 'center' }}
+            >
+              Submit
+            </Button>
           </Col>
           <BackTop />
         </Spin>

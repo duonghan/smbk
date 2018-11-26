@@ -23,6 +23,7 @@ class QuestionGroup extends React.Component {
       questions: [],
       answerOptions: [],
       loading: true,
+      prevLength: 0,
     };
   }
 
@@ -31,8 +32,10 @@ class QuestionGroup extends React.Component {
   }
 
   // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.id !== this.props.id) {
-  //     this.fetchQuestions(nextProps.id);
+  //   if (nextProps.prefix !== this.props.prefix) {
+  //     this.setState(prevState => ({
+  //       prevLength: prevState.questions.length,
+  //     }));
   //   }
   // }
 
@@ -41,20 +44,23 @@ class QuestionGroup extends React.Component {
       this.setState({
         questions: res.data.questions,
         answerOptions: res.data.optionAnswers,
+        inputType: res.data.inputType,
         loading: false,
       });
     });
   };
 
   render() {
-    const { questions } = this.state;
     return (
       <Spin spinning={this.state.loading}>
-        {questions.length > 0 &&
-          questions.map((question, index) => (
+        {this.state.questions.length > 0 &&
+          this.state.questions.map((question, index) => (
             <Question
-              content={`${this.props.prefix}.${index + 1}. ${question.content}`}
+              content={`${this.props.prefix}.${index +
+                this.state.prevLength +
+                1}. ${question.content}`}
               answers={this.state.answerOptions}
+              inputType={this.state.inputType}
             />
           ))}
       </Spin>

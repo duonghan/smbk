@@ -47,7 +47,7 @@ router.post('/add', (req, res) => {
  */
 router.get('/list/:groupId', (req, res) => {
   QuestionGroup.findById(req.params.groupId)
-    .select('optionAnswers')
+    .select('optionAnswers parent inputType')
     .populate({ path: 'questions', select: 'content' })
     .exec((error, groups) => res.json(groups));
 });
