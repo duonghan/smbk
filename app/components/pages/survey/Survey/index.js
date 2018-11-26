@@ -8,44 +8,26 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
+import axios from 'axios';
 
-import { Row, Col, Steps, BackTop, Anchor, Affix } from 'antd';
+import {
+  Row,
+  Col,
+  Steps,
+  BackTop,
+  Anchor,
+  Tree,
+  Spin,
+  Icon,
+  Collapse,
+} from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
 
 const { Step } = Steps;
-const steps = [
-  {
-    title: 'First',
-    content: 'First-content',
-  },
-  {
-    title: 'Second',
-    content: 'Second-content',
-  },
-  {
-    title: 'Last',
-    content: 'Last-content',
-  },
-];
-
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    width: 150,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    width: 150,
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-  },
-];
+const TreeNode = Tree.TreeNode;
+const Panel = Collapse.Panel;
 
 const data = [];
 for (let i = 0; i < 100; i += 1) {
@@ -65,29 +47,107 @@ class Survey extends React.Component {
     super(props);
     this.state = {
       current: 0,
+      groups: [],
+      errors: {},
+      loading: true,
+      currentGroup: '',
+      surveyTitle: '',
+      activeKey: '0',
     };
   }
 
+  componentDidMount() {
+    this.getCurrentSurveyName(this.props.match.params.id);
+
+    this.fetchQuestionGroups(this.props.match.params.id);
+  }
+
+  fetchQuestionGroups = surveyId => {
+    axios
+      .get(`/api/survey/question-groups/list/${surveyId}`)
+      .then(res => {
+        this.setState({
+          groups: res.data.filter(item => !item.parent),
+          loading: false,
+        });
+      })
+      .catch(errors => this.setState({ errors }));
+  };
+
+  fetchQuestion = groupId => {
+    this.setState({ loading: true });
+    axios.get(`/api/survey/question-groups/questions/${groupId}`).then(res => {
+      this.setState({
+        currentGroup: res.data,
+        loading: false,
+      });
+    });
+  };
+
+  getCurrentSurveyName = id => {
+    axios.get(`/api/survey/${id}`).then(res => {
+      this.setState({ surveyTitle: res.data.title });
+    });
+  };
+
+  onSelect = (selectedKeys, info) => {
+    console.log('selected', info.selected);
+    if (info.selected) {
+      this.fetchQuestion(selectedKeys);
+    }
+  };
+
+  onChange = key => {
+    this.setState({ activeKey: key });
+  };
+
   render() {
     const { current } = this.state;
+    console.log(this.state.groups.length);
     return (
       <Row>
-        <Col span={4}>
-          <Affix offsetTop={20}>
-            <Steps current={1} direction="vertical" size="small" status="error">
-              {steps.map(item => (
-                <Step key={item.title} title={item.title} />
-              ))}
-            </Steps>
-          </Affix>
-        </Col>
-        <Col span={20}>
-          <div className="steps-content">
-            {steps[current].content}
-            <QuestionGroup />
-          </div>
-        </Col>
-        <BackTop />
+        <Spin spinning={this.state.loading}>
+          <Col
+            md={{ span: 14, offset: 5 }}
+            sm={{ span: 20, offset: 2 }}
+            xs={24}
+          >
+            <h1 style={{ textAlign: 'center' }}>{this.state.surveyTitle}</h1>
+            <br />
+            {this.state.groups.map((item, index) => (
+              <Collapse
+                accordion
+                activeKey={this.state.activeKey}
+                bordered={false}
+                defaultActiveKey="0"
+                onChange={this.onChange}
+                key={index}
+              >
+                <Panel key={index} header={`${index + 1}. ${item.name}`}>
+                  {item.childs && item.childs.length > 0 ? (
+                    item.childs.map((leaf, i) => (
+                      <Collapse
+                        bordered={false}
+                        defaultActiveKey="0"
+                        key={leaf._id}
+                      >
+                        <Panel key={`${index}_${i}`} header={leaf.name}>
+                          <QuestionGroup
+                            id={leaf._id}
+                            prefix={`${index + 1}`}
+                          />
+                        </Panel>
+                      </Collapse>
+                    ))
+                  ) : (
+                    <QuestionGroup id={item._id} prefix={`${index}`} />
+                  )}
+                </Panel>
+              </Collapse>
+            ))}
+          </Col>
+          <BackTop />
+        </Spin>
       </Row>
     );
   }

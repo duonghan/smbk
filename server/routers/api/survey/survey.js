@@ -18,6 +18,11 @@ router.get('/test', (req, res) =>
   }),
 );
 
+router.post('/test', (req, res) => {
+  const array = req.body.array;
+  return res.json({ array });
+});
+
 /**
  * @function: POST /api/survey
  * @desc: Create survey
@@ -82,6 +87,14 @@ router.get(
       .catch(err => res.status(404).json(err));
   },
 );
+
+router.get('/:id', (req, res) => {
+  Survey.findById(req.params.id)
+    .select('title')
+    .sort({ date: -1 })
+    .then(surveys => res.json(surveys))
+    .catch(err => res.status(404).json(err));
+});
 
 /**
  * @function: GET /api/survey/list

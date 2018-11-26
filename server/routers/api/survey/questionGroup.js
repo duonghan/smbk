@@ -6,6 +6,7 @@ const passport = require('passport');
 
 // Load question group model
 const QuestionGroup = require('../../../models/QuestionGroup');
+const Survey = require('../../../models/Survey');
 
 /**
  * @function: GET /api/question-group/test
@@ -23,15 +24,36 @@ router.get('/test', (req, res) =>
  * @desc: Create survey
  * @access: private
  */
-router.post('/', (req, res) => {
-  const newSurvey = new QuestionGroup({
-    name: req.body.name,
-    description: req.body.description,
-    title: req.body.title,
-    // user: req.user.id,
-  });
+router.post('/update', (req, res) => {
+  Survey.findById(req.body.surveyId).then(survey => {
+    QuestionGroup.findById(req.body.parent).then(parentGroups => {
+      const newQuestionGroup = {};
 
-  newSurvey.save().then(survey => res.json(survey));
+      newQuestionGroup.id = req.body.id;
+      if (req.body.name) newQuestionGroup.name = req.body.name.trim();
+      if (req.body.survey) newQuestionGroup.survey = survey._id;
+      if (req.body.childs) newQuestionGroup.childs = parentGroups._id;
+      if (req.body.parent) newQuestionGroup.parent = req.body.parent;
+      if (req.body.questions)
+        newQuestionGroup.questions = JSON.parse(req.body.questions);
+      if (req.body.inputType) newQuestionGroup.inputType = req.body.inputType;
+      if (req.body.optionAnswers)
+        newQuestionGroup.optionAnswers = JSON.parse(req.body.optionAnswers);
+
+      // return res.json(newQuestionGroup);
+
+      QuestionGroup.findByIdAndUpdate(newQuestionGroup.id, {
+        $set: newQuestionGroup,
+      })
+        .then(groups => {
+          res.json(groups);
+        })
+        .catch(err => {
+          const message = 'Cannot update question group';
+          res.status(404).json({ message, info: err });
+        });
+    });
+  });
 });
 
 /**
@@ -41,7 +63,7 @@ router.post('/', (req, res) => {
  */
 router.post('/add', (req, res) => {
   const newQuestionGroup = new QuestionGroup({
-    name: req.body.name,
+    name: req.body.name.trim(),
     survey: mongoose.Types.ObjectId(req.body.surveyId),
     childs: req.body.childs,
     questions: req.body.questions,
@@ -62,15 +84,19 @@ router.post('/add', (req, res) => {
  * @desc: Return list survey in db
  * @access: private
  */
-router.get(
-  '/list',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    QuestionGroup.find()
-      .sort({ date: -1 })
-      .then(surveys => res.json(surveys))
-      .catch(err => res.status(404).json(err));
-  },
-);
+router.get('/list/:surveyid', (req, res) => {
+  QuestionGroup.find(
+    { survey: req.params.surveyid, parent: null },
+    '_id name childs',
+  )
+    .populate({ path: 'childs', select: '_id name' })
+    .exec((error, groups) => res.json(groups));
+});
+
+router.get('/questions/:groupId', (req, res) => {
+  QuestionGroup.findById(req.params.groupId)
+    .populate({ path: 'questions', select: '_id content' })
+    .exec((error, groups) => res.json(groups));
+});
 
 module.exports = router;

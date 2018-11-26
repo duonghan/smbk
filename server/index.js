@@ -30,7 +30,7 @@ const answers = require('./routers/api/answer');
 const auth = require('./routers/auth');
 
 // Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Config database

@@ -97,7 +97,7 @@ class App extends React.Component {
                 <PrivateRouter exact path="/test" component={QuestionGroup} />
                 <PrivateRouter
                   exact
-                  path="/take-survey/:name"
+                  path="/take-survey/:name/:id"
                   component={Survey}
                 />
                 <PrivateRouter exact path="/setting" component={Setting} />

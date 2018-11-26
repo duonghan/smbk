@@ -11,6 +11,7 @@ const transporter = require('../../../utils/auth/sendMail');
 
 // Load question model
 const Question = require('../../../models/Question');
+const QuestionGroup = require('../../../models/QuestionGroup');
 
 /**
  * @function: GET /api/question/test
@@ -44,15 +45,11 @@ router.post('/add', (req, res) => {
  * @desc: Return list survey in db
  * @access: private
  */
-router.get(
-  '/list',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    Question.find()
-      .sort({ date: -1 })
-      .then(questions => res.json(questions))
-      .catch(err => res.status(404).json(err));
-  },
-);
+router.get('/list/:groupId', (req, res) => {
+  QuestionGroup.findById(req.params.groupId)
+    .select('optionAnswers')
+    .populate({ path: 'questions', select: 'content' })
+    .exec((error, groups) => res.json(groups));
+});
 
 module.exports = router;
