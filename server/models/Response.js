@@ -7,11 +7,25 @@ const ResponseSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'users',
   },
-  answer: {
-    type: String,
-    required: true,
+
+  survey: {
+    type: Schema.Types.ObjectId,
+    ref: 'surveys',
   },
+
+  answers: [
+    {
+      questionId: {
+        type: Schema.Types.ObjectId,
+        ref: 'questions',
+      },
+      value: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
 });
 
-const Response = mongoose.model('answers', ResponseSchema);
+const Response = mongoose.model('responses', ResponseSchema);
 module.exports = Response;

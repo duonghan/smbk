@@ -24,6 +24,7 @@ const profile = require('./routers/api/profile');
 const form = require('./routers/api/form');
 const survey = require('./routers/api/survey/survey');
 const questions = require('./routers/api/survey/question');
+const responses = require('./routers/api/survey/response');
 const questionGroup = require('./routers/api/survey/questionGroup');
 const answers = require('./routers/api/answer');
 
@@ -59,6 +60,7 @@ app.use('/api/survey', survey);
 app.use('/api/survey/question-groups', questionGroup);
 app.use('/api/survey/questions', questions);
 app.use('/api/survey/answers', answers);
+app.use('/api/survey/responses', responses);
 app.use('/auth', auth);
 
 // In production we need to pass these values in instead of relying on webpack

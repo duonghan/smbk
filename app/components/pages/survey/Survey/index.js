@@ -6,29 +6,17 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import axios from 'axios';
 import Helmet from 'react-helmet';
 
-import {
-  Row,
-  Col,
-  Steps,
-  BackTop,
-  Anchor,
-  Tree,
-  Spin,
-  Collapse,
-  Button,
-} from 'antd';
+import { Row, Col, BackTop, Spin, Collapse, Button } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
 
-const { Step } = Steps;
-const TreeNode = Tree.TreeNode;
-const Panel = Collapse.Panel;
+const { Panel } = Collapse;
 
 const data = [];
 for (let i = 0; i < 100; i += 1) {
@@ -40,13 +28,12 @@ for (let i = 0; i < 100; i += 1) {
   });
 }
 
-const { Link } = Anchor;
-
 /* eslint-disable react/prefer-stateless-function */
 class Survey extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      surveyId: props.match.params.id,
       current: 0,
       groups: [],
       errors: {},
@@ -58,9 +45,10 @@ class Survey extends React.Component {
   }
 
   componentDidMount() {
-    this.getCurrentSurveyName(this.props.match.params.id);
+    this.getCurrentSurveyName(this.state.surveyId);
+    this.fetchQuestionGroups(this.state.surveyId);
 
-    this.fetchQuestionGroups(this.props.match.params.id);
+    this.props.initResponse(this.state.surveyId, this.props.userId);
   }
 
   fetchQuestionGroups = surveyId => {
@@ -75,27 +63,10 @@ class Survey extends React.Component {
       .catch(errors => this.setState({ errors }));
   };
 
-  fetchQuestion = groupId => {
-    this.setState({ loading: true });
-    axios.get(`/api/survey/question-groups/questions/${groupId}`).then(res => {
-      this.setState({
-        loading: false,
-      });
-    });
-  };
-
   getCurrentSurveyName = id => {
     axios.get(`/api/survey/${id}`).then(res => {
       this.setState({ surveyTitle: res.data.title, surveyName: res.data.name });
-      debugger;
     });
-  };
-
-  onSelect = (selectedKeys, info) => {
-    console.log('selected', info.selected);
-    if (info.selected) {
-      this.fetchQuestion(selectedKeys);
-    }
   };
 
   onChange = key => {
@@ -137,26 +108,23 @@ class Survey extends React.Component {
                               header={`${index + 1}.${i + 1}. ${leaf.name}`}
                             >
                               <QuestionGroup
-                                id={leaf._id}
+                                group={leaf}
                                 prefix={`${index + 1}.${i + 1}`}
                               />
                             </Panel>
                           </Collapse>
                         ))
                       ) : (
-                        <QuestionGroup id={item._id} prefix={`${index + 1}`} />
+                        <QuestionGroup group={item} prefix={`${index + 1}`} />
                       )}
                     </Panel>
                   </Collapse>
                 ))
               : this.state.groups.map((item, index) => (
-                  <QuestionGroup id={item._id} key={index} />
+                  <QuestionGroup group={item} key={index} />
                 ))}
 
-            <Button
-              type="primary"
-              style={{ marginTop: 10, textAlign: 'center' }}
-            >
+            <Button type="primary" style={{ marginTop: 10 }}>
               Submit
             </Button>
           </Col>
@@ -167,6 +135,10 @@ class Survey extends React.Component {
   }
 }
 
-Survey.propTypes = {};
+Survey.propTypes = {
+  match: PropTypes.object.isRequired,
+  initResponse: PropTypes.func.isRequired,
+  userId: PropTypes.string.isRequired,
+};
 
 export default Survey;

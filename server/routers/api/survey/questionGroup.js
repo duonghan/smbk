@@ -87,15 +87,9 @@ router.post('/add', (req, res) => {
 router.get('/list/:surveyid', (req, res) => {
   QuestionGroup.find(
     { survey: req.params.surveyid, parent: null },
-    '_id name childs',
+    '_id name childs optionAnswers inputType',
   )
-    .populate({ path: 'childs', select: '_id name' })
-    .exec((error, groups) => res.json(groups));
-});
-
-router.get('/questions/:groupId', (req, res) => {
-  QuestionGroup.findById(req.params.groupId)
-    .populate({ path: 'questions', select: '_id content' })
+    .populate({ path: 'childs', select: '_id name optionAnswers inputType' })
     .exec((error, groups) => res.json(groups));
 });
 

@@ -2,13 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const Mongoose = require('mongoose');
-const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const hbs = require('nodemailer-express-handlebars');
-const passport = require('passport');
-const _ = require('lodash');
-const transporter = require('../../../utils/auth/sendMail');
 
 // Load question model
 const Question = require('../../../models/Question');
@@ -61,40 +54,40 @@ router.post('/update', (req, res) => {
   //   return res.json(questions);
   // });
 
-  QuestionGroup.find({ survey: '5bf4974dfa4c6c21a1b5ed68' }).then(groups => {
-    groups.filter(item => item.questions.length > 0).map(itemParent => {
-      itemParent.questions.map((item, index) => {
-        Question.findByIdAndUpdate(
-          item,
-          {
-            $set: {
-              group: itemParent._id,
-              orderNumber: index + 1,
-            },
-          },
-          { new: true },
-        ).then(doc => res.json(doc));
-      });
-    });
-  });
-
-  // QuestionGroup.findById('5bfc74c272cb2907acca20d7').then(groups => {
-  //   // return res.json(groups.map(item => item.questions));
-  //   groups.questions.map((item, index) => {
-  //     Question.findByIdAndUpdate(
-  //       item,
-  //       {
-  //         $set: {
-  //           group: Mongoose.Types.ObjectId('5bfc74c272cb2907acca20d7'),
-  //           orderNumber: index + 1,
+  // QuestionGroup.find({ survey: '5bf4974dfa4c6c21a1b5ed68' }).then(groups => {
+  //   groups.filter(item => item.questions.length > 0).map(itemParent => {
+  //     itemParent.questions.map((item, index) => {
+  //       Question.findByIdAndUpdate(
+  //         item,
+  //         {
+  //           $set: {
+  //             group: itemParent._id,
+  //             orderNumber: index + 1,
+  //           },
   //         },
-  //       },
-  //       { new: true },
-  //     ).then(doc => res.json(doc));
+  //         { new: true },
+  //       ).then(doc => res.json(doc));
+  //     });
   //   });
-  //
-  //   // return res.json(groups.questions);
   // });
+
+  QuestionGroup.findById('5bfc74c272cb2907acca20d7').then(groups => {
+    // return res.json(groups.map(item => item.questions));
+    groups.questions.map((item, index) => {
+      Question.findByIdAndUpdate(
+        item,
+        {
+          $set: {
+            group: Mongoose.Types.ObjectId('5bfc74c272cb2907acca20d7'),
+            orderNumber: index + 1,
+          },
+        },
+        { new: true },
+      ).then(doc => res.json(doc));
+    });
+
+    // return res.json(groups.questions);
+  });
 });
 
 /**
@@ -103,10 +96,11 @@ router.post('/update', (req, res) => {
  * @access: private
  */
 router.get('/list/:groupId', (req, res) => {
-  QuestionGroup.findById(req.params.groupId)
-    .select('optionAnswers parent inputType')
-    .populate({ path: 'questions', select: 'content' })
-    .exec((error, groups) => res.json(groups));
+  Question.find({ group: req.params.groupId })
+    .select('orderNumber content')
+    .sort({ orderNumber: 1 })
+    .then(questions => res.json(questions))
+    .catch(err => res.json({ err }));
 });
 
 module.exports = router;

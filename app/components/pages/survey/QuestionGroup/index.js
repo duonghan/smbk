@@ -21,13 +21,12 @@ class QuestionGroup extends React.Component {
     super(props);
     this.state = {
       questions: [],
-      answerOptions: [],
       loading: true,
     };
   }
 
   componentWillMount() {
-    this.fetchQuestions(this.props.id);
+    this.fetchQuestions(this.props.group._id);
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -41,9 +40,7 @@ class QuestionGroup extends React.Component {
   fetchQuestions = id => {
     axios.get(`/api/survey/questions/list/${id}`).then(res => {
       this.setState({
-        questions: res.data.questions,
-        answerOptions: res.data.optionAnswers,
-        inputType: res.data.inputType,
+        questions: res.data,
         loading: false,
       });
     });
@@ -53,15 +50,13 @@ class QuestionGroup extends React.Component {
     return (
       <Spin spinning={this.state.loading}>
         {this.state.questions.length > 0 &&
-          this.state.questions.map((question, index) => (
+          this.state.questions.map(question => (
             <Question
-              content={
-                this.props.prefix
-                  ? `${this.props.prefix}.${index + 1}. ${question.content}`
-                  : `${index + 1}. ${question.content}`
-              }
-              answers={this.state.answerOptions}
-              inputType={this.state.inputType}
+              content={`${question.orderNumber}. ${question.content}`}
+              orderNumber={question.orderNumber}
+              answers={this.props.group.optionAnswers}
+              inputType={this.props.group.inputType}
+              key={question._id}
             />
           ))}
       </Spin>
@@ -70,8 +65,7 @@ class QuestionGroup extends React.Component {
 }
 
 QuestionGroup.propTypes = {
-  id: PropTypes.string,
-  prefix: PropTypes.string,
+  group: PropTypes.object.isRequired,
 };
 
 export default QuestionGroup;

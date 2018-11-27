@@ -28,7 +28,8 @@ import NotFoundPage from 'components/pages/NotFoundPage/Loadable';
 
 import QuestionGroup from 'components/pages/survey/QuestionGroup';
 import AdminPage from 'modules/admin/components/AdminPage/Loadable';
-import Survey from 'components/pages/survey/Survey';
+// import Survey from 'components/pages/survey/Survey';
+import Survey from 'containers/ResponseContainer';
 import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
 import ResetPassword from 'components/auth/ResetPassword/Loadable';
 import Setting from 'containers/SettingContainer/Loadable';

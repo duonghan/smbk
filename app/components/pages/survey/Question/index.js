@@ -10,9 +10,6 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Steps, Button, Card, Radio, Rate, Icon } from 'antd';
 
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import messages from './messages';
-
 const RadioGroup = Radio.Group;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -28,9 +25,6 @@ class Question extends React.Component {
   };
 
   render() {
-    const { formatMessage } = this.props.intl;
-    const { answers } = this.props;
-    debugger;
     const radioStyle = {
       display: 'block',
       height: '30px',
@@ -68,10 +62,9 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
-  intl: intlShape.isRequired,
   content: PropTypes.string,
   inputType: PropTypes.string,
   answers: PropTypes.array,
 };
 
-export default injectIntl(Question);
+export default Question;
