@@ -23,7 +23,6 @@ class QuestionGroup extends React.Component {
       questions: [],
       answerOptions: [],
       loading: true,
-      prevLength: 0,
     };
   }
 
@@ -56,9 +55,11 @@ class QuestionGroup extends React.Component {
         {this.state.questions.length > 0 &&
           this.state.questions.map((question, index) => (
             <Question
-              content={`${this.props.prefix}.${index +
-                this.state.prevLength +
-                1}. ${question.content}`}
+              content={
+                this.props.prefix
+                  ? `${this.props.prefix}.${index + 1}. ${question.content}`
+                  : `${index + 1}. ${question.content}`
+              }
               answers={this.state.answerOptions}
               inputType={this.state.inputType}
             />

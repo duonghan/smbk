@@ -30,21 +30,7 @@ class SurveyItem extends React.Component {
           </Link>
         }
       >
-        <p>
-          <FormattedMessage {...messages.type} /> : {this.props.name}
-        </p>
-        <p>
-          <FormattedMessage {...messages.date} /> :{' '}
-          {FormattedTime(this.props.date)}
-        </p>
-        <p>
-          <FormattedMessage {...messages.lastUpdate} /> :{' '}
-          {FormattedTime(this.props.lastUpdate)}
-        </p>
-        <p>
-          <FormattedMessage {...messages.userCount} /> :
-          {this.props.users.length}
-        </p>
+        <p>{this.props.description}</p>
       </Card>
     );
   }

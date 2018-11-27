@@ -12,6 +12,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
+import { compose } from 'redux';
 
 // Import decode token package
 import jwtDecode from 'jwt-decode';
@@ -33,9 +34,12 @@ import ResetPassword from 'components/auth/ResetPassword/Loadable';
 import Setting from 'containers/SettingContainer/Loadable';
 import MainApp from 'containers/SurveyContainer/Loadable';
 import LoginPage from 'containers/Authentication/Login';
+import injectReducer from 'utils/injectReducer';
+import injectSaga from 'utils/injectSaga';
+import saga from 'containers/Authentication/saga';
+import reducer from 'containers/Authentication/reducer';
 
 import PrivateRouter from './PrivateRouter';
-
 import './styles.css';
 
 const { Content } = Layout;
@@ -112,4 +116,10 @@ class App extends React.Component {
   }
 }
 
-export default withRouter(App);
+const withReducer = injectReducer({ key: 'auth', reducer });
+const withSaga = injectSaga({ key: 'auth', saga });
+
+export default compose(
+  withReducer,
+  withSaga,
+)(withRouter(App));

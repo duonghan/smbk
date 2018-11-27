@@ -28,15 +28,14 @@ class MainApp extends React.Component {
       <Layout style={{ margin: 20 }}>
         <Helmet title={formatMessage(messages.header)} />
         <Spin spinning={this.props.loading}>
-          <Row gutter={24} type="flex" justify="space-around" align="middle">
+          <Row>
             {this.props.surveys &&
               this.props.surveys.map(item => {
                 return (
                   <Col
                     className="gutter-row"
-                    xs={24}
-                    sm={12}
-                    md={12}
+                    md={{ span: 10, offset: 7 }}
+                    sm={{ span: 14, offset: 5 }}
                     key={item.title}
                   >
                     <SurveyItem {...item} loading={this.props.loading} />

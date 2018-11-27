@@ -3,9 +3,19 @@ const { Schema } = mongoose;
 
 // Create new schema
 const QuestionSchema = new Schema({
+  orderNumber: {
+    type: Number,
+    required: true,
+  },
+
   content: {
     type: String,
     required: true,
+  },
+
+  group: {
+    type: Schema.Types.ObjectId,
+    ref: 'questionGroups',
   },
 });
 

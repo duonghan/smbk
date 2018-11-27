@@ -12,22 +12,27 @@ const mapStateToProps = state => ({
   auth: state.get('auth'),
 });
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
     onSignIn: userData => dispatch(signInRequest(userData)),
   };
-}
+};
 
-const withConnect = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
-);
-
-const withReducer = injectReducer({ key: 'auth', reducer });
-const withSaga = injectSaga({ key: 'auth', saga });
-
-export default compose(
-  withReducer,
-  withSaga,
-  withConnect,
 )(Login);
+
+// const withConnect = connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// );
+//
+// const withReducer = injectReducer({ key: 'auth', reducer });
+// const withSaga = injectSaga({ key: 'auth', saga });
+//
+// export default compose(
+//   withReducer,
+//   withSaga,
+//   withConnect,
+// )(Login);

@@ -51,8 +51,8 @@ class Survey extends React.Component {
       groups: [],
       errors: {},
       loading: true,
-      currentGroup: '',
       surveyTitle: '',
+      surveyName: '',
       activeKey: '0',
     };
   }
@@ -86,7 +86,8 @@ class Survey extends React.Component {
 
   getCurrentSurveyName = id => {
     axios.get(`/api/survey/${id}`).then(res => {
-      this.setState({ surveyTitle: res.data.title });
+      this.setState({ surveyTitle: res.data.title, surveyName: res.data.name });
+      debugger;
     });
   };
 
@@ -113,37 +114,44 @@ class Survey extends React.Component {
           >
             <h1 style={{ textAlign: 'center' }}>{this.state.surveyTitle}</h1>
             <br />
-            {this.state.groups.map((item, index) => (
-              <Collapse
-                accordion
-                activeKey={this.state.activeKey}
-                bordered={false}
-                defaultActiveKey="0"
-                onChange={this.onChange}
-                key={index}
-              >
-                <Panel key={index} header={`${index + 1}. ${item.name}`}>
-                  {item.childs && item.childs.length > 0 ? (
-                    item.childs.map((leaf, i) => (
-                      <Collapse
-                        bordered={false}
-                        defaultActiveKey="0"
-                        key={leaf._id}
-                      >
-                        <Panel key={`${index}_${i}`} header={leaf.name}>
-                          <QuestionGroup
-                            id={leaf._id}
-                            prefix={`${index + 1}`}
-                          />
-                        </Panel>
-                      </Collapse>
-                    ))
-                  ) : (
-                    <QuestionGroup id={item._id} prefix={`${index + 1}`} />
-                  )}
-                </Panel>
-              </Collapse>
-            ))}
+            {this.state.surveyName === 'psychological_test'
+              ? this.state.groups.map((item, index) => (
+                  <Collapse
+                    accordion
+                    activeKey={this.state.activeKey}
+                    bordered={false}
+                    defaultActiveKey="0"
+                    onChange={this.onChange}
+                    key={index}
+                  >
+                    <Panel key={index} header={`${index + 1}. ${item.name}`}>
+                      {item.childs && item.childs.length > 0 ? (
+                        item.childs.map((leaf, i) => (
+                          <Collapse
+                            bordered={false}
+                            defaultActiveKey="0"
+                            key={leaf._id}
+                          >
+                            <Panel
+                              key={`${index}_${i}`}
+                              header={`${index + 1}.${i + 1}. ${leaf.name}`}
+                            >
+                              <QuestionGroup
+                                id={leaf._id}
+                                prefix={`${index + 1}.${i + 1}`}
+                              />
+                            </Panel>
+                          </Collapse>
+                        ))
+                      ) : (
+                        <QuestionGroup id={item._id} prefix={`${index + 1}`} />
+                      )}
+                    </Panel>
+                  </Collapse>
+                ))
+              : this.state.groups.map((item, index) => (
+                  <QuestionGroup id={item._id} key={index} />
+                ))}
 
             <Button
               type="primary"

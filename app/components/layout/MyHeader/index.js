@@ -112,16 +112,21 @@ const mapStateToProps = state => ({
   auth: state.get('auth'),
 });
 
-const withConnect = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
-);
-
-const withReducer = injectReducer({ key: 'auth', reducer });
-const withSaga = injectSaga({ key: 'auth', saga });
-
-export default compose(
-  withReducer,
-  withSaga,
-  withConnect,
 )(MainHeader);
+
+// const withConnect = connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// );
+//
+// const withReducer = injectReducer({ key: 'auth', reducer });
+// const withSaga = injectSaga({ key: 'auth', saga });
+//
+// export default compose(
+//   withReducer,
+//   withSaga,
+//   withConnect,
+// )(MainHeader);

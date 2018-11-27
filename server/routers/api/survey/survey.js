@@ -85,7 +85,7 @@ router.get(
 
 router.get('/:id', (req, res) => {
   Survey.findById(req.params.id)
-    .select('title')
+    .select('title name')
     .sort({ date: -1 })
     .then(surveys => res.json(surveys))
     .catch(err => res.status(404).json(err));
