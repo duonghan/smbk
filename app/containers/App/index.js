@@ -29,11 +29,12 @@ import NotFoundPage from 'components/pages/NotFoundPage/Loadable';
 import QuestionGroup from 'components/pages/survey/QuestionGroup';
 import AdminPage from 'modules/admin/components/AdminPage/Loadable';
 // import Survey from 'components/pages/survey/Survey';
-import Survey from 'containers/ResponseContainer';
+import TestPage from 'components/pages/survey/Question/Test';
+import Survey from 'containers/ResponseContainer/Loadable';
 import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
 import ResetPassword from 'components/auth/ResetPassword/Loadable';
 import Setting from 'containers/SettingContainer/Loadable';
-import MainApp from 'containers/SurveyContainer/Loadable';
+import HomePage from 'containers/HomePageContainer/Loadable';
 import LoginPage from 'containers/Authentication/Login';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
@@ -75,7 +76,7 @@ class App extends React.Component {
                   return <Redirect to="/admin" />;
                 }
                 if (this.isLogged()) {
-                  return <MainApp />;
+                  return <HomePage />;
                 }
                 return <Landing />;
               }}
@@ -93,6 +94,7 @@ class App extends React.Component {
               <Switch>
                 <Route path="/register" component={RegisterPage} />
                 <Route path="/login" component={LoginPage} />
+                <Route path="/test" component={TestPage} />
                 <Route
                   exact
                   path="/auth/forgot-password"

@@ -1,6 +1,6 @@
 /**
  *
- * MainApp
+ * HomePage
  *
  */
 
@@ -8,8 +8,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import axios from 'axios';
-import { Layout, Row, Col, Pagination, Spin } from 'antd';
+import { Layout, Row, Col, Spin } from 'antd';
 import SurveyItem from 'components/pages/survey/SurveyItem';
 import { injectIntl, intlShape } from 'react-intl';
 import { Helmet } from 'react-helmet';
@@ -17,7 +16,7 @@ import { Helmet } from 'react-helmet';
 import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
-class MainApp extends React.Component {
+class HomePage extends React.Component {
   componentWillMount() {
     this.props.fetchSurvey();
   }
@@ -49,16 +48,10 @@ class MainApp extends React.Component {
   }
 }
 
-MainApp.propTypes = {
+HomePage.propTypes = {
   intl: intlShape.isRequired,
-  surveys: PropTypes.object,
+  surveys: PropTypes.any.isRequired,
   fetchSurvey: PropTypes.func.isRequired,
 };
 
-export default injectIntl(MainApp);
-
-// MainApp.propTypes = {
-//   token: PropTypes.string,
-//   history: PropTypes.object.isRequired,
-// };
-//
+export default injectIntl(HomePage);

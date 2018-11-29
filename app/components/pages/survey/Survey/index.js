@@ -11,22 +11,12 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Helmet from 'react-helmet';
 
-import { Row, Col, BackTop, Spin, Collapse, Button } from 'antd';
+import { Row, Col, BackTop, Spin, Collapse, Button, Modal } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
 
 const { Panel } = Collapse;
-
-const data = [];
-for (let i = 0; i < 100; i += 1) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    address: `London, Park Lane no. ${i}`,
-  });
-}
 
 /* eslint-disable react/prefer-stateless-function */
 class Survey extends React.Component {
@@ -36,7 +26,7 @@ class Survey extends React.Component {
       surveyId: props.match.params.id,
       current: 0,
       groups: [],
-      errors: {},
+      errors: '',
       loading: true,
       surveyTitle: '',
       surveyName: '',
@@ -48,7 +38,10 @@ class Survey extends React.Component {
     this.getCurrentSurveyName(this.state.surveyId);
     this.fetchQuestionGroups(this.state.surveyId);
 
-    this.props.initResponse(this.state.surveyId, this.props.userId);
+    this.props.initResponse({
+      surveyId: this.state.surveyId,
+      userId: this.props.userId,
+    });
   }
 
   fetchQuestionGroups = surveyId => {
@@ -82,6 +75,11 @@ class Survey extends React.Component {
             md={{ span: 14, offset: 5 }}
             sm={{ span: 20, offset: 2 }}
             xs={24}
+            style={{
+              border: '1px solid black',
+              borderRadius: 5,
+              padding: 20,
+            }}
           >
             <h1 style={{ textAlign: 'center' }}>{this.state.surveyTitle}</h1>
             <br />
@@ -124,7 +122,11 @@ class Survey extends React.Component {
                   <QuestionGroup group={item} key={index} />
                 ))}
 
-            <Button type="primary" style={{ marginTop: 10 }}>
+            <Button
+              type="primary"
+              style={{ marginTop: 10 }}
+              onClick={() => this.props.submitResponse(this.props.response)}
+            >
               Submit
             </Button>
           </Col>
@@ -138,7 +140,9 @@ class Survey extends React.Component {
 Survey.propTypes = {
   match: PropTypes.object.isRequired,
   initResponse: PropTypes.func.isRequired,
+  submitResponse: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
+  response: PropTypes.object.isRequired,
 };
 
 export default Survey;

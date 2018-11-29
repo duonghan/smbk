@@ -13,18 +13,18 @@ const ResponseSchema = new Schema({
     ref: 'surveys',
   },
 
-  answers: [
+  results: [
     {
-      questionId: {
-        type: Schema.Types.ObjectId,
-        ref: 'questions',
-      },
-      value: {
-        type: Number,
-        required: true,
-      },
+      type: Schema.Types.ObjectId,
+      ref: 'resultindicator',
     },
   ],
+
+  score: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
 });
 
 const Response = mongoose.model('responses', ResponseSchema);

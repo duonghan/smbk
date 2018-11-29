@@ -103,4 +103,30 @@ router.get('/list/:groupId', (req, res) => {
     .catch(err => res.json({ err }));
 });
 
+router.get('/list', (req, res) => {
+  if (req.query.range === 'survey' && req.query.id !== '') {
+    QuestionGroup.find({ survey: req.query.id, childs: [] })
+      .select('_id questions')
+      .populate('questions')
+      .exec((error, groups) => {
+        if (!error) {
+          return res.json(groups);
+          groups.map(group => {
+
+          })
+          const answers = data.questions.map(question => ({
+            [question._id]: { orderNUmber: question.orderNumber },
+          }));
+          return res.json({ length: data.questions.length, answers });
+        }
+      });
+  }
+
+  // Question.find({ group: req.params.groupId })
+  //   .select('orderNumber content')
+  //   .sort({ orderNumber: 1 })
+  //   .then(questions => res.json(questions))
+  //   .catch(err => res.json({ err }));
+});
+
 module.exports = router;

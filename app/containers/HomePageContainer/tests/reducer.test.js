@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import homePageContainerReducer from '../reducer';
+import mainPageContainerReducer from '../reducer';
 
-describe('homePageContainerReducer', () => {
+describe('mainPageContainerReducer', () => {
   it('returns the initial state', () => {
-    expect(homePageContainerReducer(undefined, {})).toEqual(fromJS({}));
+    expect(mainPageContainerReducer(undefined, {})).toEqual(fromJS({}));
   });
 });

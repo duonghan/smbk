@@ -1,12 +1,12 @@
 /*
- * MainApp Messages
+ * HomePage Messages
  *
- * This contains all the text for the MainApp component.
+ * This contains all the text for the HomePage component.
  */
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.components.MainApp';
+export const scope = 'app.components.HomePage';
 
 export default defineMessages({
   header: {

@@ -54,6 +54,7 @@ class QuestionGroup extends React.Component {
             <Question
               content={`${question.orderNumber}. ${question.content}`}
               orderNumber={question.orderNumber}
+              id={question._id}
               answers={this.props.group.optionAnswers}
               inputType={this.props.group.inputType}
               key={question._id}

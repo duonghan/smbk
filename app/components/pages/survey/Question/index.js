@@ -9,18 +9,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Steps, Button, Card, Radio, Rate, Icon } from 'antd';
+import { addAnswer } from 'containers/ResponseContainer/actions';
+import connect from 'react-redux/es/connect/connect';
 
 const RadioGroup = Radio.Group;
 
 /* eslint-disable react/prefer-stateless-function */
 class Question extends React.Component {
   state = {
-    score: 0,
+    isSelected: false,
   };
 
   onChange = e => {
-    this.setState({
+    this.setState(prevState => ({ isSelected: true }));
+
+    this.props.addAnswer({
+      questionId: this.props.id,
+      orderNum: this.props.orderNumber,
       score: e.target.value,
+    });
+  };
+
+  onChangeRate = value => {
+    this.setState(prevState => ({ isSelected: true }));
+
+    this.props.addAnswer({
+      questionId: this.props.id,
+      orderNum: this.props.orderNumber,
+      score: value,
     });
   };
 
@@ -32,13 +48,15 @@ class Question extends React.Component {
     };
 
     return (
-      <p>
-        <strong>{this.props.content}</strong>
+      <div>
+        <strong style={{ color: this.state.isSelected && 'brown' }}>
+          {this.props.content}
+        </strong>
         <br />
         {this.props.inputType !== 'rate' ? (
           <RadioGroup onChange={this.onChange}>
             {this.props.answers.map((item, index) => (
-              <Radio style={radioStyle} value={item.score}>
+              <Radio style={radioStyle} value={item.score} key={index}>
                 {item.text}
               </Radio>
             ))}
@@ -49,14 +67,15 @@ class Question extends React.Component {
             <Rate
               character={<Icon type="like" />}
               count={this.props.answers.length}
-              defaultValue={1}
+              defaultValue={0}
+              onChange={this.onChangeRate}
               allowClear={false}
               style={{ color: '#1373cc' }}
             />
             {` | ${this.props.answers[this.props.answers.length - 1].text}`}
           </div>
         )}
-      </p>
+      </div>
     );
   }
 }
@@ -65,6 +84,16 @@ Question.propTypes = {
   content: PropTypes.string,
   inputType: PropTypes.string,
   answers: PropTypes.array,
+  addAnswer: PropTypes.func.isRequired,
 };
 
-export default Question;
+// export default Question;
+
+const mapDispatchToProps = dispatch => ({
+  addAnswer: answer => dispatch(addAnswer(answer)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Question);

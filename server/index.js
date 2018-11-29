@@ -4,8 +4,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const bodyParser = require('body-parser');
-const ngrokInit = require('ngrok');
-const path = require('path');
 const logger = require('./logger');
 
 const argv = require('./argv');
@@ -20,13 +18,11 @@ const { resolve } = require('path');
 const app = express();
 
 const users = require('./routers/api/users');
-const profile = require('./routers/api/profile');
-const form = require('./routers/api/form');
 const survey = require('./routers/api/survey/survey');
 const questions = require('./routers/api/survey/question');
 const responses = require('./routers/api/survey/response');
+const resultIndicator = require('./routers/api/survey/resultIndicator');
 const questionGroup = require('./routers/api/survey/questionGroup');
-const answers = require('./routers/api/answer');
 
 const auth = require('./routers/auth');
 
@@ -54,12 +50,10 @@ require('./config/passport')(passport);
 
 // Use Router
 app.use('/api/users', users);
-app.use('/api/profile', profile);
-app.use('/api/form', form);
 app.use('/api/survey', survey);
 app.use('/api/survey/question-groups', questionGroup);
 app.use('/api/survey/questions', questions);
-app.use('/api/survey/answers', answers);
+app.use('/api/survey/result-indicator', resultIndicator);
 app.use('/api/survey/responses', responses);
 app.use('/auth', auth);
 

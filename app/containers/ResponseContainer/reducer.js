@@ -11,14 +11,14 @@ import {
   INIT_SUCCESS,
   INIT_FAILED,
   ADD_ANSWER,
+  SUBMIT_FAILED,
+  RESET_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
   id: '',
-  answers: {
-    questionId: '',
-    value: '',
-  },
+  total: 0,
+  answers: {},
   errors: {},
 });
 
@@ -27,11 +27,24 @@ function responseContainerReducer(state = initialState, action) {
     case INIT_RESPONSE:
       return state.mergeDeep({ ...action.initialValue });
     case INIT_SUCCESS:
-      return state.set('id', action.responseId);
+      return state.mergeDeep({
+        id: action.responseId,
+        total: action.totalQuestions,
+      });
     case INIT_FAILED:
       return state.set('errors', action.err);
+    case SUBMIT_FAILED:
+      return state.set('errors', action.err);
+    case RESET_ERROR:
+      return state.set('errors', {});
     case ADD_ANSWER:
-      return state;
+      return state.setIn(
+        ['answers', action.answer.questionId],
+        fromJS({
+          orderNum: action.answer.orderNum,
+          score: action.answer.score,
+        }),
+      );
     default:
       return state;
   }

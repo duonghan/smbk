@@ -13,14 +13,24 @@ import {
   INIT_RESPONSE,
   INIT_SUCCESS,
   INIT_FAILED,
+  FETCH_QUESTION_GROUP,
+  FETCH_SURVEY_INFO, SUBMIT_FAILED, RESET_ERROR,
 } from './constants';
 
 export const initResponse = initialValue => ({
   type: INIT_RESPONSE,
-  initialValue,
+  value: initialValue,
 });
 
-export const initSucess = responseId => ({ type: INIT_SUCCESS, responseId });
+export const fetchSurvey = () => ({ type: FETCH_SURVEY_INFO });
+
+export const fetchQuestionGroup = () => ({ type: FETCH_QUESTION_GROUP });
+
+export const initSucess = (responseId, totalQuestions) => ({
+  type: INIT_SUCCESS,
+  responseId,
+  totalQuestions,
+});
 
 export const initFailed = err => ({ type: INIT_FAILED, err });
 
@@ -31,6 +41,10 @@ export const addAnswer = answer => ({
 
 export const updateAnswer = answer => ({ type: UPDATE_ANSWER, answer });
 
-export const submitResponse = () => ({ type: SUBMIT_RESPONSE });
+export const submitResponse = response => ({ type: SUBMIT_RESPONSE, response });
 
 export const submitSuccess = data => ({ type: SUBMIT_SUCCESS, data });
+
+export const submitFailed = err => ({ type: SUBMIT_FAILED, err });
+
+export const resetError = () => ({ type: RESET_ERROR });
