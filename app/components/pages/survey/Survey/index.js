@@ -11,7 +11,17 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Helmet from 'react-helmet';
 
-import { Row, Col, BackTop, Spin, Collapse, Button, Modal } from 'antd';
+import {
+  Row,
+  Col,
+  BackTop,
+  Spin,
+  Collapse,
+  Button,
+  Modal,
+  Progress,
+  Affix,
+} from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
@@ -27,6 +37,7 @@ class Survey extends React.Component {
       current: 0,
       groups: [],
       errors: '',
+      percent: 0,
       loading: true,
       surveyTitle: '',
       surveyName: '',
@@ -38,9 +49,22 @@ class Survey extends React.Component {
     this.getCurrentSurveyName(this.state.surveyId);
     this.fetchQuestionGroups(this.state.surveyId);
 
+    debugger;
     this.props.initResponse({
       surveyId: this.state.surveyId,
       userId: this.props.userId,
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    debugger;
+
+    this.setState({
+      percent: Math.round(
+        (nextProps.response.get('answers').size /
+          this.props.response.get('total')) *
+          100,
+      ),
     });
   }
 
@@ -71,6 +95,9 @@ class Survey extends React.Component {
       <Row>
         <Spin spinning={this.state.loading}>
           <Helmet title={this.state.surveyTitle} />
+          <Affix>
+            <Progress percent={this.state.percent} status="active" />
+          </Affix>
           <Col
             md={{ span: 14, offset: 5 }}
             sm={{ span: 20, offset: 2 }}
@@ -79,6 +106,7 @@ class Survey extends React.Component {
               border: '1px solid black',
               borderRadius: 5,
               padding: 20,
+              backgroundColor: 'white',
             }}
           >
             <h1 style={{ textAlign: 'center' }}>{this.state.surveyTitle}</h1>

@@ -76,8 +76,8 @@ router.get(
   '/list',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    Survey.find()
-      .sort({ date: -1 })
+    Survey.find({})
+      .select('_id name title description')
       .then(surveys => res.json(surveys))
       .catch(err => res.status(404).json(err));
   },

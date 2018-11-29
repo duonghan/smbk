@@ -30,6 +30,7 @@ import QuestionGroup from 'components/pages/survey/QuestionGroup';
 import AdminPage from 'modules/admin/components/AdminPage/Loadable';
 // import Survey from 'components/pages/survey/Survey';
 import TestPage from 'components/pages/survey/Question/Test';
+import ResultPage from 'components/pages/survey/ResultPage/Loadable';
 import Survey from 'containers/ResponseContainer/Loadable';
 import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
 import ResetPassword from 'components/auth/ResetPassword/Loadable';
@@ -108,6 +109,7 @@ class App extends React.Component {
                   component={Survey}
                 />
                 <PrivateRouter exact path="/setting" component={Setting} />
+                <PrivateRouter exact path="/result" component={ResultPage} />
                 <Route component={NotFoundPage} />
               </Switch>
             </Container>

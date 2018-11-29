@@ -24,13 +24,15 @@ export const initialState = fromJS({
 
 function responseContainerReducer(state = initialState, action) {
   switch (action.type) {
-    case INIT_RESPONSE:
-      return state.mergeDeep({ ...action.initialValue });
     case INIT_SUCCESS:
-      return state.mergeDeep({
+      debugger;
+      const a = state.mergeDeep({
         id: action.responseId,
         total: action.totalQuestions,
+        answers: {},
+        errors: {},
       });
+      return a;
     case INIT_FAILED:
       return state.set('errors', action.err);
     case SUBMIT_FAILED:

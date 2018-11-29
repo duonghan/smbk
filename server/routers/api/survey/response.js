@@ -92,6 +92,8 @@ router.post(
             return item;
           });
 
+          console.log(JSON.stringify(newResponse));
+
           const scoreC = C.reduce(
             (accumulator, currentValue) =>
               newResponse[accumulator] + newResponse[currentValue],

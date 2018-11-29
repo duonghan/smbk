@@ -17,6 +17,7 @@ import saga from './saga';
 import { initResponse, resetError, submitResponse } from './actions';
 
 const mapStateToProps = state => {
+  debugger;
   return {
     userId: state.getIn(['auth', 'user', 'id']),
     response: state.get('response'),
