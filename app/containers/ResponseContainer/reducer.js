@@ -26,12 +26,13 @@ function responseContainerReducer(state = initialState, action) {
   switch (action.type) {
     case INIT_SUCCESS:
       debugger;
-      const a = state.mergeDeep({
-        id: action.responseId,
-        total: action.totalQuestions,
-        answers: {},
-        errors: {},
-      });
+      const a = state
+        .mergeDeep({
+          id: action.responseId,
+          total: action.totalQuestions,
+        })
+        .set('answers', fromJS({}))
+        .set('errors', fromJS({}));
       return a;
     case INIT_FAILED:
       return state.set('errors', action.err);

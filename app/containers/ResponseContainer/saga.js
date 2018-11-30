@@ -1,6 +1,7 @@
 import { call, all, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import config from 'utils/validation/config';
+import { push } from 'connected-react-router';
 
 import { initSucess, initFailed, submitFailed } from './actions';
 import { INIT_RESPONSE, SUBMIT_RESPONSE } from './constants';
@@ -30,6 +31,10 @@ function* submitResponse(data) {
       data.response,
       config,
     );
+
+    if (false) {
+      yield put(push('/take-survey/result'));
+    }
 
     // if (data.response.get('answers').size < data.response.get('total')) {
     //   yield put(submitFailed({ message: 'ResponseNotCompleted' }));

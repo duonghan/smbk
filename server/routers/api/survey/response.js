@@ -9,6 +9,8 @@ const passport = require('passport');
 const Response = require('../../../models/Response');
 const Survey = require('../../../models/Survey');
 const QuestionGroup = require('../../../models/QuestionGroup');
+const resultNEO = require('../../../utils/calculate/response/neo');
+const resultRIASEC = require('../../../utils/calculate/response/riasec');
 
 /**
  * @function: GET /api/question/test
@@ -50,59 +52,60 @@ router.post(
           console.log(score);
         }
         if (survey.name === 'neo') {
-          const reverseIndex = [
-            2,
-            3,
-            4,
-            7,
-            8,
-            9,
-            12,
-            14,
-            17,
-            22,
-            23,
-            27,
-            32,
-            37,
-            38,
-            42,
-            43,
-            47,
-            48,
-            49,
-            50,
-            52,
-            53,
-            54,
-            57,
-            59,
-          ];
+          // const reverseIndex = [
+          //   2,
+          //   3,
+          //   4,
+          //   7,
+          //   8,
+          //   9,
+          //   12,
+          //   14,
+          //   17,
+          //   22,
+          //   23,
+          //   27,
+          //   32,
+          //   37,
+          //   38,
+          //   42,
+          //   43,
+          //   47,
+          //   48,
+          //   49,
+          //   50,
+          //   52,
+          //   53,
+          //   54,
+          //   57,
+          //   59,
+          // ];
+          //
+          // const C = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
+          // const A = [2, 7, 12, 17, 22, 27, 32, 37, 42, 47, 52, 57];
+          // const N = [4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59];
+          // const O = [3, 8, 13, 18, 23, 28, 33, 38, 43, 48, 53, 58];
+          // const E = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
+          //
+          // // reverse
+          // const newResponse = Object.values(req.body.answers).map(item => {
+          //   if (reverseIndex.includes(item.orderNum))
+          //     item.score = 4 - item.score;
+          //   return item;
+          // });
+          //
+          // console.log(JSON.stringify(newResponse));
+          //
+          // const scoreC = newResponse
+          //   .filter(item => C.includes(item.orderNum))
+          //   .reduce((acc, cur) => acc + cur.score, 0);
+          //
+          // console.log(scoreC);
 
-          const C = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
-          const A = [2, 7, 12, 17, 22, 27, 32, 37, 42, 47, 52, 57];
-          const N = [4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59];
-          const O = [3, 8, 13, 18, 23, 28, 33, 38, 43, 48, 53, 58];
-          const E = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
-
-          // reverse
-          const newResponse = Object.values(req.body.answers).map(item => {
-            if (reverseIndex.includes(item.orderNum))
-              item.score = 4 - item.score;
-            return item;
-          });
-
-          console.log(JSON.stringify(newResponse));
-
-          const scoreC = C.reduce(
-            (accumulator, currentValue) =>
-              newResponse[accumulator] + newResponse[currentValue],
-            0,
-          );
-
-          console.log(scoreC);
+          console.log(resultNEO(req.body.answers));
         }
         if (survey.name === 'riasec') {
+          console.log(resultRIASEC(req.body.answers));
         }
       });
     });

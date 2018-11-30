@@ -109,7 +109,11 @@ class App extends React.Component {
                   component={Survey}
                 />
                 <PrivateRouter exact path="/setting" component={Setting} />
-                <PrivateRouter exact path="/result" component={ResultPage} />
+                <PrivateRouter
+                  exact
+                  path="/take-survey/result"
+                  component={ResultPage}
+                />
                 <Route component={NotFoundPage} />
               </Switch>
             </Container>
