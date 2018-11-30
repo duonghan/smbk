@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import axios from 'axios';
 import Helmet from 'react-helmet';
+import ProfileModal from './ProfileModal';
 
 import {
   Row,
@@ -41,6 +42,7 @@ class Survey extends React.Component {
       loading: true,
       surveyTitle: '',
       surveyName: '',
+      visible: false,
       activeKey: '0',
     };
   }
@@ -81,8 +83,12 @@ class Survey extends React.Component {
   };
 
   getCurrentSurveyName = id => {
-    axios.get(`/api/survey/${id}`).then(res => {
-      this.setState({ surveyTitle: res.data.title, surveyName: res.data.name });
+    axios.get(`/api/survey?id=${id}`).then(res => {
+      this.setState({
+        surveyTitle: res.data.title,
+        surveyName: res.data.name,
+        visible: res.data.name === 'moc',
+      });
     });
   };
 
@@ -90,11 +96,38 @@ class Survey extends React.Component {
     this.setState({ activeKey: key });
   };
 
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
+
+  handleCreate = () => {
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      console.log('Received values of form: ', values);
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  };
+
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+
   render() {
     return (
       <Row>
         <Spin spinning={this.state.loading}>
           <Helmet title={this.state.surveyTitle} />
+          <ProfileModal
+            wrappedComponentRef={this.saveFormRef}
+            visible={this.state.visible}
+            onCancel={this.handleCancel}
+            onCreate={this.handleCreate}
+          />
           <Affix>
             <Progress percent={this.state.percent} status="active" />
           </Affix>
@@ -149,7 +182,6 @@ class Survey extends React.Component {
               : this.state.groups.map((item, index) => (
                   <QuestionGroup group={item} key={index} />
                 ))}
-
             <Button
               type="primary"
               style={{ marginTop: 10 }}
@@ -158,6 +190,7 @@ class Survey extends React.Component {
               Submit
             </Button>
           </Col>
+
           <BackTop />
         </Spin>
       </Row>

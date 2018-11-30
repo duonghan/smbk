@@ -6,38 +6,67 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Card } from 'antd';
+
+import { Card, Badge } from 'antd';
 import { FormattedMessage } from 'react-intl';
-import FormattedTime from 'utils/time/formatTime';
 // import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+import { setCurrentSurvey } from 'containers/HomePageContainer/actions';
+import Cover from 'images/neo_survey_cover.png';
 import messages from './messages';
+
+const { Meta } = Card;
 
 /* eslint-disable react/prefer-stateless-function */
 class SurveyItem extends React.Component {
   render() {
     return (
-      <Card
-        hoverable
-        title={this.props.title}
-        style={{ marginTop: 40 }}
-        loading={this.props.loading}
-        extra={
-          <Link to={`/take-survey/${this.props.name}/${this.props._id}`}>
-            <FormattedMessage {...messages.takeSurvey} />
-          </Link>
-        }
-      >
-        <p>{this.props.description}</p>
-      </Card>
+      <Badge count="new">
+        <Card
+          hoverable
+          loading={this.props.loading}
+          cover={
+            <img
+              alt="example"
+              src={this.props.cover}
+              style={{ width: '100%', height: 'auto' }}
+            />
+          }
+          extra={
+            <Link
+              to={`/take-survey/${this.props.name}/${this.props._id}`}
+              onClick={() => this.props.setCurrentSurvey(this.props.index)}
+            >
+              <FormattedMessage {...messages.takeSurvey} />
+            </Link>
+          }
+        >
+          <Meta
+            title={this.props.title}
+            description={
+              this.props.description.length <= 120
+                ? this.props.description
+                : `${this.props.description.substring(0, 120)}...`
+            }
+          />
+        </Card>
+      </Badge>
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentSurvey: order => dispatch(setCurrentSurvey(order)),
+});
 
 SurveyItem.propTypes = {
   title: PropTypes.string,
 };
 
-export default SurveyItem;
+export default connect(
+  null,
+  mapDispatchToProps,
+)(SurveyItem);

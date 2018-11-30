@@ -8,17 +8,6 @@ const Survey = require('../../../models/Survey');
 const QuestionGroup = require('../../../models/QuestionGroup');
 
 /**
- * @function: GET /api/survey/test
- * @desc: Test survey router
- * @access: public
- */
-router.get('/test', (req, res) =>
-  res.json({
-    msg: `Test survey successfully`,
-  }),
-);
-
-/**
  * @function: POST /api/survey
  * @desc: Create survey
  * @access: private
@@ -27,8 +16,8 @@ router.post('/', (req, res) => {
   const newSurvey = new Survey({
     name: req.body.name,
     description: req.body.description,
+    cover: req.body.cover,
     title: req.body.title,
-    // user: req.user.id,
   });
 
   newSurvey.save().then(survey => res.json(survey));
@@ -40,27 +29,16 @@ router.post('/', (req, res) => {
  * @access: private
  */
 router.post('/update', (req, res) => {
-  // const {
-  //   id,
-  //   name,
-  //   survey,
-  //   childs,
-  //   questions,
-  //   inputType,
-  //   optionAnswers,
-  // } = req.body;
-
   const newSurvey = {
-    id: req.body.id,
-    name: req.body.name,
-    survey: req.body.survey,
-    childs: req.body.childs,
-    questions: req.body.questions,
-    inputType: req.body.inputType,
-    optionAnswers: req.body.optionAnswers,
+    lastUpdate: Date.now(),
   };
 
-  Survey.findByIdAndUpdate(newSurvey.id, { $set: newSurvey })
+  if (req.body.id) newSurvey.id = req.body.id;
+  if (req.body.name) newSurvey.name = req.body.name;
+  if (req.body.cover) newSurvey.cover = req.body.cover;
+  if (req.body.title) newSurvey.title = req.body.title;
+
+  Survey.findByIdAndUpdate(newSurvey.id, { $set: newSurvey }, { new: true })
     .then(survey => {
       res.json(survey);
     })
@@ -73,23 +51,29 @@ router.post('/update', (req, res) => {
  * @access: private
  */
 router.get(
-  '/list',
+  '/all',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Survey.find({})
-      .select('_id name title description')
+      .select('_id name title description cover')
       .then(surveys => res.json(surveys))
       .catch(err => res.status(404).json(err));
   },
 );
 
-router.get('/:id', (req, res) => {
-  Survey.findById(req.params.id)
-    .select('title name')
-    .sort({ date: -1 })
-    .then(surveys => res.json(surveys))
-    .catch(err => res.status(404).json(err));
-});
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    if (req.query.id !== '') {
+      Survey.findById(req.query.id)
+        .select('title name')
+        .sort({ date: -1 })
+        .then(surveys => res.json(surveys))
+        .catch(err => res.status(404).json(err));
+    }
+  },
+);
 
 router.get('/groups/:surveyid', (req, res) => {
   QuestionGroup.find({ survey: req.params.surveyid })

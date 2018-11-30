@@ -27,17 +27,22 @@ class HomePage extends React.Component {
       <Layout style={{ margin: 20 }}>
         <Helmet title={formatMessage(messages.header)} />
         <Spin spinning={this.props.loading}>
-          <Row>
+          <Row gutter={16}>
             {this.props.surveys &&
-              this.props.surveys.map(item => {
+              this.props.surveys.map((item, index) => {
                 return (
                   <Col
                     className="gutter-row"
-                    md={{ span: 10, offset: 7 }}
-                    sm={{ span: 14, offset: 5 }}
+                    md={6}
+                    sm={12}
+                    xs={24}
                     key={item.title}
                   >
-                    <SurveyItem {...item} loading={this.props.loading} />
+                    <SurveyItem
+                      {...item}
+                      loading={this.props.loading}
+                      index={index}
+                    />
                   </Col>
                 );
               })}

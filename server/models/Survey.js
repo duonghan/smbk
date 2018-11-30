@@ -7,21 +7,29 @@ const SurveySchema = new Schema({
     type: String,
     required: true,
   },
-  description: String,
+
+  description: {
+    type: String,
+    required: true,
+    default: '',
+  },
+
+  cover: {
+    type: String,
+    required: true,
+    default: '',
+  },
+
   title: {
     type: String,
     required: true,
   },
-  users: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'users',
-    },
-  ],
+
   date: {
     type: Date,
     default: Date.now,
   },
+
   lastUpdate: {
     type: Date,
     default: Date.now,

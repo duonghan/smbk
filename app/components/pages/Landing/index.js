@@ -14,12 +14,12 @@ import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import BackgroundImage from 'images/landing-background.jpg';
 import { signInGuest } from 'containers/Authentication/actions';
 import { withRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import Introduction from './Introduction';
 import LandingBackground from './LandingBackground';
 import LandingContainer from './LandingContainer';
 import messages from './messages';
-import { Helmet } from 'react-helmet';
 
 /* eslint-disable react/prefer-stateless-function */
 class Landing extends React.Component {

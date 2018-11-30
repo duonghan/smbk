@@ -6,16 +6,14 @@
 */
 
 import {
-  DEFAULT_ACTION,
+  SET_CURRENT_SURVEY,
   FETCH_FAILED,
   FETCH_SUCCESS,
   FETCH_SURVEY,
 } from './constants';
 
-export function defaultAction() {
-  return {
-    type: DEFAULT_ACTION,
-  };
+export function setCurrentSurvey(order) {
+  return { type: SET_CURRENT_SURVEY, order };
 }
 
 export function fetchSurvey() {

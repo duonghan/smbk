@@ -12,17 +12,6 @@ const QuestionGroup = require('../../../models/QuestionGroup');
 const resultNEO = require('../../../utils/calculate/response/neo');
 const resultRIASEC = require('../../../utils/calculate/response/riasec');
 
-/**
- * @function: GET /api/question/test
- * @desc: Test question router
- * @access: public
- */
-router.get('/test', (req, res) =>
-  res.json({
-    msg: `Test question successfully`,
-  }),
-);
-
 router.get(
   '/:id',
   passport.authenticate('jwt', { session: false }),

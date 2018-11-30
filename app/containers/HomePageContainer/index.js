@@ -14,7 +14,7 @@ import injectReducer from 'utils/injectReducer';
 import MainApp from 'components/pages/HomePage';
 import reducer from './reducer';
 import saga from './saga';
-import { fetchSurvey } from './actions';
+import { fetchSurvey, setCurrentSurvey } from './actions';
 
 const mapStateToProps = state => ({
   surveys: state.getIn(['survey', 'items']),

@@ -6,7 +6,7 @@ import { fetchFailed, fetchSuccess } from './actions';
 
 function* doFetchSurvey() {
   try {
-    const res = yield call(axios.get, '/api/survey/list', config);
+    const res = yield call(axios.get, '/api/survey/all', config);
     const surveys = res.data;
     yield put(fetchSuccess(surveys));
   } catch (err) {
