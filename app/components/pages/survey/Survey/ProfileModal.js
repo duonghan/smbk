@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, Input, Radio } from 'antd';
+import { Modal, Form, Input, Radio, InputNumber } from 'antd';
+
+import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
+
+import messages from './messages';
 
 const FormItem = Form.Item;
 
@@ -8,19 +12,21 @@ const FormItem = Form.Item;
 class ProfileModal extends React.Component {
   render() {
     const { visible, onCancel, onCreate, form } = this.props;
+    const { formatMessage } = this.props.intl;
     const { getFieldDecorator } = form;
 
     return (
       <Modal
         visible={visible}
-        title="Create a new collection"
-        okText="Create"
+        title={formatMessage(messages.profileTitle)}
+        okText={formatMessage(messages.saveBtn)}
+        cancelText={formatMessage(messages.cancelBtn)}
         onCancel={onCancel}
         onOk={onCreate}
       >
         <Form layout="vertical">
-          <FormItem label="Title">
-            {getFieldDecorator('title', {
+          <FormItem label={formatMessage(messages.nameLabel)}>
+            {getFieldDecorator('name', {
               rules: [
                 {
                   required: true,
@@ -29,16 +35,30 @@ class ProfileModal extends React.Component {
               ],
             })(<Input />)}
           </FormItem>
-          <FormItem label="Description">
-            {getFieldDecorator('description')(<Input type="textarea" />)}
+          <FormItem label={formatMessage(messages.ageLabel)}>
+            {getFieldDecorator('age', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please input the title of collection!',
+                },
+              ],
+            })(<InputNumber min={1} max={200} />)}
           </FormItem>
-          <FormItem className="collection-create-form_last-form-item">
-            {getFieldDecorator('modifier', {
-              initialValue: 'public',
+          <FormItem label={formatMessage(messages.addressLabel)}>
+            {getFieldDecorator('address')(<Input type="textarea" />)}
+          </FormItem>
+          <FormItem label={formatMessage(messages.genderLabel)}>
+            {getFieldDecorator('gender', {
+              initialValue: 'male',
             })(
               <Radio.Group>
-                <Radio value="public">Public</Radio>
-                <Radio value="private">Private</Radio>
+                <Radio value="male">
+                  <FormattedMessage {...messages.maleOptions} />
+                </Radio>
+                <Radio value="female">
+                  <FormattedMessage {...messages.femaleOptions} />
+                </Radio>
               </Radio.Group>,
             )}
           </FormItem>
@@ -53,6 +73,7 @@ ProfileModal.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onCreate: PropTypes.func.isRequired,
   form: PropTypes.object.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default Form.create()(ProfileModal);
+export default Form.create()(injectIntl(ProfileModal));

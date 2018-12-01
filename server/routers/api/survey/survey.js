@@ -12,38 +12,54 @@ const QuestionGroup = require('../../../models/QuestionGroup');
  * @desc: Create survey
  * @access: private
  */
-router.post('/', (req, res) => {
-  const newSurvey = new Survey({
-    name: req.body.name,
-    description: req.body.description,
-    cover: req.body.cover,
-    title: req.body.title,
-  });
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    if (req.user.role === 'ADMIN') {
+      const newSurvey = new Survey({
+        name: req.body.name,
+        description: req.body.description,
+        cover: req.body.cover,
+        title: req.body.title,
+      });
 
-  newSurvey.save().then(survey => res.json(survey));
-});
+      newSurvey.save().then(survey => res.json(survey));
+    } else {
+      res.status(403).send('You have no rights to visit this page');
+    }
+  },
+);
 
 /**
  * @function: POST /api/survey/update
  * @desc: Create survey
  * @access: private
  */
-router.post('/update', (req, res) => {
-  const newSurvey = {
-    lastUpdate: Date.now(),
-  };
+router.post(
+  '/update',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    if (req.user.role === 'ADMIN') {
+      const newSurvey = {
+        lastUpdate: Date.now(),
+      };
 
-  if (req.body.id) newSurvey.id = req.body.id;
-  if (req.body.name) newSurvey.name = req.body.name;
-  if (req.body.cover) newSurvey.cover = req.body.cover;
-  if (req.body.title) newSurvey.title = req.body.title;
+      if (req.body.id) newSurvey.id = req.body.id;
+      if (req.body.name) newSurvey.name = req.body.name;
+      if (req.body.cover) newSurvey.cover = req.body.cover;
+      if (req.body.title) newSurvey.title = req.body.title;
 
-  Survey.findByIdAndUpdate(newSurvey.id, { $set: newSurvey }, { new: true })
-    .then(survey => {
-      res.json(survey);
-    })
-    .catch(err => res.status(400).json(err));
-});
+      Survey.findByIdAndUpdate(newSurvey.id, { $set: newSurvey }, { new: true })
+        .then(survey => {
+          res.json(survey);
+        })
+        .catch(err => res.status(400).json(err));
+    } else {
+      res.status(403).send('You have no rights to visit this page');
+    }
+  },
+);
 
 /**
  * @function: GET /api/survey/list

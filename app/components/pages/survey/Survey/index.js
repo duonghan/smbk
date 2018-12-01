@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import axios from 'axios';
 import Helmet from 'react-helmet';
-import ProfileModal from './ProfileModal';
 
 import {
   Row,
@@ -19,13 +18,13 @@ import {
   Spin,
   Collapse,
   Button,
-  Modal,
   Progress,
   Affix,
 } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
+import ProfileModal from './ProfileModal';
 
 const { Panel } = Collapse;
 
@@ -42,7 +41,7 @@ class Survey extends React.Component {
       loading: true,
       surveyTitle: '',
       surveyName: '',
-      visible: false,
+      visible: true,
       activeKey: '0',
     };
   }
