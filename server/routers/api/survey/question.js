@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return,no-shadow */
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const Mongoose = require('mongoose');
 
 // Load question model
@@ -95,38 +96,35 @@ router.post('/update', (req, res) => {
  * @desc: Return list survey in db
  * @access: private
  */
-router.get('/list/:groupId', (req, res) => {
-  Question.find({ group: req.params.groupId })
-    .select('orderNumber content')
-    .sort({ orderNumber: 1 })
-    .then(questions => res.json(questions))
-    .catch(err => res.json({ err }));
-});
+router.get(
+  '/group/:groupId',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    QuestionGroup.findById(req.params.groupId)
+      .select('groups')
+      .populate({ path: 'questions', select: 'orderNumber content' })
+      .sort({ orderNumber: 1 })
+      .exec((error, story) => res.json(story.questions));
+  },
+);
 
-router.get('/list', (req, res) => {
-  if (req.query.range === 'survey' && req.query.id !== '') {
-    QuestionGroup.find({ survey: req.query.id, childs: [] })
-      .select('_id questions')
-      .populate('questions')
-      .exec((error, groups) => {
-        if (!error) {
-          return res.json(groups);
-          groups.map(group => {
+router.get(
+  '/count',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    if (req.query.surveyId && req.query.surveyId !== '') {
+      QuestionGroup.find({ survey: req.query.surveyId, childs: [] }).then(
+        groups => {
+          const total = groups.reduce(
+            (acc, cur) => acc + cur.questions.length,
+            0,
+          );
 
-          })
-          const answers = data.questions.map(question => ({
-            [question._id]: { orderNUmber: question.orderNumber },
-          }));
-          return res.json({ length: data.questions.length, answers });
-        }
-      });
-  }
-
-  // Question.find({ group: req.params.groupId })
-  //   .select('orderNumber content')
-  //   .sort({ orderNumber: 1 })
-  //   .then(questions => res.json(questions))
-  //   .catch(err => res.json({ err }));
-});
+          res.json({ total });
+        },
+      );
+    }
+  },
+);
 
 module.exports = router;

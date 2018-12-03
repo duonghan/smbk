@@ -35,33 +35,6 @@ class ProfileModal extends React.Component {
               ],
             })(<Input />)}
           </FormItem>
-          <FormItem label={formatMessage(messages.ageLabel)}>
-            {getFieldDecorator('age', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please input the title of collection!',
-                },
-              ],
-            })(<InputNumber min={1} max={200} />)}
-          </FormItem>
-          <FormItem label={formatMessage(messages.addressLabel)}>
-            {getFieldDecorator('address')(<Input type="textarea" />)}
-          </FormItem>
-          <FormItem label={formatMessage(messages.genderLabel)}>
-            {getFieldDecorator('gender', {
-              initialValue: 'male',
-            })(
-              <Radio.Group>
-                <Radio value="male">
-                  <FormattedMessage {...messages.maleOptions} />
-                </Radio>
-                <Radio value="female">
-                  <FormattedMessage {...messages.femaleOptions} />
-                </Radio>
-              </Radio.Group>,
-            )}
-          </FormItem>
         </Form>
       </Modal>
     );

@@ -5,6 +5,7 @@ import { Table, Button, Input, Icon, Form, AutoComplete } from 'antd';
 import { Helmet } from 'react-helmet';
 import Cookies from 'js-cookie';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import config from 'utils/validation/config';
 import messages from './messages';
 import EditableCell, { EditableContext } from './EditableCell';
 import { styles } from './styles';
@@ -122,7 +123,7 @@ class AccountTable extends React.Component {
   fetchUser = () => {
     this.setState({ loading: true });
     axios
-      .get('/api/users/list')
+      .get('/api/users/list', config)
       .then(res => {
         this.setState({ dataSource: res.data, loading: false });
       })

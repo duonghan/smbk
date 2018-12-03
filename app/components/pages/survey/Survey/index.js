@@ -21,10 +21,10 @@ import {
   Progress,
   Affix,
 } from 'antd';
+import config from 'utils/validation/config';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
-import ProfileModal from './ProfileModal';
 
 const { Panel } = Collapse;
 
@@ -33,7 +33,6 @@ class Survey extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      surveyId: props.match.params.id,
       current: 0,
       groups: [],
       errors: '',
@@ -41,25 +40,22 @@ class Survey extends React.Component {
       loading: true,
       surveyTitle: '',
       surveyName: '',
-      visible: true,
       activeKey: '0',
     };
   }
 
   componentDidMount() {
-    this.getCurrentSurveyName(this.state.surveyId);
-    this.fetchQuestionGroups(this.state.surveyId);
+    this.getCurrentSurveyName(this.props.location.state.surveyId);
+    this.fetchQuestionGroups(this.props.location.state.surveyId);
 
     debugger;
     this.props.initResponse({
-      surveyId: this.state.surveyId,
+      surveyId: this.props.location.state.surveyId,
       userId: this.props.userId,
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    debugger;
-
     this.setState({
       percent: Math.round(
         (nextProps.response.get('answers').size /
@@ -71,7 +67,7 @@ class Survey extends React.Component {
 
   fetchQuestionGroups = surveyId => {
     axios
-      .get(`/api/survey/question-groups/list/${surveyId}`)
+      .get(`/api/survey/question-groups/list/${surveyId}`, config)
       .then(res => {
         this.setState({
           groups: res.data.filter(item => !item.parent),
@@ -82,11 +78,9 @@ class Survey extends React.Component {
   };
 
   getCurrentSurveyName = id => {
-    axios.get(`/api/survey?id=${id}`).then(res => {
+    axios.get(`/api/survey?id=${id}`, config).then(res => {
       this.setState({
         surveyTitle: res.data.title,
-        surveyName: res.data.name,
-        visible: res.data.name === 'moc',
       });
     });
   };
@@ -95,38 +89,12 @@ class Survey extends React.Component {
     this.setState({ activeKey: key });
   };
 
-  handleCancel = () => {
-    this.setState({ visible: false });
-  };
-
-  handleCreate = () => {
-    const { form } = this.formRef.props;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-
-      console.log('Received values of form: ', values);
-      form.resetFields();
-      this.setState({ visible: false });
-    });
-  };
-
-  saveFormRef = formRef => {
-    this.formRef = formRef;
-  };
-
   render() {
+    debugger;
     return (
       <Row>
         <Spin spinning={this.state.loading}>
           <Helmet title={this.state.surveyTitle} />
-          <ProfileModal
-            wrappedComponentRef={this.saveFormRef}
-            visible={this.state.visible}
-            onCancel={this.handleCancel}
-            onCreate={this.handleCreate}
-          />
           <Affix>
             <Progress percent={this.state.percent} status="active" />
           </Affix>
@@ -143,7 +111,7 @@ class Survey extends React.Component {
           >
             <h1 style={{ textAlign: 'center' }}>{this.state.surveyTitle}</h1>
             <br />
-            {this.state.surveyName === 'psychological_test'
+            {this.state.groups.length > 1
               ? this.state.groups.map((item, index) => (
                   <Collapse
                     accordion

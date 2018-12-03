@@ -4,29 +4,39 @@ const { Schema } = mongoose;
 // https://grokonez.com/node-js/mongoose-many-to-many-related-models-with-nodejs-express-mongodb
 
 // Create new schema
-const UserSchema = new Schema({
+const MOCProfileSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
 
-  email: {
+  workUnit: {
     type: String,
     required: true,
   },
 
-  password: {
+  position: {
     type: String,
     required: true,
   },
 
-  role: {
+  mainTasks: {
     type: String,
     required: true,
   },
 
-  avatar: {
+  speciality: {
     type: String,
+    required: true,
+  },
+
+  personalEmail: {
+    type: String,
+    required: true,
+  },
+
+  phone: {
+    type: Number,
     required: true,
   },
 
@@ -34,12 +44,7 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-
-  confirmed: {
-    type: Boolean,
-    default: false,
-  },
 });
 
-const User = mongoose.model('users', UserSchema);
-module.exports = User;
+const MOCProfile = mongoose.model('mocprofiles', MOCProfileSchema);
+module.exports = MOCProfile;

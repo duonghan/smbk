@@ -22,6 +22,7 @@ router.post(
         description: req.body.description,
         cover: req.body.cover,
         title: req.body.title,
+        requiredProfile: req.body.requiredProfile,
       });
 
       newSurvey.save().then(survey => res.json(survey));
@@ -71,7 +72,7 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Survey.find({})
-      .select('_id name title description cover')
+      .select('_id name title description cover requiredProfile')
       .then(surveys => res.json(surveys))
       .catch(err => res.status(404).json(err));
   },
@@ -83,20 +84,11 @@ router.get(
   (req, res) => {
     if (req.query.id !== '') {
       Survey.findById(req.query.id)
-        .select('title name')
         .sort({ date: -1 })
         .then(surveys => res.json(surveys))
         .catch(err => res.status(404).json(err));
     }
   },
 );
-
-router.get('/groups/:surveyid', (req, res) => {
-  QuestionGroup.find({ survey: req.params.surveyid })
-    .then(groups => {
-      res.json(groups);
-    })
-    .catch(error => res.json({ msg: 'cannot find any groups' }));
-});
 
 module.exports = router;

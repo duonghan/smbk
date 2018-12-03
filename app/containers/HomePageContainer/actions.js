@@ -10,6 +10,10 @@ import {
   FETCH_FAILED,
   FETCH_SUCCESS,
   FETCH_SURVEY,
+  FETCH_GROUP,
+  FETCH_GROUP_SUCCESS,
+  FETCH_GROUP_FAILED,
+  CREATE_PROFILE,
 } from './constants';
 
 export function setCurrentSurvey(order) {
@@ -35,3 +39,9 @@ export function fetchFailed(err) {
     err,
   };
 }
+
+export const createProfile = (profile, survey) => ({
+  type: CREATE_PROFILE,
+  profile,
+  survey,
+});

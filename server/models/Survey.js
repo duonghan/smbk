@@ -30,6 +30,12 @@ const SurveySchema = new Schema({
     default: Date.now,
   },
 
+  requiredProfile: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
   lastUpdate: {
     type: Date,
     default: Date.now,

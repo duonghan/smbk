@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios';
 import { Spin } from 'antd';
+import config from 'utils/validation/config';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import Question from '../Question';
@@ -29,16 +30,8 @@ class QuestionGroup extends React.Component {
     this.fetchQuestions(this.props.group._id);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.prefix !== this.props.prefix) {
-  //     this.setState(prevState => ({
-  //       prevLength: prevState.questions.length,
-  //     }));
-  //   }
-  // }
-
   fetchQuestions = id => {
-    axios.get(`/api/survey/questions/list/${id}`).then(res => {
+    axios.get(`/api/survey/questions/group/${id}`, config).then(res => {
       this.setState({
         questions: res.data,
         loading: false,

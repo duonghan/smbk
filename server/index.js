@@ -18,6 +18,7 @@ const { resolve } = require('path');
 const app = express();
 
 const users = require('./routers/api/users');
+const mocprofiles = require('./routers/api/mocprofiles');
 const survey = require('./routers/api/survey/survey');
 const questions = require('./routers/api/survey/question');
 const responses = require('./routers/api/survey/response');
@@ -50,6 +51,7 @@ require('./config/passport')(passport);
 
 // Use Router
 app.use('/api/users', users);
+app.use('/api/mocprofiles', mocprofiles);
 app.use('/api/survey', survey);
 app.use('/api/survey/question-groups', questionGroup);
 app.use('/api/survey/questions', questions);

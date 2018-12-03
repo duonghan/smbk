@@ -8,6 +8,11 @@ const ResponseSchema = new Schema({
     ref: 'users',
   },
 
+  profile: {
+    type: Schema.Types.ObjectId,
+    ref: 'mocprofiles',
+  },
+
   survey: {
     type: Schema.Types.ObjectId,
     ref: 'surveys',

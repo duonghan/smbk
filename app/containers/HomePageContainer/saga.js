@@ -1,7 +1,9 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, all, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import config from 'utils/validation/config';
-import { FETCH_SURVEY } from './constants';
+import { push } from 'connected-react-router/immutable';
+
+import { CREATE_PROFILE, FETCH_SURVEY } from './constants';
 import { fetchFailed, fetchSuccess } from './actions';
 
 function* doFetchSurvey() {
@@ -15,6 +17,30 @@ function* doFetchSurvey() {
   }
 }
 
+function* doCreateProfile(data) {
+  try {
+    const res = yield call(
+      axios.post,
+      '/api/mocprofiles/test',
+      data.profile,
+      config,
+    );
+    const { id } = res.data;
+    yield put(
+      push(`/take-survey/${data.survey.name}`, {
+        surveyId: data.survey._id,
+        profileId: id,
+      }),
+    );
+  } catch (err) {
+    // set error message
+    yield put(fetchFailed(err.response.data));
+  }
+}
+
 export default function* surveySaga() {
-  yield takeLatest(FETCH_SURVEY, doFetchSurvey);
+  yield all([
+    takeLatest(FETCH_SURVEY, doFetchSurvey),
+    takeLatest(CREATE_PROFILE, doCreateProfile),
+  ]);
 }

@@ -10,12 +10,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { Card, Badge } from 'antd';
+import { Card, Badge, Button } from 'antd';
 import { FormattedMessage } from 'react-intl';
 // import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { setCurrentSurvey } from 'containers/HomePageContainer/actions';
-import Cover from 'images/neo_survey_cover.png';
 import messages from './messages';
 
 const { Meta } = Card;
@@ -36,12 +34,9 @@ class SurveyItem extends React.Component {
             />
           }
           extra={
-            <Link
-              to={`/take-survey/${this.props.name}/${this.props._id}`}
-              onClick={() => this.props.setCurrentSurvey(this.props.index)}
-            >
+            <Button onClick={this.props.onClick}>
               <FormattedMessage {...messages.takeSurvey} />
-            </Link>
+            </Button>
           }
         >
           <Meta

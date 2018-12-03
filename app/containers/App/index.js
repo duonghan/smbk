@@ -31,7 +31,6 @@ import AdminPage from 'modules/admin/components/AdminPage/Loadable';
 // import Survey from 'components/pages/survey/Survey';
 import TestPage from 'components/pages/survey/Question/Test';
 import ResultPage from 'components/pages/survey/ResultPage/Loadable';
-import ProfileModal from 'components/pages/survey/Survey/ProfileModal';
 import Survey from 'containers/ResponseContainer/Loadable';
 import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
 import ResetPassword from 'components/auth/ResetPassword/Loadable';
@@ -96,7 +95,6 @@ class App extends React.Component {
               <Switch>
                 <Route path="/register" component={RegisterPage} />
                 <Route path="/login" component={LoginPage} />
-                <Route path="/test" component={ProfileModal} />
                 <Route
                   exact
                   path="/auth/forgot-password"
@@ -106,7 +104,7 @@ class App extends React.Component {
                 <PrivateRouter exact path="/test" component={QuestionGroup} />
                 <PrivateRouter
                   exact
-                  path="/take-survey/:name/:id"
+                  path="/take-survey/:name"
                   component={Survey}
                 />
                 <PrivateRouter exact path="/setting" component={Setting} />

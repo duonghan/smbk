@@ -14,7 +14,7 @@ import injectReducer from 'utils/injectReducer';
 import MainApp from 'components/pages/HomePage';
 import reducer from './reducer';
 import saga from './saga';
-import { fetchSurvey, setCurrentSurvey } from './actions';
+import { createProfile, fetchSurvey, setCurrentSurvey } from './actions';
 
 const mapStateToProps = state => ({
   surveys: state.getIn(['survey', 'items']),
@@ -23,6 +23,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchSurvey: () => dispatch(fetchSurvey()),
+  createProfile: (profile, survey) => dispatch(createProfile(profile, survey)),
 });
 
 const withConnect = connect(
