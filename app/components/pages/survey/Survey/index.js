@@ -39,6 +39,7 @@ class Survey extends React.Component {
       percent: 0,
       loading: true,
       surveyTitle: '',
+      surveyDescription: '',
       surveyName: '',
       activeKey: '0',
     };
@@ -81,6 +82,7 @@ class Survey extends React.Component {
     axios.get(`/api/survey?id=${id}`, config).then(res => {
       this.setState({
         surveyTitle: res.data.title,
+        surveyDescription: res.data.description,
       });
     });
   };
@@ -107,10 +109,16 @@ class Survey extends React.Component {
               borderRadius: 5,
               padding: 20,
               backgroundColor: 'white',
+              minHeight: window.innerHeight,
             }}
           >
-            <h1 style={{ textAlign: 'center' }}>{this.state.surveyTitle}</h1>
+            <h1 style={{ textAlign: 'center' }}>
+              {this.state.surveyTitle.toUpperCase()}
+            </h1>
             <br />
+            <h4 style={{ textAlign: 'center' }}>
+              <i>{this.state.surveyDescription}</i>
+            </h4>
             {this.state.groups.length > 1
               ? this.state.groups.map((item, index) => (
                   <Collapse
@@ -151,7 +159,7 @@ class Survey extends React.Component {
                 ))}
             <Button
               type="primary"
-              style={{ marginTop: 10 }}
+              style={{ marginTop: 20 }}
               onClick={() => this.props.submitResponse(this.props.response)}
             >
               Submit

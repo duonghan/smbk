@@ -7,21 +7,25 @@ const QuestionSchema = new Schema({
     type: String,
     required: true,
   },
+
   survey: {
     type: Schema.Types.ObjectId,
     ref: 'surveys',
     required: true,
   },
+
   parent: {
     type: Schema.Types.ObjectId,
     ref: 'questionGroups',
   },
+
   childs: [
     {
       type: Schema.Types.ObjectId,
       ref: 'questionGroups',
     },
   ],
+
   questions: [
     {
       type: Schema.Types.ObjectId,
@@ -29,17 +33,24 @@ const QuestionSchema = new Schema({
       default: [],
     },
   ],
+
   inputType: {
     type: String,
     required: true,
     default: 'radio',
   },
+
   optionAnswers: [
     {
       text: String,
       score: Number,
     },
   ],
+
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Question = mongoose.model('questionGroups', QuestionSchema);

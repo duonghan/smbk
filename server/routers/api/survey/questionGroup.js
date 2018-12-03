@@ -90,6 +90,7 @@ router.get('/list/:surveyid', (req, res) => {
     '_id name childs optionAnswers inputType',
   )
     .populate({ path: 'childs', select: '_id name optionAnswers inputType' })
+    .sort({ date: 1 })
     .exec((error, groups) => res.json(groups));
 });
 

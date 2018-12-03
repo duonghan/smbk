@@ -8,11 +8,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Steps, Button, Card, Radio, Rate, Icon } from 'antd';
+import { Steps, Button, Card, Radio, Rate, Icon, Input, Checkbox } from 'antd';
 import { addAnswer } from 'containers/ResponseContainer/actions';
 import connect from 'react-redux/es/connect/connect';
 
 const RadioGroup = Radio.Group;
+const { TextArea } = Input;
+const CheckboxGroup = Checkbox.Group;
 
 /* eslint-disable react/prefer-stateless-function */
 class Question extends React.Component {
@@ -40,28 +42,33 @@ class Question extends React.Component {
     });
   };
 
-  render() {
-    const radioStyle = {
-      display: 'block',
-      height: '30px',
-      lineHeight: '30px',
-    };
+  onChangeCheckbox = checkedValues => {
+    console.log('checked = ', checkedValues);
+  };
 
-    return (
-      <div>
-        <strong style={{ color: this.state.isSelected && 'brown' }}>
-          {this.props.content}
-        </strong>
-        <br />
-        {this.props.inputType !== 'rate' ? (
+  renderQuestion = type => {
+    console.log(type);
+    switch (type) {
+      case 'radio':
+        return (
           <RadioGroup onChange={this.onChange}>
             {this.props.answers.map((item, index) => (
-              <Radio style={radioStyle} value={item.score} key={index}>
+              <Radio
+                style={{
+                  display: 'block',
+                  height: '30px',
+                  lineHeight: '30px',
+                }}
+                value={item.score}
+                key={index}
+              >
                 {item.text}
               </Radio>
             ))}
           </RadioGroup>
-        ) : (
+        );
+      case 'rate':
+        return (
           <div>
             {`${this.props.answers[0].text} | `}
             <Rate
@@ -74,7 +81,40 @@ class Question extends React.Component {
             />
             {` | ${this.props.answers[this.props.answers.length - 1].text}`}
           </div>
-        )}
+        );
+      case 'text-area':
+        return <TextArea autosize={{ minRows: 4, maxRows: 6 }} />;
+      case 'select':
+        console.log('asdasdasd');
+        const options = this.props.answers.map(item => ({
+          label: item.text,
+          value: item.score,
+        }));
+
+        return (
+          <CheckboxGroup options={options} onChange={this.onChangeCheckbox} />
+        );
+      default:
+        return null;
+    }
+  };
+
+  render() {
+    return (
+      <div
+        style={{
+          border: '1px solid',
+          borderColor: this.state.isSelected ? 'brown' : 'black',
+          borderRadius: 5,
+          padding: 10,
+          margin: 10,
+        }}
+      >
+        <strong style={{ color: this.state.isSelected && 'brown' }}>
+          {this.props.content}
+        </strong>
+        <br />
+        {this.renderQuestion(this.props.inputType)}
       </div>
     );
   }

@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const Mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 // Load question model
 const Question = require('../../../models/Question');
@@ -24,16 +24,41 @@ router.get('/test', (req, res) =>
  * @desc: Add question
  * @access: public
  */
-router.post('/add', (req, res) => {
-  const newQuestion = new Question({
-    content: req.body.content.trim(),
-  });
+router.post(
+  '/add',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    try {
+      if (req.user.role !== 'ADMIN')
+        return res
+          .status(403)
+          .json({ message: "You don't have permission to access this place" });
 
-  newQuestion
-    .save()
-    .then(question => res.json(question))
-    .catch(err => res.status(400).json(err));
-});
+      QuestionGroup.findById(req.body.groupId).then(group => {
+        const newQuestion = new Question({
+          orderNumber: group.questions.length + 1,
+          content: req.body.content.trim(),
+        });
+
+        newQuestion
+          .save()
+          .then(question => {
+            // add question to question group
+            QuestionGroup.findByIdAndUpdate(
+              req.body.groupId,
+              {
+                $push: { questions: mongoose.Types.ObjectId(question._id) },
+              },
+              { safe: true, upsert: true },
+            ).then(newGroup => res.json(question));
+          })
+          .catch(err => res.status(400).json(err));
+      });
+    } catch (e) {
+      return res.status(400).json(e);
+    }
+  },
+);
 
 router.post('/update', (req, res) => {
   const { id } = req.body;
@@ -79,7 +104,7 @@ router.post('/update', (req, res) => {
         item,
         {
           $set: {
-            group: Mongoose.Types.ObjectId('5bfc74c272cb2907acca20d7'),
+            group: mongoose.Types.ObjectId('5bfc74c272cb2907acca20d7'),
             orderNumber: index + 1,
           },
         },
