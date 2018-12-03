@@ -7,17 +7,17 @@
 
 import { fromJS } from 'immutable';
 import {
-  INIT_RESPONSE,
   INIT_SUCCESS,
   INIT_FAILED,
   ADD_ANSWER,
   SUBMIT_FAILED,
-  RESET_ERROR,
+  SET_CURRENT_PROFILE,
 } from './constants';
 
 export const initialState = fromJS({
   id: '',
   total: 0,
+  profileId: '',
   answers: {},
   errors: {},
 });
@@ -25,21 +25,20 @@ export const initialState = fromJS({
 function responseContainerReducer(state = initialState, action) {
   switch (action.type) {
     case INIT_SUCCESS:
-      debugger;
-      const a = state
-        .mergeDeep({
-          id: action.responseId,
-          total: action.totalQuestions,
-        })
+      return state
+        .mergeDeep({ id: action.responseId, total: action.totalQuestions })
         .set('answers', fromJS({}))
         .set('errors', fromJS({}));
-      return a;
+
     case INIT_FAILED:
       return state.set('errors', action.err);
+
+    case SET_CURRENT_PROFILE:
+      return state.set('profileId', action.profileId);
+
     case SUBMIT_FAILED:
       return state.set('errors', action.err);
-    case RESET_ERROR:
-      return state.set('errors', {});
+
     case ADD_ANSWER:
       return state.setIn(
         ['answers', action.answer.questionId],
@@ -50,6 +49,7 @@ function responseContainerReducer(state = initialState, action) {
           text: action.answer.text,
         }),
       );
+
     default:
       return state;
   }

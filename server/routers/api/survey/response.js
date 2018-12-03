@@ -11,6 +11,8 @@ const Survey = require('../../../models/Survey');
 const QuestionGroup = require('../../../models/QuestionGroup');
 const resultNEO = require('../../../utils/calculate/response/neo');
 const resultRIASEC = require('../../../utils/calculate/response/riasec');
+const resultPsychologic = require('../../../utils/calculate/response/psychologic');
+const resultMOC = require('../../../utils/calculate/response/moc');
 
 router.get(
   '/:id',
@@ -30,76 +32,29 @@ router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    let result;
     Response.findById(req.body.id).then(response => {
       Survey.findById(response.survey).then(survey => {
-        if (survey.name === 'psychological_test') {
-          let score = 0;
-          Object.values(req.body.answers).map(item => {
-            score += item.score;
-          });
-
-          console.log(score);
-        }
-        if (survey.name === 'neo') {
-          // const reverseIndex = [
-          //   2,
-          //   3,
-          //   4,
-          //   7,
-          //   8,
-          //   9,
-          //   12,
-          //   14,
-          //   17,
-          //   22,
-          //   23,
-          //   27,
-          //   32,
-          //   37,
-          //   38,
-          //   42,
-          //   43,
-          //   47,
-          //   48,
-          //   49,
-          //   50,
-          //   52,
-          //   53,
-          //   54,
-          //   57,
-          //   59,
-          // ];
-          //
-          // const C = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56];
-          // const A = [2, 7, 12, 17, 22, 27, 32, 37, 42, 47, 52, 57];
-          // const N = [4, 9, 14, 19, 24, 29, 34, 39, 44, 49, 54, 59];
-          // const O = [3, 8, 13, 18, 23, 28, 33, 38, 43, 48, 53, 58];
-          // const E = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
-          //
-          // // reverse
-          // const newResponse = Object.values(req.body.answers).map(item => {
-          //   if (reverseIndex.includes(item.orderNum))
-          //     item.score = 4 - item.score;
-          //   return item;
-          // });
-          //
-          // console.log(JSON.stringify(newResponse));
-          //
-          // const scoreC = newResponse
-          //   .filter(item => C.includes(item.orderNum))
-          //   .reduce((acc, cur) => acc + cur.score, 0);
-          //
-          // console.log(scoreC);
-
-          console.log(resultNEO(req.body.answers));
-        }
-        if (survey.name === 'riasec') {
-          console.log(resultRIASEC(req.body.answers));
+        switch (survey.name) {
+          case 'psychological_test':
+            return res.json({
+              result: resultPsychologic(req.body.answers),
+            });
+          case 'neo':
+            return res.json({
+              result: resultNEO(req.body.answers),
+            });
+          case 'riasec':
+            return res.json({ result: resultRIASEC(req.body.answers) });
+          case 'moc':
+          case 'moc2':
+          default:
+            return res.json({ result: false });
         }
       });
     });
 
-    res.send(req.body);
+    // res.send({ result });
 
     // Response.findOne({ user: req.user.id }).then(response => {
     //   if (response) {

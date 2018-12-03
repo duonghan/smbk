@@ -13,7 +13,6 @@ import SurveyItem from 'components/pages/survey/SurveyItem';
 import { injectIntl, intlShape } from 'react-intl';
 import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router';
-import config from 'utils/validation/config';
 
 import messages from './messages';
 import ProfileModal from './ProfileModal';
@@ -29,10 +28,6 @@ class HomePage extends React.Component {
     this.props.fetchSurvey();
   }
 
-  onChange = key => {
-    this.setState({ activeKey: key });
-  };
-
   handleCancel = () => {
     this.setState({ visible: false });
   };
@@ -44,7 +39,6 @@ class HomePage extends React.Component {
         return;
       }
 
-      console.log('Received values of form: ', values);
       form.resetFields();
       this.props.createProfile(values, this.state.currentSurvey);
       this.setState({ visible: false });
@@ -77,25 +71,23 @@ class HomePage extends React.Component {
         <Spin spinning={this.props.loading}>
           <Row gutter={16} type="flex" jusify="center">
             {this.props.surveys &&
-              this.props.surveys.map((item, index) => {
-                return (
-                  <Col
-                    className="gutter-row"
-                    md={8}
-                    sm={12}
-                    xs={24}
-                    key={item.title}
-                    style={{ marginTop: 20 }}
-                  >
-                    <SurveyItem
-                      {...item}
-                      loading={this.props.loading}
-                      index={index}
-                      onClick={() => this.handleClick(item)}
-                    />
-                  </Col>
-                );
-              })}
+              this.props.surveys.map((item, index) => (
+                <Col
+                  className="gutter-row"
+                  md={8}
+                  sm={12}
+                  xs={24}
+                  key={item.title}
+                  style={{ marginTop: 20 }}
+                >
+                  <SurveyItem
+                    {...item}
+                    loading={this.props.loading}
+                    index={index}
+                    onClick={() => this.handleClick(item)}
+                  />
+                </Col>
+              ))}
           </Row>
         </Spin>
       </Layout>
