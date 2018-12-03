@@ -3,7 +3,7 @@ import axios from 'axios';
 import config from 'utils/validation/config';
 import { push } from 'connected-react-router';
 
-import { initSucess, initFailed, submitFailed } from './actions';
+import { initSucess, initFailed } from './actions';
 import { INIT_RESPONSE, SUBMIT_RESPONSE } from './constants';
 
 function* initResponse(initialValue) {
@@ -17,14 +17,12 @@ function* initResponse(initialValue) {
     const { id, total } = res.data;
     yield put(initSucess(id, total));
   } catch (err) {
-    debugger;
     yield put(initFailed(err));
   }
 }
 
 function* submitResponse(data) {
   try {
-    debugger;
     const res = yield call(
       axios.post,
       '/api/survey/responses/',
@@ -32,9 +30,11 @@ function* submitResponse(data) {
       config,
     );
 
-    if (false) {
-      yield put(push('/take-survey/result'));
-    }
+    yield put(
+      push(`/survey-result`, {
+        result: res.data,
+      }),
+    );
 
     // if (data.response.get('answers').size < data.response.get('total')) {
     //   yield put(submitFailed({ message: 'ResponseNotCompleted' }));

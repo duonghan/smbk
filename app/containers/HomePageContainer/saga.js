@@ -25,7 +25,9 @@ function* doCreateProfile(data) {
       data.profile,
       config,
     );
+
     const { id } = res.data;
+
     yield put(
       push(`/take-survey/${data.survey.name}`, {
         surveyId: data.survey._id,

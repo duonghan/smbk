@@ -22,11 +22,11 @@ import Cookies from 'js-cookie';
 import Landing from 'components/pages/Landing/Loadable';
 import MyHeader from 'components/layout/MyHeader';
 import MyFooter from 'components/layout/MyFooter';
-import RegisterPage from 'components/auth/Register';
+import RegisterPage from 'components/auth/Register/Loadable';
 import NotFoundPage from 'components/pages/NotFoundPage/Loadable';
 // import AdminPage from 'modules/admin/components/DashBoard';
 
-import QuestionGroup from 'components/pages/survey/QuestionGroup';
+import QuestionGroup from 'components/pages/survey/QuestionGroup/Loadable';
 import AdminPage from 'modules/admin/components/AdminPage/Loadable';
 // import Survey from 'components/pages/survey/Survey';
 import ResultPage from 'components/pages/survey/ResultPage/Loadable';
@@ -35,7 +35,7 @@ import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
 import ResetPassword from 'components/auth/ResetPassword/Loadable';
 import Setting from 'containers/SettingContainer/Loadable';
 import HomePage from 'containers/HomePageContainer/Loadable';
-import LoginPage from 'containers/Authentication/Login';
+import LoginPage from 'containers/Authentication/Loadable';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import saga from 'containers/Authentication/saga';
@@ -109,7 +109,7 @@ class App extends React.Component {
                 <PrivateRouter exact path="/setting" component={Setting} />
                 <PrivateRouter
                   exact
-                  path="/take-survey/result"
+                  path="/survey-result"
                   component={ResultPage}
                 />
                 <Route component={NotFoundPage} />
