@@ -8,7 +8,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Steps, Button, Card, Radio, Rate, Icon, Input, Checkbox } from 'antd';
+
+import { Radio, Rate, Icon, Input, Checkbox } from 'antd';
 import { addAnswer } from 'containers/ResponseContainer/actions';
 import connect from 'react-redux/es/connect/connect';
 
@@ -43,7 +44,13 @@ class Question extends React.Component {
   };
 
   onChangeCheckbox = checkedValues => {
-    console.log('checked = ', checkedValues);
+    this.setState(prevState => ({ isSelected: true }));
+
+    this.props.addAnswer({
+      questionId: this.props.id,
+      orderNum: this.props.orderNumber,
+      checked: checkedValues,
+    });
   };
 
   renderQuestion = type => {
@@ -123,6 +130,8 @@ class Question extends React.Component {
 Question.propTypes = {
   content: PropTypes.string,
   inputType: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  orderNumber: PropTypes.number.isRequired,
   answers: PropTypes.array,
   addAnswer: PropTypes.func.isRequired,
 };

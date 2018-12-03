@@ -30,7 +30,70 @@ class ProfileModal extends React.Component {
               rules: [
                 {
                   required: true,
-                  message: 'Please input the title of collection!',
+                  message: formatMessage(messages.requiredNameMsg),
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+
+          <FormItem label={formatMessage(messages.workUnitLabel)}>
+            {getFieldDecorator('workUnit', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage(messages.requiredWorkUnitMsg),
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+
+          <FormItem label={formatMessage(messages.positionLabel)}>
+            {getFieldDecorator('position', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage(messages.requiredPositionMsg),
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+
+          <FormItem label={formatMessage(messages.mainTaskLabel)}>
+            {getFieldDecorator('mainTask', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage(messages.requiredMainTaskMsg),
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+
+          <FormItem label={formatMessage(messages.personalEmailLabel)}>
+            {getFieldDecorator('personalEmail', {
+              rules: [
+                {
+                  type: 'email',
+                  message: formatMessage(messages.validatePersonalEmailMsg),
+                },
+                {
+                  required: true,
+                  message: formatMessage(messages.requiredPersonalEmailMsg),
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+
+          <FormItem label={formatMessage(messages.phoneLabel)}>
+            {getFieldDecorator('phone', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage(messages.requiredPhoneMsg),
+                },
+                {
+                  pattern: /0+(9[0-9]|3[2-9]|7[0|6-9]|8[1-5]|5[6|8|9])+([0-9]{7})\b/,
+                  message: formatMessage(messages.validatePhoneMsg),
                 },
               ],
             })(<Input />)}

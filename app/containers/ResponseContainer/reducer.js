@@ -46,6 +46,8 @@ function responseContainerReducer(state = initialState, action) {
         fromJS({
           orderNum: action.answer.orderNum,
           score: action.answer.score,
+          checkedValues: action.answer.checked,
+          text: action.answer.text,
         }),
       );
     default:
