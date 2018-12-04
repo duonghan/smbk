@@ -15,6 +15,22 @@ export default defineMessages({
     id: `${scope}.header`,
     defaultMessage: 'This is the SurveyPage component!',
   },
+
+  questionTabTitle: {
+    id: `${scope}.questionTabTitle`,
+    defaultMessage: 'Danh sách câu hỏi',
+  },
+
+  responseTabTitle: {
+    id: `${scope}.responseTabTitle`,
+    defaultMessage: 'Phản hồi',
+  },
+
+  chartTabTitle: {
+    id: `${scope}.chartTabTitle`,
+    defaultMessage: 'Biểu đồ',
+  },
+
   clearFiltersBtn: {
     id: `${scope}.clearFiltersBtn`,
     defaultMessage: 'Xóa bộ lọc',

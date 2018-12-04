@@ -36,6 +36,11 @@ export default defineMessages({
     defaultMessage: 'Quản lý tài khoản',
   },
 
+  menuItemSurvey: {
+    id: `${scope}.menuItemSurvey`,
+    defaultMessage: 'Quản lý khảo sát',
+  },
+
   menuItemDashboard: {
     id: `${scope}.menuItemDashboard`,
     defaultMessage: 'Bảng điều khiển',
@@ -43,16 +48,26 @@ export default defineMessages({
 
   menuItemCheck: {
     id: `${scope}.menuItemCheck`,
-    defaultMessage: 'Trắc nghiệm tâm lý',
+    defaultMessage: 'Khảo sát tâm lý học sinh trung học',
   },
 
   menuItemNEO: {
     id: `${scope}.menuItemNEO`,
-    defaultMessage: 'Trắc nghiệm NEO',
+    defaultMessage: 'Trắc nghiệm dự đoán nhân cách',
   },
 
   menuItemRIASEC: {
     id: `${scope}.menuItemRIASEC`,
-    defaultMessage: 'Trắc nghiệm RIASEC',
+    defaultMessage: 'Trắc nghiệm tư vấn nghề nghiệp',
+  },
+
+  menuItemMOC: {
+    id: `${scope}.menuItemMOC`,
+    defaultMessage: 'Tham vấn ý kiến người dùng/chuyên gia',
+  },
+
+  menuItemMOC2: {
+    id: `${scope}.menuItemMOC2`,
+    defaultMessage: 'Khảo sát kết quả tập huấn UDA',
   },
 });

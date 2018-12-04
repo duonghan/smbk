@@ -16,7 +16,7 @@ import messages from './messages';
 
 const { SubMenu } = Menu;
 const { Sider } = Layout;
-const MenuItemGroup = Menu.ItemGroup;
+// const MenuItemGroup = Menu.ItemGroup;
 
 /* eslint-disable react/prefer-stateless-function */
 class AdminSider extends React.Component {
@@ -41,23 +41,12 @@ class AdminSider extends React.Component {
             </Link>
           </Menu.Item>
 
-          <MenuItemGroup key="g1" title="Item 1">
-            <Menu.Item key="1">
-              <Link to="/admin/survey/check">
-                <FormattedMessage {...messages.menuItemCheck} />
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Link to="/admin/survey/neo">
-                <FormattedMessage {...messages.menuItemNEO} />
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Link to="/admin/survey/riasec">
-                <FormattedMessage {...messages.menuItemRIASEC} />
-              </Link>
-            </Menu.Item>
-          </MenuItemGroup>
+          <Menu.Item key="SURVEY">
+            <Link to="/admin/survey">
+              <Icon type="solution" />
+              <FormattedMessage {...messages.menuItemSurvey} />
+            </Link>
+          </Menu.Item>
 
           <Menu.Item key="account">
             <Link to="/admin/account-list">

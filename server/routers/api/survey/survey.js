@@ -72,7 +72,6 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Survey.find({})
-      .select('_id name title description cover requiredProfile')
       .then(surveys => res.json(surveys))
       .catch(err => res.status(404).json(err));
   },
