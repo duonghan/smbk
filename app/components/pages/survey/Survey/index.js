@@ -45,11 +45,15 @@ class Survey extends React.Component {
   componentDidMount() {
     this.getCurrentSurveyName(this.props.location.state.surveyId);
     this.fetchQuestionGroups(this.props.location.state.surveyId);
-
-    this.props.initResponse({
+    const initialResponse = {
       surveyId: this.props.location.state.surveyId,
       userId: this.props.userId,
-    });
+    };
+
+    if (this.props.location.state.profileId)
+      initialResponse.profile = this.props.location.state.profileId;
+
+    this.props.initResponse(initialResponse);
 
     this.props.setCurrentProfile(this.props.location.state.profileId);
   }

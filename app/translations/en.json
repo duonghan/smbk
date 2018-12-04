@@ -31,6 +31,7 @@
   "app.components.HomePage.requiredPersonalEmailMsg": "",
   "app.components.HomePage.requiredPhoneMsg": "",
   "app.components.HomePage.requiredPositionMsg": "",
+  "app.components.HomePage.requiredSpecialityMsg": "",
   "app.components.HomePage.requiredWorkUnitMsg": "",
   "app.components.HomePage.saveBtn": "",
   "app.components.HomePage.specialityLabel": "",

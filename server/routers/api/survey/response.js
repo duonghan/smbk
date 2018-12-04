@@ -9,6 +9,8 @@ const passport = require('passport');
 const Response = require('../../../models/Response');
 const Survey = require('../../../models/Survey');
 const QuestionGroup = require('../../../models/QuestionGroup');
+const MOCProfile = require('../../../models/MOCProfile');
+
 const resultNEO = require('../../../utils/calculate/response/neo');
 const resultRIASEC = require('../../../utils/calculate/response/riasec');
 const resultPsychologic = require('../../../utils/calculate/response/psychologic');
@@ -29,7 +31,7 @@ router.get(
 );
 
 router.post(
-  '/',
+  '/submit',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Response.findById(req.body.id).then(response => {
@@ -47,6 +49,13 @@ router.post(
             return res.json({ result: resultRIASEC(req.body.answers) });
           case 'moc':
           case 'moc2':
+            Response.findByIdAndUpdate(
+              req.body.id,
+              {
+                $set: { answers: resultMOC(req.body.answers) },
+              },
+              { new: true },
+            ).then(newResponse => {});
             return res.json({ result: resultMOC(req.body.answers) });
           default:
             return res.json({ result: false });
@@ -74,6 +83,7 @@ router.post(
   },
 );
 
+// Initial and update response
 router.post(
   '/init',
   passport.authenticate('jwt', { session: false }),
@@ -83,6 +93,7 @@ router.post(
         user: req.body.userId.trim(),
         survey: req.body.surveyId,
       }).then(response => {
+        // Get total question of current survey
         QuestionGroup.find({
           survey: req.body.surveyId,
           childs: [],
@@ -93,21 +104,23 @@ router.post(
             numofQuestion += group.questions.length;
           });
 
-          if (response) {
-            res.json({ id: response._id.toString(), total: numofQuestion });
-          } else {
-            new Response({
-              survey: mongoose.Types.ObjectId(req.body.surveyId),
-              user: mongoose.Types.ObjectId(req.body.userId),
-            })
-              .save()
-              .then(newResponse =>
-                res.json({
-                  id: newResponse._id.toString(),
-                  total: numofQuestion,
-                }),
-              );
+          // if not, create response document
+          const initialResponse = {
+            survey: mongoose.Types.ObjectId(req.body.surveyId),
+            user: mongoose.Types.ObjectId(req.body.userId),
+          };
+
+          // using in moc survey to save user profile
+          if (req.body.profile) {
+            initialResponse.profile = mongoose.Types.ObjectId(req.body.profile);
           }
+
+          new Response(initialResponse).save().then(newResponse =>
+            res.json({
+              id: newResponse._id.toString(),
+              total: numofQuestion,
+            }),
+          );
         });
       });
     } else {

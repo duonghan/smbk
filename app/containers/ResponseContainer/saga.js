@@ -25,7 +25,7 @@ function* submitResponse(data) {
   try {
     const res = yield call(
       axios.post,
-      '/api/survey/responses/',
+      '/api/survey/responses/submit',
       data.response,
       config,
     );

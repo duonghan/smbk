@@ -31,6 +31,7 @@
   "app.components.HomePage.requiredPersonalEmailMsg": "Vui lòng nhập email cá nhân",
   "app.components.HomePage.requiredPhoneMsg": "Vui lòng nhập số điện thoại",
   "app.components.HomePage.requiredPositionMsg": "Vui lòng nhập chức vụ/nghề nghiệp",
+  "app.components.HomePage.requiredSpecialityMsg": "Vui lòng nhập chuyên môn chính được đào tạo",
   "app.components.HomePage.requiredWorkUnitMsg": "Vui lòng nhập đơn vị công tác",
   "app.components.HomePage.saveBtn": "Lưu lại",
   "app.components.HomePage.specialityLabel": "Chuyên môn chính được đào tạo",
