@@ -13,8 +13,15 @@ export default defineMessages({
     id: `${scope}.header`,
     defaultMessage: 'This is the NotFoundPage component !',
   },
+
   msg: {
     id: `${scope}.msg`,
-    defaultMessage: '404 Không tìm thấy trang',
+    defaultMessage: 'Không tìm thấy trang',
+  },
+
+  description: {
+    id: `${scope}.description`,
+    defaultMessage:
+      'Trang bạn tìm kiếm không tồn tại hoặc đã chuyển sang địa chỉ mới.',
   },
 });

@@ -43,40 +43,51 @@ class Question extends React.Component {
     });
   };
 
-  onChangeCheckbox = checkedValues => {
-    this.setState(prevState => ({ isSelected: true }));
+  onChangeCheckbox = e => {
+    this.setState(prevState => ({ isSelected: e.target.checked }));
 
     this.props.addAnswer({
       questionId: this.props.id,
       orderNum: this.props.orderNumber,
-      checked: checkedValues,
+      score: e.target.checked ? 1 : 0,
     });
   };
 
   renderQuestion = type => {
-    console.log(type);
     switch (type) {
       case 'radio':
         return (
-          <RadioGroup onChange={this.onChange}>
-            {this.props.answers.map((item, index) => (
-              <Radio
-                style={{
-                  display: 'block',
-                  height: '30px',
-                  lineHeight: '30px',
-                }}
-                value={item.score}
-                key={index}
-              >
-                {item.text}
-              </Radio>
-            ))}
-          </RadioGroup>
+          <div>
+            <strong style={{ color: this.state.isSelected && 'brown' }}>
+              {this.props.content}
+            </strong>
+            <br />
+            <RadioGroup onChange={this.onChange}>
+              {this.props.answers.map((item, index) => (
+                <Radio
+                  style={{
+                    display: 'block',
+                    height: '30px',
+                    lineHeight: '30px',
+                  }}
+                  value={item.score}
+                  key={index}
+                >
+                  {item.text}
+                </Radio>
+              ))}
+            </RadioGroup>
+          </div>
         );
       case 'rate':
         return (
           <div>
+            <strong style={{ color: this.state.isSelected && 'brown' }}>
+              {this.props.content}
+            </strong>
+
+            <br />
+
             {`${this.props.answers[0].text} | `}
             <Rate
               character={<Icon type="like" />}
@@ -86,21 +97,19 @@ class Question extends React.Component {
               allowClear={false}
               style={{ color: '#1373cc' }}
             />
+
             {` | ${this.props.answers[this.props.answers.length - 1].text}`}
           </div>
         );
       case 'text-area':
         return <TextArea autosize={{ minRows: 4, maxRows: 6 }} />;
       case 'select':
-        console.log('asdasdasd');
-        const options = this.props.answers.map(item => ({
-          label: item.text,
-          value: item.score,
-        }));
-
         return (
-          <CheckboxGroup options={options} onChange={this.onChangeCheckbox} />
+          <Checkbox onChange={this.onChangeCheckbox}>
+            {this.props.content}
+          </Checkbox>
         );
+
       default:
         return null;
     }
@@ -110,17 +119,9 @@ class Question extends React.Component {
     return (
       <div
         style={{
-          border: '1px solid',
-          borderColor: this.state.isSelected ? 'brown' : 'black',
-          borderRadius: 5,
-          padding: 10,
           margin: 10,
         }}
       >
-        <strong style={{ color: this.state.isSelected && 'brown' }}>
-          {this.props.content}
-        </strong>
-        <br />
         {this.renderQuestion(this.props.inputType)}
       </div>
     );
