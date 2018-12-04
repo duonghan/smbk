@@ -2,9 +2,9 @@
 // import { mount } from 'enzyme';
 // import { enzymeFind } from 'styled-components/test-utils';
 
-// import { AccountTableContainer } from '../index';
+// import { AdminContainer } from '../index';
 
-describe('<AccountTableContainer />', () => {
+describe('<AdminContainer />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

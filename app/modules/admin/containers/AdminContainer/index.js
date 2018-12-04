@@ -1,7 +1,7 @@
 /**
  * Author: Duong Han
  * HUST
- * AccountTableContainer
+ * AdminContainer
  *
  */
 
@@ -11,7 +11,7 @@ import { compose } from 'redux';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import AccountTable from '../../components/pages/AccountPage';
+import AccountPage from '../../components/pages/AccountPage';
 import reducer from './reducer';
 import saga from './saga';
 import { fetchRequest } from './actions';
@@ -36,4 +36,4 @@ export default compose(
   withReducer,
   withSaga,
   withConnect,
-)(AccountTable);
+)(AccountPage);

@@ -46,9 +46,7 @@ class AdminBreadcrum extends React.Component {
     );
 
     return (
-      <Breadcrumb style={{ margin: '16px 0' }} separator=">">
-        {breadcrumbItems}
-      </Breadcrumb>
+      <Breadcrumb style={{ margin: '16px 0' }}>{breadcrumbItems}</Breadcrumb>
     );
   }
 }

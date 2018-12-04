@@ -1,7 +1,7 @@
 /*
 * Author: Duong Han
 * HUST
-* AccountTableContainer reducer
+* AdminContainer reducer
 *
 */
 
