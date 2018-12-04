@@ -20,7 +20,7 @@ const MOCProfileSchema = new Schema({
     required: true,
   },
 
-  mainTasks: {
+  mainTask: {
     type: String,
     required: true,
   },

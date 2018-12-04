@@ -87,6 +87,17 @@ class ProfileModal extends React.Component {
             })(<Input />)}
           </FormItem>
 
+          <FormItem label={formatMessage(messages.specialityLabel)}>
+            {getFieldDecorator('speciality', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage(messages.requiredSpecialityMsg),
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+
           <FormItem label={formatMessage(messages.personalEmailLabel)}>
             {getFieldDecorator('personalEmail', {
               rules: [

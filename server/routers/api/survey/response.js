@@ -32,7 +32,6 @@ router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    let result;
     Response.findById(req.body.id).then(response => {
       Survey.findById(response.survey).then(survey => {
         switch (survey.name) {
@@ -48,6 +47,7 @@ router.post(
             return res.json({ result: resultRIASEC(req.body.answers) });
           case 'moc':
           case 'moc2':
+            return res.json({ result: resultMOC(req.body.answers) });
           default:
             return res.json({ result: false });
         }

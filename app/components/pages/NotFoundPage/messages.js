@@ -11,7 +11,7 @@ export const scope = 'app.components.NotFound';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the NotFoundPage component !',
+    defaultMessage: 'Không tìm thấy trang',
   },
 
   msg: {

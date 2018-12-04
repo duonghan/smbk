@@ -13,26 +13,6 @@ router.get('/test', (req, res) =>
 );
 
 router.post(
-  '/test',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    const newMOCProfile = new MOCProfile({
-      name: req.body.name,
-      workUnit: 'Bkav',
-      position: 'Intern',
-      mainTasks: 'VLBM',
-      speciality: 'IT',
-      personalEmail: 'duonghv@bkav.com',
-      phone: '0975410740',
-    });
-
-    newMOCProfile
-      .save()
-      .then(newMocProfile => res.json({ id: newMocProfile._id }));
-  },
-);
-
-router.post(
   '/',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
@@ -40,14 +20,16 @@ router.post(
       name: req.body.name,
       workUnit: req.body.workUnit,
       position: req.body.position,
-      mainTasks: req.body.mainTasks,
+      mainTask: req.body.mainTask,
       speciality: req.body.speciality,
       personalEmail: req.body.personalEmail,
       phone: req.body.phone,
-      date: req.body.date,
     });
 
-    newMOCProfile.save().then(survey => res.json(survey));
+    newMOCProfile
+      .save()
+      .then(newMocProfile => res.json({ id: newMocProfile._id }))
+      .catch(err => res.json(err));
   },
 );
 

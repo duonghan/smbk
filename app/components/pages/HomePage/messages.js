@@ -74,6 +74,11 @@ export default defineMessages({
     defaultMessage: 'Chuyên môn chính được đào tạo',
   },
 
+  requiredSpecialityMsg: {
+    id: `${scope}.requiredSpecialityMsg`,
+    defaultMessage: 'Vui lòng nhập chuyên môn chính được đào tạo',
+  },
+
   personalEmailLabel: {
     id: `${scope}.personalEmailLabel`,
     defaultMessage: 'Email cá nhân',

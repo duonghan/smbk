@@ -21,7 +21,7 @@ function* doCreateProfile(data) {
   try {
     const res = yield call(
       axios.post,
-      '/api/mocprofiles/test',
+      '/api/mocprofiles/',
       data.profile,
       config,
     );

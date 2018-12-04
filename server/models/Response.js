@@ -25,11 +25,16 @@ const ResponseSchema = new Schema({
     },
   ],
 
-  score: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
+  answers: [
+    {
+      questionId: {
+        type: Schema.Types.ObjectId,
+        ref: 'questions',
+      },
+      value: Number,
+      text: String, // when question has type text-area
+    },
+  ],
 });
 
 const Response = mongoose.model('responses', ResponseSchema);

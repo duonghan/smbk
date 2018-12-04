@@ -23,7 +23,7 @@ class Question extends React.Component {
     isSelected: false,
   };
 
-  onChange = e => {
+  onChangeRadio = e => {
     this.setState(prevState => ({ isSelected: true }));
 
     this.props.addAnswer({
@@ -53,6 +53,14 @@ class Question extends React.Component {
     });
   };
 
+  onChangeTextArea = e => {
+    this.props.addAnswer({
+      questionId: this.props.id,
+      orderNum: this.props.orderNumber,
+      text: e.target.value,
+    });
+  };
+
   renderQuestion = type => {
     switch (type) {
       case 'radio':
@@ -62,7 +70,7 @@ class Question extends React.Component {
               {this.props.content}
             </strong>
             <br />
-            <RadioGroup onChange={this.onChange}>
+            <RadioGroup onChange={this.onChangeRadio}>
               {this.props.answers.map((item, index) => (
                 <Radio
                   style={{
@@ -102,7 +110,12 @@ class Question extends React.Component {
           </div>
         );
       case 'text-area':
-        return <TextArea autosize={{ minRows: 4, maxRows: 6 }} />;
+        return (
+          <TextArea
+            autosize={{ minRows: 4, maxRows: 6 }}
+            onChange={this.onChangeTextArea}
+          />
+        );
       case 'select':
         return (
           <Checkbox onChange={this.onChangeCheckbox}>

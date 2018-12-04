@@ -7,8 +7,9 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
+import Helmet from 'react-helmet';
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, intlShape, injectIntl } from 'react-intl';
 import { Row } from 'antd';
 import messages from './messages';
 import './styles.css';
@@ -18,6 +19,7 @@ class NotFound extends React.Component {
   render() {
     return (
       <Row type="flex" justify="center">
+        <Helmet title={this.props.intl.formatMessage(messages.header)} />
         <div
           className="error-banner"
           style={{
@@ -343,6 +345,8 @@ class NotFound extends React.Component {
   }
 }
 
-NotFound.propTypes = {};
+NotFound.propTypes = {
+  intl: intlShape.isRequired,
+};
 
-export default NotFound;
+export default injectIntl(NotFound);
