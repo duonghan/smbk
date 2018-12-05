@@ -6,11 +6,12 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Table } from 'antd';
+import { Table, Skeleton } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
 import messages from './messages';
@@ -26,38 +27,38 @@ class QuestionTable extends React.Component {
     editingKey: '',
   };
 
-  componentDidMount() {
-    this.fetchSurveys();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.groupId) {
+      this.fetchQuestion(nextProps.groupId);
+    }
   }
 
-  fetchSurveys = () => {
+  fetchQuestion = groupId => {
     this.setState({ loading: true });
 
-    axios
-      .get('/api/survey/questions/group/5bfad0a3f893c01bc7919f5d', config)
-      .then(res => {
-        this.setState({
-          data: res.data.map(question => ({
-            id: question._id,
-            content: question.content,
-            orderNumber: question.orderNumber,
-          })),
-          loading: false,
-        });
+    axios.get(`/api/survey/questions/group/${groupId}`, config).then(res => {
+      this.setState({
+        data: res.data.map(question => ({
+          id: question._id,
+          content: question.content,
+          orderNumber: question.orderNumber,
+        })),
+        loading: false,
       });
+    });
   };
 
-  isEditing = record => record.key === this.state.editingKey;
+  isEditing = record => record.orderNumber === this.state.editingKey;
 
-  edit = key => {
-    this.setState({ editingKey: key });
+  edit = orderNumber => {
+    this.setState({ editingKey: orderNumber });
   };
 
   cancel = () => {
     this.setState({ editingKey: '' });
   };
 
-  save = (form, key) => {
+  save = (form, orderNumber) => {
     form.validateFields((error, row) => {
       if (error) {
         return;
@@ -65,7 +66,7 @@ class QuestionTable extends React.Component {
 
       // update in UI
       const newData = [...this.state.data];
-      const index = newData.findIndex(item => key === item.key);
+      const index = newData.findIndex(item => orderNumber === item.orderNumber);
 
       if (index > -1) {
         const item = newData[index];
@@ -114,27 +115,42 @@ class QuestionTable extends React.Component {
     });
 
     return (
-      <Table
-        bordered
-        components={components}
-        rowKey={record => record.id}
-        loading={this.state.loading}
-        dataSource={this.state.data}
-        columns={columns}
-        title={() => (
-          <h3 style={{ color: '#FA541C' }}>
-            <strong>{formatMessage(messages.header)}</strong>
-          </h3>
-        )}
-        size="middle"
-        rowClassName="editable-row"
-      />
+      <Skeleton loading={this.state.loading}>
+        <Table
+          bordered
+          components={components}
+          rowKey={record => record.id}
+          dataSource={this.state.data}
+          columns={columns}
+          title={() => (
+            <h3 style={{ color: '#FA541C' }}>
+              <strong>{formatMessage(messages.header)}</strong>
+            </h3>
+          )}
+          size="middle"
+          rowClassName="editable-row"
+        />
+      </Skeleton>
     );
   }
 }
 
 QuestionTable.propTypes = {
   intl: intlShape.isRequired,
+  groupId: PropTypes.string,
 };
 
-export default injectIntl(QuestionTable);
+const mapStateToProps = state => ({
+  groupId: state.getIn(['surveyDetail', 'groupId']),
+});
+
+// const mapDispatchToProps = dispatch => ({
+//   setCurrentGroup: groupId => dispatch(setCurrentGroup(groupId)),
+// });
+
+export default connect(
+  mapStateToProps,
+  // mapDispatchToProps,
+)(injectIntl(QuestionTable));
+
+// export default injectIntl(QuestionTable);

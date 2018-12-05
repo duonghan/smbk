@@ -6,23 +6,63 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { FormattedMessage } from 'react-intl';
+import { Button } from 'antd';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
+
+import PsychologicTable from './components/PsychologicTable/Loadable';
+import NeoTable from './components/NeoTable/Loadable';
+import RiasecTable from './components/RiasecTable/Loadable';
+import MocTable from './components/MocTable/Loadable';
+
+const renderResponse = surveyName => {
+  switch (surveyName) {
+    case 'psychologic_test':
+      return <PsychologicTable />;
+    case 'neo':
+      return <NeoTable />;
+    case 'riasec':
+      return <RiasecTable />;
+    case 'moc':
+      return <MocTable />;
+    default:
+      return <MocTable />;
+  }
+};
 
 /* eslint-disable react/prefer-stateless-function */
 class ResponseTab extends React.Component {
   render() {
     return (
       <div>
-        <FormattedMessage {...messages.header} />
+        <Button type="primary">
+          <FormattedMessage {...messages.exportBtn} />
+        </Button>
+        <br />
+        {renderResponse(this.props.surveyName)}
       </div>
     );
   }
 }
 
-ResponseTab.propTypes = {};
+ResponseTab.propTypes = {
+  intl: intlShape.isRequired,
+  surveyName: PropTypes.string.isRequired,
+};
 
-export default ResponseTab;
+const mapStateToProps = state => ({
+  surveyId: state.getIn(['surveyDetail', 'surveyId']),
+  surveyName: state.getIn(['surveyDetail', 'surveyName']),
+});
+
+// const mapDispatchToProps = dispatch => ({
+//   setCurrentSurvey: (surveyId, surveyName) =>
+//     dispatch(setCurrentSurvey(surveyId, surveyName)),
+// });
+
+export default connect(mapStateToProps)(injectIntl(ResponseTab));

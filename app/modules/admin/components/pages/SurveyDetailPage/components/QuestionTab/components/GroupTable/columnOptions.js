@@ -1,12 +1,32 @@
 import React from 'react';
-import { Divider, Icon, Popconfirm, Tooltip, Popover, Tag } from 'antd';
+import { Divider, Icon, Popconfirm, Tooltip, Tag } from 'antd';
 import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { EditableContext } from '../../../../../../utils/EditableCell';
 import messages from './messages';
 import { styles } from '../../../../../../utils/styles';
 
-export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
+const colorTag = inputType => {
+  switch (inputType) {
+    case 'text-area':
+      return 'green';
+    case 'select':
+      return 'volcano';
+    case 'rate':
+      return 'purple';
+    default:
+      return 'blue';
+  }
+};
+
+export default (
+  formatMessage,
+  isEditing,
+  save,
+  cancel,
+  edit,
+  handleDelete,
+  viewQuestion,
+) => [
   {
     title: formatMessage(messages.nameLabel),
     dataIndex: 'name',
@@ -15,10 +35,86 @@ export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
     sorter: (a, b) => a.title.localeCompare(b.title),
   },
   {
+    title: formatMessage(messages.numofChildLabel),
+    dataIndex: 'numofChild',
+    key: 'numofChild',
+    sorter: (a, b) => a > b,
+  },
+  {
     title: formatMessage(messages.inputTypeLabel),
     dataIndex: 'inputType',
     key: 'inputType',
-    editable: true,
-    render: text => (text ? <Tag color="blue">{text}</Tag> : null),
+    render: text => (text ? <Tag color={colorTag(text)}>{text}</Tag> : null),
+  },
+  {
+    title: formatMessage(messages.actionLabel),
+    dataIndex: 'action',
+    key: 'action',
+    render: (text, record) => {
+      const editable = isEditing(record);
+      return (
+        <span>
+          {editable ? (
+            <span>
+              <EditableContext.Consumer>
+                {form => (
+                  <a
+                    onClick={() => save(form, record.id)}
+                    style={{ marginRight: 8 }}
+                  >
+                    <FormattedMessage {...messages.save} />
+                  </a>
+                )}
+              </EditableContext.Consumer>
+              <Popconfirm
+                title={formatMessage(messages.cancelPromtMsg)}
+                onConfirm={() => cancel(record.id)}
+                cancelText={formatMessage(messages.cancel)}
+              >
+                <a>
+                  <FormattedMessage {...messages.cancel} />
+                </a>
+              </Popconfirm>
+            </span>
+          ) : (
+            <Tooltip
+              placement="left"
+              title={formatMessage(messages.editToolTip)}
+            >
+              <a onClick={() => edit(record.id)}>
+                <Icon type="edit" style={styles.icon} />
+              </a>
+            </Tooltip>
+          )}
+          <Divider type="vertical" />
+          <Tooltip
+            placement="top"
+            title={formatMessage(messages.deleteToolTip)}
+          >
+            <Popconfirm
+              title={formatMessage(messages.deletePromtMsg)}
+              onConfirm={() => handleDelete(record.id)}
+              cancelText={formatMessage(messages.cancel)}
+              icon={<Icon type="question-circle-o" style={styles.delete} />}
+            >
+              <a>
+                <Icon type="delete" style={(styles.icon, styles.delete)} />
+              </a>
+            </Popconfirm>
+          </Tooltip>
+          <Divider type="vertical" />
+          {!record.numofChild && (
+            <Tooltip
+              placement="right"
+              title={formatMessage(messages.detailToolTip)}
+            >
+              <a onClick={() => viewQuestion(record.id)}>
+                <Icon type="eye" style={styles.icon} />
+              </a>
+            </Tooltip>
+          )}
+        </span>
+      );
+    },
   },
 ];

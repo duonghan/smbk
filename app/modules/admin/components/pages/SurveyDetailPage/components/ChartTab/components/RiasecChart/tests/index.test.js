@@ -2,9 +2,9 @@
 // import { mount } from 'enzyme';
 // import { enzymeFind } from 'styled-components/test-utils';
 
-// import ResponseTable from '../index';
+// import RiasecChart from '../index';
 
-describe('<ResponseTable />', () => {
+describe('<RiasecChart />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });

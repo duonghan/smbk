@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Button } from 'antd';
@@ -15,8 +16,6 @@ import messages from './messages';
 import AddQuestionForm from './AddQuestionForm';
 import GroupTable from './components/GroupTable/Loadable';
 import QuestionTable from './components/QuestionTable/Loadable';
-import { setCurrentSurvey } from '../../actions';
-import connect from 'react-redux/es/connect/connect';
 
 /* eslint-disable react/prefer-stateless-function */
 class QuestionTab extends React.Component {
@@ -50,8 +49,6 @@ class QuestionTab extends React.Component {
   };
 
   render() {
-    const { formatMessage } = this.props.intl;
-
     return (
       <div>
         <div style={{ marginBottom: 30 }}>

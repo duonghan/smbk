@@ -6,18 +6,18 @@
  */
 
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Table } from 'antd';
+import { Table, Skeleton } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
 import messages from './messages';
 import EditableFormRow from '../../../../../../utils/EditableFormRow';
 import EditableCell from '../../../../../../utils/EditableCell';
 import columnOptions from './columnOptions';
-import connect from 'react-redux/es/connect/connect';
 import { setCurrentGroup, setCurrentSurvey } from '../../../../actions';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -43,6 +43,7 @@ class GroupTable extends React.Component {
             id: group._id,
             name: group.name,
             inputType: group.inputType,
+            numofChild: group.childs.length,
             children: group.childs.map(child => ({
               id: child._id,
               name: child.name,
@@ -53,17 +54,17 @@ class GroupTable extends React.Component {
       });
   };
 
-  isEditing = record => record.key === this.state.editingKey;
+  isEditing = record => record.id === this.state.editingKey;
 
-  edit = key => {
-    this.setState({ editingKey: key });
+  edit = id => {
+    this.setState({ editingKey: id });
   };
 
   cancel = () => {
     this.setState({ editingKey: '' });
   };
 
-  save = (form, key) => {
+  save = (form, id) => {
     form.validateFields((error, row) => {
       if (error) {
         return;
@@ -71,7 +72,16 @@ class GroupTable extends React.Component {
 
       // update in UI
       const newData = [...this.state.data];
-      const index = newData.findIndex(item => key === item.key);
+
+      const index = newData.findIndex(item => {
+        if (item.numofChild > 0) {
+          if (id === item.id) return true;
+          item.children.findIndex(child => id === child.id);
+        }
+        return id === item.id;
+      });
+
+      console.log(index);
 
       if (index > -1) {
         const item = newData[index];
@@ -90,6 +100,15 @@ class GroupTable extends React.Component {
     });
   };
 
+  handleDelete = id => {
+    const dataSource = [...this.state.dataSource];
+    this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
+  };
+
+  viewQuestion = id => {
+    this.props.setCurrentGroup(id);
+  };
+
   render() {
     const { formatMessage } = this.props.intl;
 
@@ -102,6 +121,7 @@ class GroupTable extends React.Component {
       this.cancel,
       this.edit,
       this.handleDelete,
+      this.viewQuestion,
     ).map(col => {
       if (!col.editable) {
         return col;
@@ -120,28 +140,30 @@ class GroupTable extends React.Component {
     });
 
     return (
-      <Table
-        bordered
-        components={components}
-        rowKey={record => record.id}
-        loading={this.state.loading}
-        dataSource={this.state.data}
-        columns={columns}
-        title={() => (
-          <h3 style={{ color: '#FA541C' }}>
-            <strong>{formatMessage(messages.header)}</strong>
-          </h3>
-        )}
-        size="middle"
-        rowClassName="editable-row"
-      />
+      <Skeleton loading={this.state.loading}>
+        <Table
+          bordered
+          components={components}
+          rowKey={record => record.id}
+          dataSource={this.state.data}
+          columns={columns}
+          title={() => (
+            <h3 style={{ color: '#FA541C' }}>
+              <strong>{formatMessage(messages.header)}</strong>
+            </h3>
+          )}
+          size="middle"
+          rowClassName="editable-row"
+        />
+      </Skeleton>
     );
   }
 }
 
 GroupTable.propTypes = {
   intl: intlShape.isRequired,
-  surveyId: PropTypes.object.isRequired,
+  surveyId: PropTypes.string.isRequired,
+  setCurrentGroup: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

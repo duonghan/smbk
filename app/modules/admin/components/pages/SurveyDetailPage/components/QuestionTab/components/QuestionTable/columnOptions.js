@@ -34,7 +34,7 @@ export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
               <EditableContext.Consumer>
                 {form => (
                   <a
-                    onClick={() => save(form, record.key)}
+                    onClick={() => save(form, record.orderNumber)}
                     style={{ marginRight: 8 }}
                   >
                     <FormattedMessage {...messages.save} />
@@ -43,7 +43,7 @@ export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
               </EditableContext.Consumer>
               <Popconfirm
                 title={formatMessage(messages.cancelPromtMsg)}
-                onConfirm={() => cancel(record.key)}
+                onConfirm={() => cancel(record.orderNumber)}
                 cancelText={formatMessage(messages.cancel)}
               >
                 <a>
@@ -56,7 +56,7 @@ export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
               placement="left"
               title={formatMessage(messages.editToolTip)}
             >
-              <a onClick={() => edit(record.key)}>
+              <a onClick={() => edit(record.orderNumber)}>
                 <Icon type="edit" style={styles.icon} />
               </a>
             </Tooltip>
@@ -68,7 +68,7 @@ export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
           >
             <Popconfirm
               title={formatMessage(messages.deletePromtMsg)}
-              onConfirm={() => handleDelete(record.key)}
+              onConfirm={() => handleDelete(record.orderNumber)}
               cancelText={formatMessage(messages.cancel)}
               icon={<Icon type="question-circle-o" style={styles.delete} />}
             >

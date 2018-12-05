@@ -15,7 +15,9 @@ export const initialState = fromJS({
 const surveyDetailReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_CURRENT_SURVEY:
-      return state.set('surveyId', action.surveyId);
+      return state
+        .set('surveyId', action.surveyId)
+        .set('surveyName', action.surveyName);
     case SET_CURRENT_GROUP:
       return state.set('groupId', action.groupId);
     default:

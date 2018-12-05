@@ -1,7 +1,7 @@
 /**
  * Author: Duong Han
  * HUST
- * ResponseTable
+ * NeoTable
  *
  */
 
@@ -13,7 +13,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
-class ResponseTable extends React.Component {
+class NeoTable extends React.Component {
   render() {
     return (
       <div>
@@ -23,6 +23,6 @@ class ResponseTable extends React.Component {
   }
 }
 
-ResponseTable.propTypes = {};
+NeoTable.propTypes = {};
 
-export default ResponseTable;
+export default NeoTable;

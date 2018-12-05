@@ -15,4 +15,9 @@ export default defineMessages({
     id: `${scope}.header`,
     defaultMessage: 'This is the ResponseTab component!',
   },
+
+  exportBtn: {
+    id: `${scope}.exportBtn`,
+    defaultMessage: 'Xuất file Excel',
+  },
 });

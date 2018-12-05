@@ -11,8 +11,6 @@ import DashBoard from '../../pages/DashBoardPage';
 import AccountPage from '../../pages/AccountPage/Loadable';
 import SurveyPage from '../../pages/SurveyDetailPage/Loadable';
 import SurveyTable from '../../pages/SurveyPage/Loadable';
-import QuestionTable from '../../pages/SurveyDetailPage/components/QuestionTab/components/QuestionTable/Loadable';
-import ResponseTable from '../../pages/SurveyDetailPage/components/ResponseTab/components/ResponseTable/Loadable';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
@@ -25,7 +23,6 @@ class AdminContent extends React.Component {
         <Route exact path="/admin/account-list" component={AccountPage} />
         <Route exact path="/admin/survey" component={SurveyTable} />
         <Route exact path="/admin/survey/detail" component={SurveyPage} />
-        <Route exact path="/admin/responses" component={ResponseTable} />
         <Route component={DashBoard} />
       </Switch>
     );

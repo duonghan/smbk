@@ -66,6 +66,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "chalk": "2.4.1",
+    "chart.js": "^2.7.3",
     "compression": "1.7.3",
     "connected-react-router": "4.5.0",
     "cross-env": "5.2.0",

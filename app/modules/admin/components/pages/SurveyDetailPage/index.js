@@ -13,8 +13,9 @@ import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Tabs, Icon } from 'antd';
 
-import connect from 'react-redux/es/connect/connect';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
+import injectReducer from 'utils/injectReducer';
 
 import reducer from './reducer';
 import messages from './messages';
@@ -22,7 +23,6 @@ import QuestionTab from './components/QuestionTab/Loadable';
 import ResponseTab from './components/ResponseTab/Loadable';
 import ChartTab from './components/ChartTab/Loadable';
 
-import injectReducer from '../../../../../utils/injectReducer';
 import { setCurrentSurvey } from './actions';
 
 const { TabPane } = Tabs;
@@ -30,11 +30,13 @@ const { TabPane } = Tabs;
 /* eslint-disable react/prefer-stateless-function */
 class SurveyDetailPage extends React.Component {
   componentWillMount() {
-    this.props.setCurrentSurvey(this.props.location.state.id);
+    this.props.setCurrentSurvey(
+      this.props.location.state.id,
+      new URLSearchParams(this.props.location.search).get('survey'),
+    );
   }
 
   render() {
-    console.log(this.props.surveyId);
     return (
       <div>
         <Tabs defaultActiveKey="1" size="small">
@@ -87,7 +89,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentSurvey: surveyId => dispatch(setCurrentSurvey(surveyId)),
+  setCurrentSurvey: (surveyId, surveyName) =>
+    dispatch(setCurrentSurvey(surveyId, surveyName)),
 });
 
 const withConnect = connect(
