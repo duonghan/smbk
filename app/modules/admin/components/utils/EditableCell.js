@@ -1,29 +1,14 @@
 import React from 'react';
-import { Input, Select, Form } from 'antd';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { Input, Form } from 'antd';
+import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 
 const FormItem = Form.Item;
-const { Option } = Select;
 
 export const EditableContext = React.createContext();
 
 class EditableCell extends React.Component {
-  getInput = () => {
-    if (this.props.inputType === 'select') {
-      return (
-        <Select defaultValue="Admin">
-          <Option value="Admin">
-            <FormattedMessage {...messages.admin} />
-          </Option>
-          <Option value="User">
-            <FormattedMessage {...messages.user} />
-          </Option>
-        </Select>
-      );
-    }
-    return <Input />;
-  };
+  getInput = () => <Input />;
 
   render() {
     const {
@@ -35,8 +20,6 @@ class EditableCell extends React.Component {
       index,
       ...restProps
     } = this.props;
-
-    const { formatMessage } = this.props.intl;
     return (
       <EditableContext.Consumer>
         {form => {
@@ -49,7 +32,7 @@ class EditableCell extends React.Component {
                     rules: [
                       {
                         required: true,
-                        message: `${formatMessage(
+                        message: `${this.props.intl.formatMessage(
                           messages.rulesMsg,
                         )} ${title}!`,
                       },

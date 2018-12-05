@@ -6,7 +6,7 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.modules.admin.components.DashBoard';
+export const scope = 'app.modules.admin.components.DashBoardPage';
 
 export default defineMessages({
   header: {

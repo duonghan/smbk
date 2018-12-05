@@ -27,6 +27,7 @@ class AdminBreadcrum extends React.Component {
       '/admin/survey/check': 'Check',
       '/admin/survey/neo': 'NEO',
       '/admin/survey/riasec': 'RIASEC',
+      '/admin/survey/detail': 'Detail',
     };
   }
 

@@ -7,12 +7,12 @@
 
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import DashBoard from '../../pages/DashBoard';
+import DashBoard from '../../pages/DashBoardPage';
 import AccountPage from '../../pages/AccountPage/Loadable';
-import SurveyPage from '../../pages/SurveyPage/Loadable';
-import SurveyTable from '../../pages/SurveyTable/Loadable';
-import QuestionTable from '../../pages/QuestionTable/Loadable';
-import ResponseTable from '../../pages/ResponseTable/Loadable';
+import SurveyPage from '../../pages/SurveyDetailPage/Loadable';
+import SurveyTable from '../../pages/SurveyPage/Loadable';
+import QuestionTable from '../../pages/SurveyDetailPage/components/QuestionTab/components/QuestionTable/Loadable';
+import ResponseTable from '../../pages/SurveyDetailPage/components/ResponseTab/components/ResponseTable/Loadable';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 

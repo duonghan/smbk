@@ -1,44 +1,24 @@
 /*
 * Author: Duong Han
 * HUST
-* SurveyPage Messages
+* QuestionTable Messages
 *
-* This contains all the text for the SurveyPage component.
+* This contains all the text for the QuestionTable component.
 */
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.components.SurveyPage';
+export const scope = 'app.components.QuestionTable';
 
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'Danh sách khảo sát',
+    defaultMessage: 'Danh sách câu hỏi',
   },
 
-  titleLabel: {
-    id: `${scope}.titleLabel`,
-    defaultMessage: 'Tiêu đề',
-  },
-
-  coverLabel: {
-    id: `${scope}.coverLabel`,
-    defaultMessage: 'Ảnh bìa',
-  },
-
-  dateLabel: {
-    id: `${scope}.dateLabel`,
-    defaultMessage: 'Ngày tạo',
-  },
-
-  updateLabel: {
-    id: `${scope}.updateLabel`,
-    defaultMessage: 'Lần cuối cập nhật',
-  },
-
-  actionLabel: {
-    id: `${scope}.actionLabel`,
-    defaultMessage: 'Hành động',
+  nameLabel: {
+    id: `${scope}.nameLabel`,
+    defaultMessage: 'Nội dung câu hỏi',
   },
 
   rulesMsg: {

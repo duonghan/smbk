@@ -1,25 +1,27 @@
 /**
  * Author: Duong Han
  * HUST
- * SurveyPage
+ * GroupTable
  *
  */
 
 import React from 'react';
-import { Table } from 'antd';
-import axios from 'axios';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { injectIntl, intlShape } from 'react-intl';
+import axios from 'axios';
+import { Table } from 'antd';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
 import messages from './messages';
+import EditableFormRow from '../../../../../../utils/EditableFormRow';
+import EditableCell from '../../../../../../utils/EditableCell';
 import columnOptions from './columnOptions';
-import EditableFormRow from '../../utils/EditableFormRow';
-import EditableCell from '../../utils/EditableCell';
+import connect from 'react-redux/es/connect/connect';
+import { setCurrentGroup, setCurrentSurvey } from '../../../../actions';
 
 /* eslint-disable react/prefer-stateless-function */
-class SurveyTable extends React.Component {
+class GroupTable extends React.Component {
   state = {
     loading: false,
     data: [],
@@ -33,20 +35,22 @@ class SurveyTable extends React.Component {
   fetchSurveys = () => {
     this.setState({ loading: true });
 
-    axios.get('/api/survey/all', config).then(res => {
-      this.setState({
-        data: res.data.map((survey, index) => ({
-          key: index + 1,
-          id: survey._id,
-          name: survey.name,
-          cover: survey.cover,
-          title: survey.title,
-          date: survey.date,
-          lastUpdate: survey.lastUpdate,
-        })),
-        loading: false,
+    axios
+      .get(`/api/survey/question-groups/list/${this.props.surveyId}`, config)
+      .then(res => {
+        this.setState({
+          data: res.data.map(group => ({
+            id: group._id,
+            name: group.name,
+            inputType: group.inputType,
+            children: group.childs.map(child => ({
+              id: child._id,
+              name: child.name,
+            })),
+          })),
+          loading: false,
+        });
       });
-    });
   };
 
   isEditing = record => record.key === this.state.editingKey;
@@ -123,7 +127,11 @@ class SurveyTable extends React.Component {
         loading={this.state.loading}
         dataSource={this.state.data}
         columns={columns}
-        title={() => <strong>{formatMessage(messages.header)}</strong>}
+        title={() => (
+          <h3 style={{ color: '#FA541C' }}>
+            <strong>{formatMessage(messages.header)}</strong>
+          </h3>
+        )}
         size="middle"
         rowClassName="editable-row"
       />
@@ -131,8 +139,20 @@ class SurveyTable extends React.Component {
   }
 }
 
-SurveyTable.propTypes = {
+GroupTable.propTypes = {
   intl: intlShape.isRequired,
+  surveyId: PropTypes.object.isRequired,
 };
 
-export default injectIntl(SurveyTable);
+const mapStateToProps = state => ({
+  surveyId: state.getIn(['surveyDetail', 'surveyId']),
+});
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentGroup: groupId => dispatch(setCurrentGroup(groupId)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(injectIntl(GroupTable));

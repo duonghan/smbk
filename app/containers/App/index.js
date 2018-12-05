@@ -24,7 +24,7 @@ import MyHeader from 'components/layout/MyHeader';
 import MyFooter from 'components/layout/MyFooter';
 import RegisterPage from 'components/auth/Register/Loadable';
 import NotFoundPage from 'components/pages/NotFoundPage/Loadable';
-// import AdminPage from 'modules/admin/components/DashBoard';
+// import AdminPage from 'modules/admin/components/DashBoardPage';
 
 import QuestionGroup from 'components/pages/survey/QuestionGroup/Loadable';
 import AdminPage from 'modules/admin/components/AdminPage/Loadable';

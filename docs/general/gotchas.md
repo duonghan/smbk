@@ -35,10 +35,7 @@ Then webpack will correctly transfer the image to the build folder.
 If you have containers that should be available throughout the app, like a `NavigationBar` (they aren't route specific), you need to add their respective reducers to the root reducer with the help of `combineReducers`.
 
 ```js
-// In app/reducers.js
-
-...
-import { combineReducers } from 'redux-immutable';
+reducer.jsreducer.jst { combineReducers } from 'redux-immutable';
 ...
 
 import navigationBarReducer from 'containers/NavigationBar/reducer';

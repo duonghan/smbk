@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom';
 import { Icon, Layout, Menu } from 'antd';
 import messages from './messages';
 
-const { SubMenu } = Menu;
 const { Sider } = Layout;
 // const MenuItemGroup = Menu.ItemGroup;
 

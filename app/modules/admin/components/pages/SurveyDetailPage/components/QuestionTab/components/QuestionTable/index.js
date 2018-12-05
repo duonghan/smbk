@@ -1,25 +1,25 @@
 /**
  * Author: Duong Han
  * HUST
- * SurveyPage
+ * QuestionTable
  *
  */
 
 import React from 'react';
-import { Table } from 'antd';
-import axios from 'axios';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { injectIntl, intlShape } from 'react-intl';
+import axios from 'axios';
+import { Table } from 'antd';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
 import messages from './messages';
+import EditableFormRow from '../../../../../../utils/EditableFormRow';
+import EditableCell from '../../../../../../utils/EditableCell';
 import columnOptions from './columnOptions';
-import EditableFormRow from '../../utils/EditableFormRow';
-import EditableCell from '../../utils/EditableCell';
 
 /* eslint-disable react/prefer-stateless-function */
-class SurveyTable extends React.Component {
+class QuestionTable extends React.Component {
   state = {
     loading: false,
     data: [],
@@ -33,20 +33,18 @@ class SurveyTable extends React.Component {
   fetchSurveys = () => {
     this.setState({ loading: true });
 
-    axios.get('/api/survey/all', config).then(res => {
-      this.setState({
-        data: res.data.map((survey, index) => ({
-          key: index + 1,
-          id: survey._id,
-          name: survey.name,
-          cover: survey.cover,
-          title: survey.title,
-          date: survey.date,
-          lastUpdate: survey.lastUpdate,
-        })),
-        loading: false,
+    axios
+      .get('/api/survey/questions/group/5bfad0a3f893c01bc7919f5d', config)
+      .then(res => {
+        this.setState({
+          data: res.data.map(question => ({
+            id: question._id,
+            content: question.content,
+            orderNumber: question.orderNumber,
+          })),
+          loading: false,
+        });
       });
-    });
   };
 
   isEditing = record => record.key === this.state.editingKey;
@@ -123,7 +121,11 @@ class SurveyTable extends React.Component {
         loading={this.state.loading}
         dataSource={this.state.data}
         columns={columns}
-        title={() => <strong>{formatMessage(messages.header)}</strong>}
+        title={() => (
+          <h3 style={{ color: '#FA541C' }}>
+            <strong>{formatMessage(messages.header)}</strong>
+          </h3>
+        )}
         size="middle"
         rowClassName="editable-row"
       />
@@ -131,8 +133,8 @@ class SurveyTable extends React.Component {
   }
 }
 
-SurveyTable.propTypes = {
+QuestionTable.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(SurveyTable);
+export default injectIntl(QuestionTable);
