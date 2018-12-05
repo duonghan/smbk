@@ -43,6 +43,8 @@ module.exports = {
       },
     ],
     'jsx-a11y/aria-props': 2,
+    'jsx-a11y/anchor-is-valid': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
     'jsx-a11y/heading-has-content': 0,
     'jsx-a11y/label-has-associated-control': [
       2,
@@ -55,6 +57,7 @@ module.exports = {
     ],
     'jsx-a11y/label-has-for': 0,
     'jsx-a11y/mouse-events-have-key-events': 2,
+    'jsx-a11y/no-static-element-interactions': 0,
     'jsx-a11y/role-has-required-aria-props': 2,
     'jsx-a11y/role-supports-aria-props': 2,
     'max-len': 0,
