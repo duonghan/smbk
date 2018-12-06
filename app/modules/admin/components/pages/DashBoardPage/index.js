@@ -8,11 +8,11 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { Row, Col, Card, Divider } from 'antd';
+import { Row, Col, Divider } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import AccountTable from '../AccountPage';
 import NumberCard from './components/NumberCard';
+import ResponseChart from './components/ResponseChart';
 
 const numbers = [
   { icon: '', color: '', title: '', number: 100, countUp: {}, key: '1' },
@@ -29,7 +29,12 @@ const numberCards = numbers.map(item => (
 /* eslint-disable react/prefer-stateless-function */
 class Admin extends React.Component {
   render() {
-    return <Row gutter={24}>{numberCards}</Row>;
+    return (
+      <Row gutter={24}>
+        {numberCards}
+        <ResponseChart />
+      </Row>
+    );
   }
 }
 
