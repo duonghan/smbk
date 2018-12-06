@@ -19,7 +19,7 @@
   </a>
   <!-- Build Status -->
   <a href="https://travis-ci.org/duonghan/smbk">
-    <img src="https://travis-ci.org/duonghan/smbk.svg" alt="Build Status" />
+    <img src="https://travis-ci.com/duonghan/smbk.svg?token=LdT6JAmsLrFQqUWPg2jc&branch=master" alt="Build Status" />
   </a>
   <!-- Test Coverage -->
 <a href='https://coveralls.io/github/duonghan/smbk?branch=master'>
