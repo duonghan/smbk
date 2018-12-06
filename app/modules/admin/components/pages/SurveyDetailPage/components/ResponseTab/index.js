@@ -38,15 +38,7 @@ const renderResponse = surveyName => {
 /* eslint-disable react/prefer-stateless-function */
 class ResponseTab extends React.Component {
   render() {
-    return (
-      <div>
-        <Button type="primary">
-          <FormattedMessage {...messages.exportBtn} />
-        </Button>
-        <br />
-        {renderResponse(this.props.surveyName)}
-      </div>
-    );
+    return <div>{renderResponse(this.props.surveyName)}</div>;
   }
 }
 
@@ -56,13 +48,7 @@ ResponseTab.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  surveyId: state.getIn(['surveyDetail', 'surveyId']),
   surveyName: state.getIn(['surveyDetail', 'surveyName']),
 });
-
-// const mapDispatchToProps = dispatch => ({
-//   setCurrentSurvey: (surveyId, surveyName) =>
-//     dispatch(setCurrentSurvey(surveyId, surveyName)),
-// });
 
 export default connect(mapStateToProps)(injectIntl(ResponseTab));

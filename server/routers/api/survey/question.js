@@ -26,7 +26,7 @@ router.get('/test', (req, res) =>
  */
 router.post(
   '/add',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     try {
       if (req.user.role !== 'ADMIN')
@@ -123,7 +123,7 @@ router.post('/update', (req, res) => {
  */
 router.get(
   '/group/:groupId',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     QuestionGroup.findById(req.params.groupId)
       .select('groups')
@@ -135,7 +135,7 @@ router.get(
 
 router.get(
   '/count',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     if (req.query.surveyId && req.query.surveyId !== '') {
       QuestionGroup.find({ survey: req.query.surveyId, childs: [] }).then(

@@ -14,7 +14,7 @@ router.get('/test', (req, res) =>
 
 router.post(
   '/',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     const newMOCProfile = new MOCProfile({
       name: req.body.name,
@@ -35,7 +35,7 @@ router.post(
 
 router.get(
   '/',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     if (req.query.id !== '') {
       MOCProfile.findById(req.query.id)

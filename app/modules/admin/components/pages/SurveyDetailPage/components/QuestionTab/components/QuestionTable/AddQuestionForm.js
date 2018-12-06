@@ -42,26 +42,12 @@ class AddQuestionForm extends React.Component {
               />,
             )}
           </FormItem>
-
-          <FormItem label={formatMessage(messages.groupLabel)}>
-            {getFieldDecorator('group', {
-              rules: [
-                {
-                  required: true,
-                  message: formatMessage(messages.groupRequiredMsg),
-                },
-              ],
-            })(
-              <Select
-                onChange={this.handleChange}
-                placeholder={formatMessage(messages.groupPlaceholder)}
-              >
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="Yiminghe">yiminghe</Option>
-              </Select>,
-            )}
-          </FormItem>
+          <p>
+            <b>
+              <FormattedMessage {...messages.groupLabel} />
+            </b>{' '}
+            : {this.props.groupName}
+          </p>
         </Form>
       </Modal>
     );

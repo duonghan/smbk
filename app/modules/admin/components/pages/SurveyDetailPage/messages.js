@@ -55,6 +55,7 @@ export default defineMessages({
     id: `${scope}.nameTitle`,
     defaultMessage: 'Câu hỏi',
   },
+  
   answerTitle: {
     id: `${scope}.answerTitle`,
     defaultMessage: 'Nhóm câu trả lời',

@@ -14,7 +14,7 @@ const QuestionGroup = require('../../../models/QuestionGroup');
  */
 router.post(
   '/',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     if (req.user.role === 'ADMIN') {
       const newSurvey = new Survey({
@@ -39,7 +39,7 @@ router.post(
  */
 router.post(
   '/update',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     if (req.user.role === 'ADMIN') {
       const newSurvey = {
@@ -69,7 +69,7 @@ router.post(
  */
 router.get(
   '/all',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     Survey.find({})
       .then(surveys => res.json(surveys))
@@ -79,7 +79,7 @@ router.get(
 
 router.get(
   '/',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     if (req.query.id !== '') {
       Survey.findById(req.query.id)

@@ -65,4 +65,51 @@ export default defineMessages({
     id: `${scope}.deletePromtMsg`,
     defaultMessage: 'Bạn chắc chắn muốn xóa?',
   },
+
+  addQuestion: {
+    id: `${scope}.addQuestion`,
+    defaultMessage: 'Thêm câu hỏi',
+  },
+
+  // add question form modal
+  contentLabel: {
+    id: `${scope}.contentLabel`,
+    defaultMessage: 'Nội dung câu hỏi',
+  },
+
+  contentPlaceholder: {
+    id: `${scope}.contentPlaceholder`,
+    defaultMessage: 'Vui lòng nhập nội dung câu hỏi',
+  },
+
+  contentRequiredMsg: {
+    id: `${scope}.contentRequiredMsg`,
+    defaultMessage: 'Vui lòng nhập nội dung của câu hỏi',
+  },
+
+  groupLabel: {
+    id: `${scope}.groupLabel`,
+    defaultMessage: 'Nhóm câu hỏi',
+  },
+
+  groupPlaceholder: {
+    id: `${scope}.groupPlaceholder`,
+    defaultMessage: 'Chọn nhóm câu hỏi',
+  },
+
+  groupRequiredMsg: {
+    id: `${scope}.groupRequiredMsg`,
+    defaultMessage: 'Vui lòng chọn nhóm câu hỏi',
+  },
+
+  addBtn: {
+    id: `${scope}.addBtn`,
+    defaultMessage: 'Thêm',
+  },
+
+  cancelBtn: {
+    id: `${scope}.cancelBtn`,
+    defaultMessage: 'Trở về',
+  },
+
 });

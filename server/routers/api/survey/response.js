@@ -17,22 +17,30 @@ const resultPsychologic = require('../../../utils/calculate/response/psychologic
 const resultMOC = require('../../../utils/calculate/response/moc');
 
 router.get(
-  '/:id',
-  passport.authenticate('jwt', { session: false }),
+  '/',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    Response.findById(req.params.id)
-      .populate('survey user')
+    if (req.user.role !== 'ADMIN') return res.status(403).end();
+
+    const conditional = {};
+
+    if (req.query.survey) conditional.survey = req.query.survey;
+
+    if (req.query.id) conditional._id = req.query.id;
+
+    Response.findOne(conditional)
+      .populate('profile user')
       .exec((error, story) => {
         if (!error) return res.json(story);
 
-        return res.json(error);
+        return res.status(404).end();
       });
   },
 );
 
 router.post(
   '/submit',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     Response.findById(req.body.id).then(response => {
       Survey.findById(response.survey).then(survey => {
@@ -86,7 +94,7 @@ router.post(
 // Initial and update response
 router.post(
   '/init',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     if (req.body.userId && req.body.surveyId) {
       Response.findOne({

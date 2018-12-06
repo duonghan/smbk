@@ -21,6 +21,16 @@ export default defineMessages({
     defaultMessage: 'Tên nhóm câu hỏi',
   },
 
+  namePlaceholder: {
+    id: `${scope}.namePlaceholder`,
+    defaultMessage: 'Nhập nội dung nhóm câu hỏi',
+  },
+
+  nameRequiredMsg: {
+    id: `${scope}.nameRequiredMsg`,
+    defaultMessage: 'Vui lòng nhập nội dung của nhóm câu hỏi',
+  },
+
   numofChildLabel: {
     id: `${scope}.numofChildLabel`,
     defaultMessage: 'Số nhóm con',
@@ -29,6 +39,11 @@ export default defineMessages({
   inputTypeLabel: {
     id: `${scope}.inputTypeLabel`,
     defaultMessage: 'Kiểu',
+  },
+
+  inputTypeRequiredMsg: {
+    id: `${scope}.inputTypeRequiredMsg`,
+    defaultMessage: 'Vui lòng nhập kiểu trả lời',
   },
 
   actionLabel: {
@@ -74,5 +89,36 @@ export default defineMessages({
   deletePromtMsg: {
     id: `${scope}.deletePromtMsg`,
     defaultMessage: 'Bạn chắc chắn muốn xóa?',
+  },
+
+  addQuestion: {
+    id: `${scope}.addQuestion`,
+    defaultMessage: 'Thêm câu hỏi',
+  },
+
+  addBtn: {
+    id: `${scope}.addBtn`,
+    defaultMessage: 'Thêm',
+  },
+
+  addAnswerBtn: {
+    id: `${scope}.addAnswerBtn`,
+    defaultMessage: 'Thêm câu trả lời',
+  },
+
+  answerLabel: {
+    id: `${scope}.answerLabel`,
+    defaultMessage: 'Nội dung câu trả lời',
+  },
+
+  cancelBtn: {
+    id: `${scope}.cancelBtn`,
+    defaultMessage: 'Trở về',
+  },
+
+  // add group question form
+  addGroup: {
+    id: `${scope}.addGroup`,
+    defaultMessage: 'Thêm nhóm câu hỏi',
   },
 });

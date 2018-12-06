@@ -16,6 +16,7 @@ import { Tabs, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import injectReducer from 'utils/injectReducer';
+import injectSaga from 'utils/injectSaga';
 
 import reducer from './reducer';
 import messages from './messages';
@@ -24,6 +25,7 @@ import ResponseTab from './components/ResponseTab/Loadable';
 import ChartTab from './components/ChartTab/Loadable';
 
 import { setCurrentSurvey } from './actions';
+import saga from './saga';
 
 const { TabPane } = Tabs;
 
@@ -99,9 +101,10 @@ const withConnect = connect(
 );
 
 const withReducer = injectReducer({ key: 'surveyDetail', reducer });
-// const withSaga = injectSaga({ key: 'surveyDetail', saga });
+const withSaga = injectSaga({ key: 'surveyDetail', saga });
 
 export default compose(
   withReducer,
+  withSaga,
   withConnect,
 )(injectIntl(SurveyDetailPage));

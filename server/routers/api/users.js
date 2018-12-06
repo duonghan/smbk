@@ -234,7 +234,7 @@ router.post('/login', (req, res) => {
  */
 router.get(
   '/current',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     res.json({
       id: req.user.id,
@@ -251,7 +251,7 @@ router.get(
  */
 router.post(
   '/update',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     const newProfile = {
       email: req.body.email,
@@ -307,7 +307,7 @@ router.post(
  */
 router.get(
   '/list',
-  passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     // only return result when user has admin role
     if (req.user.role === 'ADMIN') {

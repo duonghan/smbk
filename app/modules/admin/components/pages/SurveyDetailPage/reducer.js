@@ -6,7 +6,11 @@
 */
 
 import { fromJS } from 'immutable';
-import { SET_CURRENT_GROUP, SET_CURRENT_SURVEY } from './constants';
+import {
+  FETCH_RESPONSE_SUCCESS,
+  SET_CURRENT_GROUP,
+  SET_CURRENT_SURVEY,
+} from './constants';
 
 export const initialState = fromJS({
   surveyId: '',
@@ -19,7 +23,11 @@ const surveyDetailReducer = (state = initialState, action) => {
         .set('surveyId', action.surveyId)
         .set('surveyName', action.surveyName);
     case SET_CURRENT_GROUP:
-      return state.set('groupId', action.groupId);
+      return state
+        .set('groupId', action.groupId)
+        .set('groupName', action.groupName);
+    case FETCH_RESPONSE_SUCCESS:
+      return state.set('response', action.response);
     default:
       return state;
   }

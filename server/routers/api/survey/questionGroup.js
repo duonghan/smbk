@@ -24,74 +24,86 @@ router.get('/test', (req, res) =>
  * @desc: Create survey
  * @access: private
  */
-router.post('/update', (req, res) => {
-  Survey.findById(req.body.surveyId).then(survey => {
-    QuestionGroup.findById(req.body.parent).then(parentGroups => {
-      const newQuestionGroup = {};
+router.post(
+  '/update',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    Survey.findById(req.body.surveyId).then(survey => {
+      QuestionGroup.findById(req.body.parent).then(parentGroups => {
+        const newQuestionGroup = {};
 
-      newQuestionGroup.id = req.body.id;
-      if (req.body.name) newQuestionGroup.name = req.body.name.trim();
-      if (req.body.survey) newQuestionGroup.survey = survey._id;
-      if (req.body.childs) newQuestionGroup.childs = parentGroups._id;
-      if (req.body.parent) newQuestionGroup.parent = req.body.parent;
-      if (req.body.questions)
-        newQuestionGroup.questions = JSON.parse(req.body.questions);
-      if (req.body.inputType) newQuestionGroup.inputType = req.body.inputType;
-      if (req.body.optionAnswers)
-        newQuestionGroup.optionAnswers = JSON.parse(req.body.optionAnswers);
+        newQuestionGroup.id = req.body.id;
+        if (req.body.name) newQuestionGroup.name = req.body.name.trim();
+        if (req.body.survey) newQuestionGroup.survey = survey._id;
+        if (req.body.childs) newQuestionGroup.childs = parentGroups._id;
+        if (req.body.parent) newQuestionGroup.parent = req.body.parent;
+        if (req.body.questions)
+          newQuestionGroup.questions = JSON.parse(req.body.questions);
+        if (req.body.inputType) newQuestionGroup.inputType = req.body.inputType;
+        if (req.body.optionAnswers)
+          newQuestionGroup.optionAnswers = JSON.parse(req.body.optionAnswers);
 
-      // return res.json(newQuestionGroup);
+        // return res.json(newQuestionGroup);
 
-      QuestionGroup.findByIdAndUpdate(newQuestionGroup.id, {
-        $set: newQuestionGroup,
-      })
-        .then(groups => {
-          res.json(groups);
+        QuestionGroup.findByIdAndUpdate(newQuestionGroup.id, {
+          $set: newQuestionGroup,
         })
-        .catch(err => {
-          const message = 'Cannot update question group';
-          res.status(404).json({ message, info: err });
-        });
+          .then(groups => {
+            res.json(groups);
+          })
+          .catch(err => {
+            const message = 'Cannot update question group';
+            res.status(404).json({ message, info: err });
+          });
+      });
     });
-  });
-});
+  },
+);
 
 /**
  * @function: POST /api/question-group
  * @desc: Create question group
  * @access: private
  */
-router.post('/add', (req, res) => {
-  const newQuestionGroup = new QuestionGroup({
-    name: req.body.name.trim(),
-    survey: mongoose.Types.ObjectId(req.body.surveyId),
-    childs: req.body.childs,
-    questions: req.body.questions,
-    inputType: req.body.inputType,
-    optionAnswers: JSON.parse(req.body.optionAnswers),
-  });
+router.post(
+  '/add',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    const newQuestionGroup = new QuestionGroup({
+      name: req.body.name.trim(),
+      survey: mongoose.Types.ObjectId(req.body.surveyId),
+      childs: req.body.childs,
+      questions: req.body.questions,
+      inputType: req.body.inputType,
+      optionAnswers: JSON.parse(req.body.optionAnswers),
+    });
 
-  console.log(JSON.stringify(newQuestionGroup));
+    console.log(JSON.stringify(newQuestionGroup));
 
-  newQuestionGroup
-    .save()
-    .then(group => res.json(group))
-    .catch(err => res.status(400).json(err));
-});
+    newQuestionGroup
+      .save()
+      .then(group => res.json(group))
+      .catch(err => res.status(400).json(err));
+  },
+);
 
 /**
  * @function: GET /api/survey/list
  * @desc: Return list survey in db
  * @access: private
  */
-router.get('/list/:surveyid', (req, res) => {
-  QuestionGroup.find(
-    { survey: req.params.surveyid, parent: null },
-    '_id name childs optionAnswers inputType',
-  )
-    .populate({ path: 'childs', select: '_id name optionAnswers inputType' })
-    .sort({ date: 1 })
-    .exec((error, groups) => res.json(groups));
-});
+router.get(
+  '/list/:surveyid',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    QuestionGroup.find(
+      { survey: req.params.surveyid, parent: null },
+      '_id name childs optionAnswers inputType',
+    )
+      .populate({ path: 'childs', select: '_id name optionAnswers inputType' })
+      .sort({ date: 1 })
+      .exec((error, groups) => res.json(groups));
+  },
+);
 
 module.exports = router;

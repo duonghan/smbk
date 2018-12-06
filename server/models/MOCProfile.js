@@ -36,7 +36,7 @@ const MOCProfileSchema = new Schema({
   },
 
   phone: {
-    type: Number,
+    type: String,
     required: true,
   },
 

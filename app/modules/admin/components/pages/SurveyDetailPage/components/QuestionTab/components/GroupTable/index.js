@@ -11,19 +11,22 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Table, Skeleton } from 'antd';
+import { Table, Skeleton, Icon } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
 import messages from './messages';
 import EditableFormRow from '../../../../../../utils/EditableFormRow';
 import EditableCell from '../../../../../../utils/EditableCell';
 import columnOptions from './columnOptions';
-import { setCurrentGroup, setCurrentSurvey } from '../../../../actions';
+import { setCurrentGroup } from '../../../../actions';
+import AddGroupForm from './AddGroupForm';
+import './styles.css';
 
 /* eslint-disable react/prefer-stateless-function */
 class GroupTable extends React.Component {
   state = {
     loading: false,
+    visible: false,
     data: [],
     editingKey: '',
   };
@@ -31,6 +34,31 @@ class GroupTable extends React.Component {
   componentDidMount() {
     this.fetchSurveys();
   }
+
+  showModal = () => {
+    this.setState({ visible: true });
+  };
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
+
+  handleCreate = () => {
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      console.log('Received values of form: ', values);
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  };
+
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
 
   fetchSurveys = () => {
     this.setState({ loading: true });
@@ -46,6 +74,7 @@ class GroupTable extends React.Component {
             numofChild: group.childs.length,
             children: group.childs.map(child => ({
               id: child._id,
+              inputType: child.inputType,
               name: child.name,
             })),
           })),
@@ -105,8 +134,8 @@ class GroupTable extends React.Component {
     this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
   };
 
-  viewQuestion = id => {
-    this.props.setCurrentGroup(id);
+  viewQuestion = (id, name) => {
+    this.props.setCurrentGroup(id, name);
   };
 
   render() {
@@ -150,10 +179,20 @@ class GroupTable extends React.Component {
           title={() => (
             <h3 style={{ color: '#FA541C' }}>
               <strong>{formatMessage(messages.header)}</strong>
+              <a onClick={this.showModal} style={{ float: 'right' }}>
+                <Icon type="plus" style={{ fontSize: 20, color: '#FA541C' }} />
+              </a>
             </h3>
           )}
           size="middle"
           rowClassName="editable-row"
+        />
+
+        <AddGroupForm
+          wrappedComponentRef={this.saveFormRef}
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          onCreate={this.handleCreate}
         />
       </Skeleton>
     );
@@ -171,7 +210,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentGroup: groupId => dispatch(setCurrentGroup(groupId)),
+  setCurrentGroup: (groupId, groupName) =>
+    dispatch(setCurrentGroup(groupId, groupName)),
 });
 
 export default connect(
