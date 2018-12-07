@@ -131,5 +131,6 @@ module.exports = options => ({
   },
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window
+  // vendor: ['xlsx', 'file-saver'],
   performance: options.performance || {},
 });

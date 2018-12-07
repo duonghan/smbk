@@ -5,18 +5,19 @@ import { EditableContext } from '../../../../../../utils/EditableCell';
 import { styles } from '../../../../../../utils/styles';
 import messages from './messages';
 
-export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
+export default (formatMessage, viewProfile, handleDelete) => [
   {
     title: '#',
-    dataIndex: 'orderNumber',
-    key: 'orderNumber',
+    dataIndex: 'key',
+    key: 'key',
     align: 'center',
     sorter: (a, b) => a.orderNumber < b.orderNumber,
+    render: key => key + 1,
   },
   {
     title: formatMessage(messages.profileLabel),
-    dataIndex: 'profile',
-    key: 'profile',
+    dataIndex: 'name',
+    key: 'name',
     editable: true,
     sorter: (a, b) => a.content.localeCompare(b.content),
   },
@@ -26,41 +27,13 @@ export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
     key: 'action',
     align: 'center',
     render: (text, record) => {
-      const editable = isEditing(record);
       return (
         <span>
-          {editable ? (
-            <span>
-              <EditableContext.Consumer>
-                {form => (
-                  <a
-                    onClick={() => save(form, record.orderNumber)}
-                    style={{ marginRight: 8 }}
-                  >
-                    <FormattedMessage {...messages.save} />
-                  </a>
-                )}
-              </EditableContext.Consumer>
-              <Popconfirm
-                title={formatMessage(messages.cancelPromtMsg)}
-                onConfirm={() => cancel(record.orderNumber)}
-                cancelText={formatMessage(messages.cancel)}
-              >
-                <a>
-                  <FormattedMessage {...messages.cancel} />
-                </a>
-              </Popconfirm>
-            </span>
-          ) : (
-            <Tooltip
-              placement="left"
-              title={formatMessage(messages.editToolTip)}
-            >
-              <a onClick={() => edit(record.orderNumber)}>
-                <Icon type="edit" style={styles.icon} />
-              </a>
-            </Tooltip>
-          )}
+          <Tooltip placement="left" title={formatMessage(messages.viewToolTip)}>
+            <a onClick={() => viewProfile(record.key)}>
+              <Icon type="eye" style={styles.icon} />
+            </a>
+          </Tooltip>
           <Divider type="vertical" />
           <Tooltip
             placement="right"

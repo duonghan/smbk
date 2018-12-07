@@ -6,11 +6,15 @@ import { FETCH_RESPONSE } from './constants';
 
 function* fetchResponse(data) {
   try {
+    debugger;
+    const paramOpts = {
+      survey: data.surveyId,
+    };
+    if (data.extra.length > 0) paramOpts.type = data.extra;
+
     const res = yield call(axios.get, `/api/survey/responses`, {
       ...config,
-      params: {
-        survey: data.surveyId,
-      },
+      params: paramOpts,
     });
 
     yield put(fetchResponseSucceed(res.data));

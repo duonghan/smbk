@@ -11,10 +11,31 @@ export const scope = 'app.modules.admin.components.DashBoardPage';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the Admin component !',
+    defaultMessage: 'Bảng điều khiển',
   },
-  tableTitle: {
-    id: `${scope}.tableTitle`,
-    defaultMessage: 'DANH SÁCH TÀI KHOẢN',
+
+  responseChartHeader: {
+    id: `${scope}.responseChartHeader`,
+    defaultMessage: 'Biểu đồ số lượng người dùng',
+  },
+
+  userStatTitle: {
+    id: `${scope}.userStatTitle`,
+    defaultMessage: 'Người dùng',
+  },
+
+  surveyStatTitle: {
+    id: `${scope}.surveyStatTitle`,
+    defaultMessage: 'Khảo sát',
+  },
+
+  responseStatTitle: {
+    id: `${scope}.responseStatTitle`,
+    defaultMessage: 'Phản hồi',
+  },
+
+  questionStatTitle: {
+    id: `${scope}.questionStatTitle`,
+    defaultMessage: 'Câu hỏi',
   },
 });

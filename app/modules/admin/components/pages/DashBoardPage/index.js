@@ -7,37 +7,62 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-
-import { Row, Col, Divider } from 'antd';
-import { FormattedMessage } from 'react-intl';
+import Helmet from 'react-helmet';
+import { Row, Col, Skeleton } from 'antd';
+import axios from 'axios';
+import config from 'utils/validation/config';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 import NumberCard from './components/NumberCard';
 import ResponseChart from './components/ResponseChart';
 
-const numbers = [
-  { icon: '', color: '', title: '', number: 100, countUp: {}, key: '1' },
-  { icon: '', color: '', title: '', number: 100, countUp: {}, key: '2' },
-  { icon: '', color: '', title: '', number: 100, countUp: {}, key: '3' },
-  { icon: '', color: '', title: '', number: 100, countUp: {}, key: '4' },
-];
-const numberCards = numbers.map(item => (
-  <Col key={item.key} lg={6} md={12}>
-    <NumberCard {...item} />
-  </Col>
-));
-
 /* eslint-disable react/prefer-stateless-function */
-class Admin extends React.Component {
+class DashBoardPage extends React.Component {
+  state = {
+    status: {},
+    loading: true,
+  };
+
+  componentDidMount() {
+    this.fetchStatusList();
+  }
+
+  fetchStatusList = () => {
+    axios.get('/api/survey/responses/statusList', config).then(res => {
+      this.setState({ status: res.data, loading: false });
+    });
+  };
+
   render() {
+    const { formatMessage } = this.props.intl;
+
     return (
       <Row gutter={24}>
-        {numberCards}
+        <Helmet title={formatMessage(messages.header)} />
+        <Skeleton loading={this.state.loading}>
+          {Object.entries(this.state.status).map((item, index) => (
+            <Col
+              key={index}
+              lg={6}
+              md={12}
+              sm={12}
+              style={{ marginBottom: 20 }}
+            >
+              <NumberCard
+                title={formatMessage(messages[`${item[0]}StatTitle`])}
+                number={item[1]}
+              />
+            </Col>
+          ))}
+        </Skeleton>
         <ResponseChart />
       </Row>
     );
   }
 }
 
-Admin.propTypes = {};
+DashBoardPage.propTypes = {
+  intl: intlShape.isRequired,
+};
 
-export default Admin;
+export default injectIntl(DashBoardPage);

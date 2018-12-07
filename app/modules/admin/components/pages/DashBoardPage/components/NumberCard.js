@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Card } from 'antd';
+import { Card } from 'antd';
 import CountUp from 'react-countup';
 import styles from './numberCard.css';
 
 const NumberCard = ({ icon, color, title, number, countUp }) => (
-  <Card className={styles.numberCard} bordered bodyStyle={{ padding: 10 }}>
-    <Icon className={styles.iconWarp} style={{ color }} type={icon} />
+  <Card
+    className={styles.numberCard}
+    bordered
+    bodyStyle={{
+      padding: '20px 24px 8px 24px',
+    }}
+  >
     <div className={styles.content}>
-      <p className={styles.title}>{title || 'No Title'}</p>
-      <p className={styles.number}>
+      <h3 className={styles.title}>{title || 'No Title'}</h3>
+      <p className={styles.number} style={{ fontSize: '3em' }}>
         <CountUp
           start={0}
           end={number}

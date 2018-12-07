@@ -18,9 +18,10 @@ export const setCurrentGroup = (groupId, groupName) => ({
   groupName,
 });
 
-export const fetchResponse = surveyId => ({
+export const fetchResponse = (surveyId, extra) => ({
   type: FETCH_RESPONSE,
   surveyId,
+  extra,
 });
 
 export const fetchResponseSucceed = response => ({

@@ -1,8 +1,11 @@
 import React from 'react';
-import { Line, Bar } from 'react-chartjs-2';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { Bar } from 'react-chartjs-2';
+
+import messages from '../messages';
 
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   datasets: [
     {
       label: 'Sales',
@@ -24,7 +27,7 @@ const data = {
       fill: false,
       backgroundColor: '#71B37C',
       borderColor: '#71B37C',
-      hoverBackgroundColor: '#71B37C',
+      hoverBackgroundColor: '#50b4df',
       hoverBorderColor: '#71B37C',
       yAxisID: 'y-axis-1',
     },
@@ -33,6 +36,7 @@ const data = {
 
 const options = {
   responsive: true,
+  // labels: ["January", "February", "March", "April", "May", "June", "July"],
   tooltips: {
     mode: 'label',
   },
@@ -48,9 +52,16 @@ const options = {
         gridLines: {
           display: false,
         },
-        labels: {
-          show: true,
-        },
+
+        labels: [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+        ],
       },
     ],
     yAxes: [
@@ -82,16 +93,27 @@ const options = {
   },
 };
 
+const plugins = [
+  {
+    afterDraw: (chartInstance, easing) => {
+      const ctx = chartInstance.chart.ctx;
+      // ctx.fillText('This text drawn by a plugin', 100, 100);
+    },
+  },
+];
+
 /* eslint-disable react/prefer-stateless-function */
-class LineExample extends React.Component {
+class ResponseChart extends React.Component {
   render() {
     return (
       <div>
-        <h2>Mixed data Example</h2>
-        <Bar data={data} options={options} />
+        <h2>
+          <FormattedMessage {...messages.responseChartHeader} />
+        </h2>
+        <Bar data={data} options={options} plugins={plugins} />
       </div>
     );
   }
 }
 
-export default LineExample;
+export default ResponseChart;

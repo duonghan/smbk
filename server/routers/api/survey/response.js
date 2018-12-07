@@ -9,6 +9,8 @@ const passport = require('passport');
 const Response = require('../../../models/Response');
 const Survey = require('../../../models/Survey');
 const QuestionGroup = require('../../../models/QuestionGroup');
+const Question = require('../../../models/Question');
+const User = require('../../../models/User');
 const MOCProfile = require('../../../models/MOCProfile');
 
 const resultNEO = require('../../../utils/calculate/response/neo');
@@ -28,13 +30,49 @@ router.get(
 
     if (req.query.id) conditional._id = req.query.id;
 
-    Response.findOne(conditional)
-      .populate('profile user')
-      .exec((error, story) => {
-        if (!error) return res.json(story);
+    if (req.query.type === 'moc') {
+      Response.find(conditional)
+        .populate('profile')
+        .exec((err, story) => {
+          if (err) return res.status(404).end(err);
+          return res.json(
+            story.map(item => ({
+              name: item.profile.name,
+              profile: item.profile,
+              answers: item.answers,
+            })),
+          );
+        });
+    } else {
+      Response.find(conditional)
+        .then(response => res.json(response))
+        .catch(err => res.status(404).send(err));
+    }
+  },
+);
 
-        return res.status(404).end();
-      });
+router.get(
+  '/statusList',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.user.role !== 'ADMIN') return res.status(403).end();
+
+    const status = {};
+    Survey.countDocuments({})
+      .then(count => {
+        status.survey = count;
+        Question.countDocuments({}).then(count => {
+          status.question = count;
+          User.countDocuments({}).then(count => {
+            status.user = count;
+            Response.countDocuments({}).then(count => {
+              status.response = count;
+              return res.json(status);
+            });
+          });
+        });
+      })
+      .catch(err => res.json(err.response));
   },
 );
 

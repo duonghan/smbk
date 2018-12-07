@@ -5,6 +5,17 @@ import { EditableContext } from '../EditableCell';
 import messages from '../messages';
 import { styles } from '../styles';
 
+const colorTag = role => {
+  switch (role) {
+    case 'GUEST':
+      return 'green';
+    case 'ADMIN':
+      return 'volcano';
+    default:
+      return 'blue';
+  }
+};
+
 export default (
   sortedInfo,
   filteredInfo,
@@ -47,7 +58,9 @@ export default (
     editable: true,
     render: role => (
       <span>
-        <Tag color="blue">{formatMessage(messages[role.toLowerCase()])}</Tag>
+        <Tag color={colorTag(role)}>
+          {formatMessage(messages[role.toLowerCase()])}
+        </Tag>
       </span>
     ),
     filters: [
@@ -66,6 +79,7 @@ export default (
     key: 'date',
     sorter: (a, b) => a.date < b.date,
     sortOrder: sortedInfo.columnKey === 'date' && sortedInfo.order,
+    render: text => new Date(text).toLocaleDateString('vi-VN'),
   },
   {
     title: formatMessage(messages.actionTitle),

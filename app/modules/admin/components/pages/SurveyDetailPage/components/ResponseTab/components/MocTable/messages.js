@@ -18,7 +18,12 @@ export default defineMessages({
 
   profileLabel: {
     id: `${scope}.profileLabel`,
-    defaultMessage: 'Người tham gia khảo sát',
+    defaultMessage: 'Người tham gia',
+  },
+
+  profileModalTitle: {
+    id: `${scope}.profileModalTitle`,
+    defaultMessage: 'Thông tin cá nhân',
   },
 
   rulesMsg: {
@@ -26,9 +31,9 @@ export default defineMessages({
     defaultMessage: 'Vui lòng nhập',
   },
 
-  editToolTip: {
-    id: `${scope}.editToolTip`,
-    defaultMessage: 'Sửa',
+  viewToolTip: {
+    id: `${scope}.viewToolTip`,
+    defaultMessage: 'Xem thông tin',
   },
 
   deleteToolTip: {
@@ -64,5 +69,40 @@ export default defineMessages({
   deletePromtMsg: {
     id: `${scope}.deletePromtMsg`,
     defaultMessage: 'Bạn chắc chắn muốn xóa?',
+  },
+
+  nameLabel: {
+    id: `${scope}.nameLabel`,
+    defaultMessage: 'Họ tên',
+  },
+
+  workUnitLabel: {
+    id: `${scope}.workUnitLabel`,
+    defaultMessage: 'Đơn vị công tác',
+  },
+
+  positionLabel: {
+    id: `${scope}.positionLabel`,
+    defaultMessage: 'Chức vụ/nghề nghiệp',
+  },
+
+  mainTaskLabel: {
+    id: `${scope}.mainTaskLabel`,
+    defaultMessage: 'Công việc/nhiệm vụ chính được phân công',
+  },
+
+  specialityLabel: {
+    id: `${scope}.specialityLabel`,
+    defaultMessage: 'Chuyên môn chính được đào tạo',
+  },
+
+  personalEmailLabel: {
+    id: `${scope}.personalEmailLabel`,
+    defaultMessage: 'Email cá nhân',
+  },
+
+  phoneLabel: {
+    id: `${scope}.phoneLabel`,
+    defaultMessage: 'Số điện thoại',
   },
 });
