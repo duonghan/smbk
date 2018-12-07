@@ -105,4 +105,14 @@ export default defineMessages({
     id: `${scope}.phoneLabel`,
     defaultMessage: 'Số điện thoại',
   },
+
+  dateLabel: {
+    id: `${scope}.dateLabel`,
+    defaultMessage: 'Ngày tạo',
+  },
+
+  detailDividerLabel: {
+    id: `${scope}.detailDividerLabel`,
+    defaultMessage: 'Thông tin người tham gia',
+  },
 });
