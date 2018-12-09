@@ -12,6 +12,11 @@ const QuestionSchema = new Schema({
     type: String,
     required: true,
   },
+
+  group: {
+    type: Schema.Types.ObjectId,
+    ref: 'questionGroups',
+  },
 });
 
 const Question = mongoose.model('questions', QuestionSchema);

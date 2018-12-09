@@ -4,6 +4,8 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
+const _ = require('lodash');
+const xl = require('excel4node');
 
 // Load question model
 const Response = require('../../../models/Response');
@@ -171,6 +173,100 @@ router.post(
       });
     } else {
       res.status(400).json({ message: 'surveyId and userId is required' });
+    }
+  },
+);
+
+router.get(
+  '/export',
+  // passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.query.survey) {
+      const dataSource = {
+        result: {},
+        emptyItem: 0,
+      };
+
+      QuestionGroup.find({
+        survey: req.query.survey,
+        childs: [],
+      })
+        .then(groups => {
+          groups.map(group => {
+            if (group.optionAnswers.length > 0) {
+              group.questions.map(questionId => {
+                dataSource.result[questionId] = {
+                  answers: {},
+                  ignored: 0,
+                };
+
+                group.optionAnswers.map(option => {
+                  dataSource.result[questionId].answers[option.score] = 0;
+                });
+              });
+            }
+          });
+
+          return { dataSource, groups };
+        })
+        .then(({ dataSource, groups }) => {
+          Response.find({ survey: req.query.survey })
+            .then(responses => {
+              responses.map(response => {
+                if (response.answers.length > 0) {
+                  response.answers
+                    .filter(answer => !answer.text)
+                    .map(answer => {
+                      if (!answer.questionId.toString()) {
+                        dataSource.result[
+                          answer.questionId.toString()
+                        ].ignored += 1;
+                      } else {
+                        dataSource.result[answer.questionId.toString()].answers[
+                          answer.value
+                        ] += 1;
+                      }
+                    });
+                } else {
+                  dataSource.emptyItem += 1;
+                }
+              });
+              return dataSource;
+            })
+            .then(dataSource => {
+              // Create excel file
+              // Create a new instance of a Workbook class
+              const wb = new xl.Workbook();
+
+              Survey.findById(req.query.survey).then(survey => {
+                groups.map((group, index) => {
+                  const ws = wb.addWorksheet(`Câu ${index + 1}`);
+
+                  ws.cell(1, 2)
+                    .string(survey.title)
+                    .style({ font: { bold: true, size: 18 } });
+
+                  ws.cell(4, 2).string(group.name);
+                  group.optionAnswers.map((option, index) => {
+                    ws.cell(6, 3 + index).string(option.text);
+                  });
+
+                  group.questions.map((question, i) => {
+                    ws.cell(7 + i, 2).string(question.toString());
+
+                    group.optionAnswers.map((option, ii) => {
+                      ws.cell(7 + i, 3 + ii).number(
+                        dataSource.result[question].answers[option.score],
+                      );
+                    });
+                  });
+                });
+
+                // return res.json(dataSource);
+                return wb.write('report.xlsx', res);
+              });
+            });
+        });
     }
   },
 );

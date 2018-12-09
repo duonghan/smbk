@@ -80,7 +80,7 @@ router.post('/update', (req, res) => {
   //   return res.json(questions);
   // });
 
-  // QuestionGroup.find({ survey: '5bf4974dfa4c6c21a1b5ed68' }).then(groups => {
+  // QuestionGroup.find({ survey: '5c0123521ade821495cbae8c' }).then(groups => {
   //   groups.filter(item => item.questions.length > 0).map(itemParent => {
   //     itemParent.questions.map((item, index) => {
   //       Question.findByIdAndUpdate(
@@ -88,7 +88,6 @@ router.post('/update', (req, res) => {
   //         {
   //           $set: {
   //             group: itemParent._id,
-  //             orderNumber: index + 1,
   //           },
   //         },
   //         { new: true },
@@ -97,23 +96,22 @@ router.post('/update', (req, res) => {
   //   });
   // });
 
-  QuestionGroup.findById('5bfc74c272cb2907acca20d7').then(groups => {
-    // return res.json(groups.map(item => item.questions));
-    groups.questions.map((item, index) => {
-      Question.findByIdAndUpdate(
-        item,
-        {
-          $set: {
-            group: mongoose.Types.ObjectId('5bfc74c272cb2907acca20d7'),
-            orderNumber: index + 1,
-          },
-        },
-        { new: true },
-      ).then(doc => res.json(doc));
-    });
-
-    // return res.json(groups.questions);
-  });
+  // QuestionGroup.find('5c02d09e86564756040f4482').then(groups => {
+  //   // return res.json(groups.map(item => item.questions));
+  //   groups.questions.map((item, index) => {
+  //     Question.findByIdAndUpdate(
+  //       item,
+  //       {
+  //         $set: {
+  //           group: mongoose.Types.ObjectId('5c02d09e86564756040f4482'),
+  //         },
+  //       },
+  //       { new: true },
+  //     ).then(doc => res.json(doc));
+  //   });
+  //
+  //   // return res.json(groups.questions);
+  // });
 });
 
 /**
