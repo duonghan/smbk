@@ -12,12 +12,15 @@ class EditableCell extends React.Component {
   getInput = () => {
     if (this.props.inputType === 'select') {
       return (
-        <Select defaultValue="Admin">
-          <Option value="Admin">
+        <Select>
+          <Option value="ADMIN">
             <FormattedMessage {...messages.admin} />
           </Option>
-          <Option value="User">
-            <FormattedMessage {...messages.user} />
+          <Option value="DEFAULT">
+            <FormattedMessage {...messages.default} />
+          </Option>
+          <Option value="GUEST">
+            <FormattedMessage {...messages.guest} />
           </Option>
         </Select>
       );

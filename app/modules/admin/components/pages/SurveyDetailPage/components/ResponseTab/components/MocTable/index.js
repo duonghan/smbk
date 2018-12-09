@@ -10,11 +10,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-// import axios from 'axios';
+import axios from 'axios';
 import { Icon, Skeleton, Table, Row, Col, Divider } from 'antd';
-
+import download from 'downloadjs';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-// import config from 'utils/validation/config';
+import config from 'utils/validation/config';
 import messages from './messages';
 import columnOptions from './columnOptions';
 import { fetchResponse } from '../../../../actions';
@@ -48,6 +48,18 @@ class MocTable extends React.Component {
     this.setState({ current: key });
   };
 
+  downloadExcelFile = () => {
+    axios
+      .get(`/api/survey/responses/export?survey=${this.props.surveyId}`, {
+        ...config,
+        responseType: 'blob',
+      })
+      .then(res => {
+        download(res.data, 'report.xlsx');
+        console.log(res.data);
+      });
+  };
+
   render() {
     const { formatMessage } = this.props.intl;
 
@@ -59,7 +71,7 @@ class MocTable extends React.Component {
 
     return (
       <div>
-        <Skeleton loading={this.state.loading}>
+        <Skeleton loading={this.state.loading} active>
           <Table
             bordered
             rowKey={record => record.key}
@@ -68,9 +80,9 @@ class MocTable extends React.Component {
             title={() => (
               <h3 style={{ color: '#FA541C' }}>
                 <strong>{formatMessage(messages.header)}</strong>
-                <a onClick={this.showModal} style={{ float: 'right' }}>
+                <a onClick={this.downloadExcelFile} style={{ float: 'right' }}>
                   <Icon
-                    type="file-excel"
+                    type="download"
                     style={{ fontSize: 20, color: '#FA541C' }}
                   />
                 </a>

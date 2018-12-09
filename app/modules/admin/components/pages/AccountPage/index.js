@@ -12,17 +12,6 @@ import { styles } from './styles';
 import columnOptions from './data/columnOptions';
 const { Search } = Input;
 
-const data = [];
-for (let i = 1; i <= 46; i += 1) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    email: `test.email${i}@gmail.com`,
-    role: i % 2 ? 'Admin' : 'User',
-    date: `2018-11-${i}`,
-  });
-}
-
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
@@ -36,7 +25,6 @@ class AccountTable extends React.Component {
     super(props);
 
     this.state = {
-      selectedRowKeys: [],
       filteredInfo: null,
       sortedInfo: null,
       dataSource: [],
@@ -70,10 +58,6 @@ class AccountTable extends React.Component {
     });
   };
 
-  onSelectChange = selectedRowKeys => {
-    this.setState({ selectedRowKeys });
-  };
-
   handleDelete = key => {
     this.setState(prevState => ({
       dataSource: [...prevState.dataSource].filter(item => item.key !== key),
@@ -91,7 +75,9 @@ class AccountTable extends React.Component {
       if (error) {
         return;
       }
-      const newData = [...this.state.data];
+      debugger;
+      const newData = [...this.state.dataSource];
+      debugger;
       const index = newData.findIndex(item => key === item.key);
       if (index > -1) {
         const item = newData[index];
@@ -99,21 +85,16 @@ class AccountTable extends React.Component {
           ...item,
           ...row,
         });
-        this.setState({ data: newData, editingKey: '' });
+        this.setState({ dataSource: newData, editingKey: '' });
       } else {
         newData.push(row);
-        this.setState({ data: newData, editingKey: '' });
+        this.setState({ dataSource: newData, editingKey: '' });
       }
     });
   }
 
   cancel = () => {
     this.setState({ editingKey: '' });
-  };
-
-  onSelect = value => {
-    this.setState({ searchText: value });
-    console.log('onSelect', value);
   };
 
   emitEmpty = () => {
@@ -125,63 +106,20 @@ class AccountTable extends React.Component {
     axios
       .get('/api/users/list', config)
       .then(res => {
-        this.setState({ dataSource: res.data, loading: false });
+        this.setState({
+          dataSource: res.data.map((account, i) => ({
+            key: i + 1,
+            ...account,
+          })),
+          loading: false,
+        });
       })
       .catch(err => this.setState({ loading: false }));
   };
 
-  // componentDidMount() {
-  //   this.fetch();
-  // }
-
   render() {
     const { formatMessage } = this.props.intl;
-    const { selectedRowKeys, dataSource } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-      hideDefaultSelections: true,
-      selections: [
-        {
-          key: 'all-data',
-          text: 'Select All Data',
-          onSelect: () => {
-            this.setState({
-              selectedRowKeys: [...Array(46).keys()], // 0...45
-            });
-          },
-        },
-        {
-          key: 'odd',
-          text: 'Select Odd Row',
-          onSelect: changableRowKeys => {
-            let newSelectedRowKeys = [];
-            newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-              if (index % 2 !== 0) {
-                return false;
-              }
-              return true;
-            });
-            this.setState({ selectedRowKeys: newSelectedRowKeys });
-          },
-        },
-        {
-          key: 'even',
-          text: 'Select Even Row',
-          onSelect: changableRowKeys => {
-            let newSelectedRowKeys = [];
-            newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-              if (index % 2 !== 0) {
-                return true;
-              }
-              return false;
-            });
-            this.setState({ selectedRowKeys: newSelectedRowKeys });
-          },
-        },
-      ],
-      onSelection: this.onSelection,
-    };
+    const { dataSource } = this.state;
     const sortedInfo = this.state.sortedInfo || {};
     const filteredInfo = this.state.filteredInfo || {};
 
@@ -211,8 +149,6 @@ class AccountTable extends React.Component {
         }),
       };
     });
-
-    const hasSelected = selectedRowKeys.length > 0;
 
     return (
       <div>
@@ -253,14 +189,6 @@ class AccountTable extends React.Component {
             />
           </AutoComplete>
         </div>
-        <div style={{ marginLeft: 10, marginBottom: 10 }}>
-          <span>
-            {hasSelected &&
-              `${formatMessage(messages.selectedTextFirst)} ${
-                selectedRowKeys.length
-              } ${formatMessage(messages.selectedTextLast)}`}
-          </span>
-        </div>
 
         <Table
           components={components}
@@ -270,7 +198,6 @@ class AccountTable extends React.Component {
           loading={this.state.loading}
           columns={columns}
           onChange={this.handleChange}
-          rowSelection={rowSelection}
           size="middle"
           rowClassName="editable-row"
           scroll={{ x: 715 }}

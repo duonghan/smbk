@@ -169,7 +169,7 @@ class GroupTable extends React.Component {
     });
 
     return (
-      <Skeleton loading={this.state.loading}>
+      <Skeleton loading={this.state.loading} active>
         <Table
           bordered
           components={components}

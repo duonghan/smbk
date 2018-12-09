@@ -15,10 +15,14 @@ const Question = require('../../../models/Question');
 const User = require('../../../models/User');
 const MOCProfile = require('../../../models/MOCProfile');
 
+// Load result calculator method
 const resultNEO = require('../../../utils/calculate/response/neo');
 const resultRIASEC = require('../../../utils/calculate/response/riasec');
 const resultPsychologic = require('../../../utils/calculate/response/psychologic');
 const resultMOC = require('../../../utils/calculate/response/moc');
+
+// Load excel config
+const { workbookConfig } = require('../../../config/excel');
 
 router.get(
   '/',
@@ -185,6 +189,7 @@ router.get(
       const dataSource = {
         result: {},
         emptyItem: 0,
+        totalItem: 0,
       };
 
       QuestionGroup.find({
@@ -205,6 +210,12 @@ router.get(
                 });
               });
             }
+          });
+
+          _.mapKeys(dataSource.result, key => {
+            Question.findById(key).then(question => {
+              dataSource.result[key].content = question.content;
+            });
           });
 
           return { dataSource, groups };
@@ -231,12 +242,13 @@ router.get(
                   dataSource.emptyItem += 1;
                 }
               });
+              dataSource.totalItem = responses.length;
               return dataSource;
             })
             .then(dataSource => {
               // Create excel file
               // Create a new instance of a Workbook class
-              const wb = new xl.Workbook();
+              const wb = new xl.Workbook(workbookConfig);
 
               Survey.findById(req.query.survey).then(survey => {
                 groups.map((group, index) => {
@@ -244,7 +256,12 @@ router.get(
 
                   ws.cell(1, 2)
                     .string(survey.title)
-                    .style({ font: { bold: true, size: 18 } });
+                    .style({
+                      font: {
+                        bold: true,
+                        size: 18,
+                      },
+                    });
 
                   ws.cell(4, 2).string(group.name);
                   group.optionAnswers.map((option, index) => {
@@ -260,9 +277,22 @@ router.get(
                       );
                     });
                   });
+
+                  ws.cell(7 + group.optionAnswers + 1, 2).string(
+                    'Tổng số phiếu',
+                  );
+                  ws.cell(7 + group.optionAnswers + 2, 2).string('Phiếu trống');
+                  ws.cell(7 + group.optionAnswers + 3, 2).string('Phiếu lỗi');
+
+                  ws.cell(7 + group.optionAnswers + 1, 3).number(
+                    dataSource.totalItem,
+                  );
+                  ws.cell(7 + group.optionAnswers + 2, 3).number(
+                    dataSource.emptyItem,
+                  );
+                  ws.cell(7 + group.optionAnswers + 3, 3).number(0);
                 });
 
-                // return res.json(dataSource);
                 return wb.write('report.xlsx', res);
               });
             });

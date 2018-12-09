@@ -79,12 +79,12 @@ export default (
     key: 'date',
     sorter: (a, b) => a.date < b.date,
     sortOrder: sortedInfo.columnKey === 'date' && sortedInfo.order,
-    render: text => new Date(text).toLocaleDateString('vi-VN'),
+    render: text => new Date(text).toLocaleString('vi-VN'),
   },
   {
     title: formatMessage(messages.actionTitle),
     dataIndex: 'action',
-    width: 140,
+    width: 100,
     key: 'action',
     align: 'center',
     render: (text, record) => {

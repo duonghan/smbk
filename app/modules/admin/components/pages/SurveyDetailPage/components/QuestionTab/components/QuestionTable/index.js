@@ -26,6 +26,7 @@ class QuestionTable extends React.Component {
     loading: false,
     data: [],
     visible: false,
+    display: 'none',
     editingKey: '',
   };
 
@@ -61,7 +62,7 @@ class QuestionTable extends React.Component {
   };
 
   fetchQuestion = groupId => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, display: null });
 
     axios.get(`/api/survey/questions/group/${groupId}`, config).then(res => {
       this.setState({
@@ -142,7 +143,7 @@ class QuestionTable extends React.Component {
     });
 
     return (
-      <Skeleton loading={this.state.loading}>
+      <Skeleton loading={this.state.loading} active>
         <Table
           bordered
           components={components}
@@ -159,6 +160,7 @@ class QuestionTable extends React.Component {
           )}
           size="middle"
           rowClassName="editable-row"
+          style={{ display: this.state.display }}
         />
 
         <AddQuestionForm

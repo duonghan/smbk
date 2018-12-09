@@ -70,6 +70,7 @@
     "compression": "1.7.3",
     "connected-react-router": "4.5.0",
     "cross-env": "5.2.0",
+    "downloadjs": "^1.4.7",
     "excel4node": "^1.7.0",
     "express": "4.16.4",
     "gravatar": "^1.6.0",
