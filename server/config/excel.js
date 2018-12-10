@@ -4,7 +4,7 @@ const workbookConfig = {
   },
   defaultFont: {
     size: 13,
-    name: 'Time New Roman',
+    name: 'Times New Roman',
     // color: 'FFFFFFFF',
   },
   dateFormat: 'hh:mm:ss dd/mm/yyyy ',

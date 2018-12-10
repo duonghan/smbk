@@ -195,6 +195,9 @@ router.get(
       QuestionGroup.find({
         survey: req.query.survey,
         childs: [],
+        inputType: {
+          $ne: 'text-area',
+        },
       })
         .then(groups => {
           groups.map(group => {
@@ -212,11 +215,11 @@ router.get(
             }
           });
 
-          _.mapKeys(dataSource.result, key => {
-            Question.findById(key).then(question => {
-              dataSource.result[key].content = question.content;
-            });
-          });
+          // _.mapKeys(dataSource.result, key => {
+          //   Question.findById(key).then(question => {
+          //     dataSource.result[key].content = question.content;
+          //   });
+          // });
 
           return { dataSource, groups };
         })
@@ -228,7 +231,7 @@ router.get(
                   response.answers
                     .filter(answer => !answer.text)
                     .map(answer => {
-                      if (!answer.questionId.toString()) {
+                      if (!answer.value) {
                         dataSource.result[
                           answer.questionId.toString()
                         ].ignored += 1;
@@ -263,7 +266,7 @@ router.get(
                       },
                     });
 
-                  ws.cell(4, 2).string(group.name);
+                  ws.cell(4, 2).string(`Câu hỏi: ${group.name}`);
                   group.optionAnswers.map((option, index) => {
                     ws.cell(6, 3 + index).string(option.text);
                   });
@@ -276,21 +279,33 @@ router.get(
                         dataSource.result[question].answers[option.score],
                       );
                     });
+
+                    if (dataSource.result[question].ignored > 0) {
+                      ws.cell(7 + i, 3 + group.optionAnswers.length).string(
+                        `Có ${
+                          dataSource.result[question].ignored
+                        } phiếu không trả lời ý này`,
+                      );
+                    }
                   });
 
-                  ws.cell(7 + group.optionAnswers + 1, 2).string(
+                  ws.cell(7 + group.questions.length + 1, 2).string(
                     'Tổng số phiếu',
                   );
-                  ws.cell(7 + group.optionAnswers + 2, 2).string('Phiếu trống');
-                  ws.cell(7 + group.optionAnswers + 3, 2).string('Phiếu lỗi');
+                  ws.cell(7 + group.questions.length + 2, 2).string(
+                    'Phiếu trống',
+                  );
+                  ws.cell(7 + group.questions.length + 3, 2).string(
+                    'Phiếu lỗi',
+                  );
 
-                  ws.cell(7 + group.optionAnswers + 1, 3).number(
+                  ws.cell(7 + group.questions.length + 1, 3).number(
                     dataSource.totalItem,
                   );
-                  ws.cell(7 + group.optionAnswers + 2, 3).number(
+                  ws.cell(7 + group.questions.length + 2, 3).number(
                     dataSource.emptyItem,
                   );
-                  ws.cell(7 + group.optionAnswers + 3, 3).number(0);
+                  ws.cell(7 + group.questions.length + 3, 3).number(0);
                 });
 
                 return wb.write('report.xlsx', res);
