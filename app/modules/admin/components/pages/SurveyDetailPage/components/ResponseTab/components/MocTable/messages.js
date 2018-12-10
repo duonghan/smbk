@@ -115,4 +115,14 @@ export default defineMessages({
     id: `${scope}.detailDividerLabel`,
     defaultMessage: 'Thông tin người tham gia',
   },
+
+  deleteSuccessTitle: {
+    id: `${scope}.deleteSuccessTitle`,
+    defaultMessage: 'Thành công',
+  },
+
+  deleteSuccessContent: {
+    id: `${scope}.deleteSuccessContent`,
+    defaultMessage: 'Xóa hồ sơ thành công',
+  },
 });

@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Icon, Skeleton, Table, Row, Col, Divider } from 'antd';
+import { Icon, Skeleton, Table, Row, Col, Divider, Modal } from 'antd';
 import download from 'downloadjs';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
@@ -34,10 +34,10 @@ class MocTable extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.response) {
       this.setState({
-        data: nextProps.response.map((item, index) => {
-          item.key = index; // add order number for response data - (#)
-          return item;
-        }),
+        data: nextProps.response.map((item, index) => ({
+          ...item,
+          key: index,
+        })),
         loading: false,
       });
     }
@@ -45,6 +45,28 @@ class MocTable extends React.Component {
 
   viewProfile = key => {
     this.setState({ current: key });
+  };
+
+  handleDelete = key => {
+    const id = this.state.data[key].profile._id;
+    axios
+      .delete('/api/mocprofiles', {
+        ...config,
+        data: {
+          id,
+        },
+      })
+      .then(res => {
+        if (res.data.success) {
+          this.props.fetchResponse(this.props.surveyId, 'moc');
+          Modal.success({
+            title: this.props.intl.formatMessage(messages.deleteSuccessTitle),
+            content: this.props.intl.formatMessage(
+              messages.deleteSuccessContent,
+            ),
+          });
+        }
+      });
   };
 
   downloadExcelFile = () => {

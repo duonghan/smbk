@@ -2,9 +2,11 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const mongoose = require('mongoose');
 
 // Load survey model
 const MOCProfile = require('../../models/MOCProfile');
+const Response = require('../../models/Response');
 
 router.get('/test', (req, res) =>
   res.json({
@@ -47,6 +49,18 @@ router.get(
         .then(surveys => res.json(surveys))
         .catch(err => res.status(404).json(err));
     }
+  },
+);
+
+router.delete(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    MOCProfile.findByIdAndRemove(req.body.id).then(() => {
+      Response.findOneAndRemove({
+        profile: mongoose.Types.ObjectId(req.body.id),
+      }).then(() => res.json({ success: true }));
+    });
   },
 );
 

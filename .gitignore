@@ -11,4 +11,4 @@ npm-debug.log
 package-lock.json
 
 #key
-/server/config/keys_dev.js
+keys_dev.js
