@@ -20,12 +20,12 @@ router.get('/test', (req, res) =>
 );
 
 /**
- * @function: POST /api/question/add
- * @desc: Add question
+ * @function: CRUD /api/survey/questions/
+ * @desc: Question CRUD
  * @access: public
  */
 router.post(
-  '/add',
+  '/',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     try {
@@ -60,63 +60,53 @@ router.post(
   },
 );
 
-router.post('/update', (req, res) => {
-  const { id } = req.body;
+router.put(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    if (req.user.role !== 'ADMIN')
+      return res
+        .status(403)
+        .json({ message: "You don't have permission to access this place" });
 
-  // Question.findById(id)
-  //   .then(question => {
-  //     const newQuestion = {};
-  //     if (req.body.orderNumber) newQuestion.orderNumber = req.body.orderNumber;
-  //     if (req.body.content) newQuestion.content = req.body.content;
-  //
-  //     Question.findByIdAndUpdate(id, { $set: newQuestion }, { new: true }).then(
-  //       question => res.json(question),
-  //     );
-  //   })
-  //   .catch(err => res.status(404).json({ errors: 'Question not found' }));
+    if (!req.body.id)
+      return res.status(400).json({ message: 'QuestionId not found' });
 
-  // Question.find({ content: /Em/i }).then(questions => {
-  //   console.log(questions.length);
-  //   return res.json(questions);
-  // });
+    Question.findByIdAndUpdate(
+      req.body.id,
+      {
+        $set: {
+          content: req.body.content,
+        },
+      },
+      { new: true },
+    )
+      .then(question => res.json(question))
+      .catch(err => res.status(404).json({ message: 'Question not found' }));
+  },
+);
 
-  // QuestionGroup.find({ survey: '5c0123521ade821495cbae8c' }).then(groups => {
-  //   groups.filter(item => item.questions.length > 0).map(itemParent => {
-  //     itemParent.questions.map((item, index) => {
-  //       Question.findByIdAndUpdate(
-  //         item,
-  //         {
-  //           $set: {
-  //             group: itemParent._id,
-  //           },
-  //         },
-  //         { new: true },
-  //       ).then(doc => res.json(doc));
-  //     });
-  //   });
-  // });
-
-  // QuestionGroup.find('5c02d09e86564756040f4482').then(groups => {
-  //   // return res.json(groups.map(item => item.questions));
-  //   groups.questions.map((item, index) => {
-  //     Question.findByIdAndUpdate(
-  //       item,
-  //       {
-  //         $set: {
-  //           group: mongoose.Types.ObjectId('5c02d09e86564756040f4482'),
-  //         },
-  //       },
-  //       { new: true },
-  //     ).then(doc => res.json(doc));
-  //   });
-  //
-  //   // return res.json(groups.questions);
-  // });
-});
+router.delete(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Question.findByIdAndRemove(req.body.id).then(() => {
+      QuestionGroup.findByIdAndUpdate(
+        req.body.group,
+        {
+          $pull: { questions: mongoose.Types.ObjectId(req.body.id) },
+        },
+        { new: true },
+      ).then(() => {
+        res.json({ success: true });
+      });
+    });
+  },
+);
 
 /**
- * @function: GET /api/Question/list
- * @desc: Return list survey in db
+ * @function: GET /api/survey/questions/group/:groupId
+ * @desc: Return all questions in a group
  * @access: private
  */
 router.get(
@@ -131,6 +121,11 @@ router.get(
   },
 );
 
+/**
+ * @function: GET /api/survey/questions/count
+ * @desc: Return number of questions in a survey
+ * @access: private
+ */
 router.get(
   '/count',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),

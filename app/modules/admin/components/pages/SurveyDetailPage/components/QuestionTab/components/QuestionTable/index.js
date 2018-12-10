@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Table, Skeleton, Icon } from 'antd';
+import { Table, Skeleton, Icon, Modal } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
 import messages from './messages';
@@ -44,19 +44,6 @@ class QuestionTable extends React.Component {
     this.setState({ visible: false });
   };
 
-  handleCreate = () => {
-    const { form } = this.formRef.props;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-
-      console.log('Received values of form: ', values);
-      form.resetFields();
-      this.setState({ visible: false });
-    });
-  };
-
   saveFormRef = formRef => {
     this.formRef = formRef;
   };
@@ -86,9 +73,61 @@ class QuestionTable extends React.Component {
     this.setState({ editingKey: '' });
   };
 
-  save = (form, orderNumber) => {
+  // CRUD question
+  handleCreate = () => {
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      axios
+        .post(
+          '/api/survey/questions',
+          {
+            ...values,
+            groupId: this.props.groupId,
+          },
+          config,
+        )
+        .then(res => {
+          this.fetchQuestion(this.props.groupId);
+        });
+
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  };
+
+  handleDelete = id => {
+    axios
+      .delete('/api/survey/questions/', {
+        ...config,
+        data: {
+          id,
+          group: this.props.groupId,
+        },
+      })
+      .then(res => {
+        if (res.data.success) {
+          this.fetchQuestion(this.props.groupId);
+          Modal.success({
+            title: this.props.intl.formatMessage(messages.deleteSuccessTitle),
+            content: this.props.intl.formatMessage(
+              messages.deleteSuccessContent,
+            ),
+          });
+        }
+      });
+  };
+
+  handleUpdate = (form, orderNumber) => {
     form.validateFields((error, row) => {
       if (error) {
+        Modal.error({
+          title: this.props.intl.formatMessage(messages.updateFailedTitle),
+          content: this.props.intl.formatMessage(messages.updateFailedContent),
+        });
         return;
       }
 
@@ -96,20 +135,14 @@ class QuestionTable extends React.Component {
       const newData = [...this.state.data];
       const index = newData.findIndex(item => orderNumber === item.orderNumber);
 
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        this.setState({ data: newData, editingKey: '' });
-      } else {
-        newData.push(row);
-        this.setState({ data: newData, editingKey: '' });
-      }
-
       // update survey name in db
-      axios.post('/api/survey/update', newData[index], config).then(res => {});
+      axios.put(`/api/survey/questions`, newData[index], config).then(res => {
+        this.fetchQuestion(this.props.groupId);
+        Modal.success({
+          title: this.props.intl.formatMessage(messages.updateSuccessTitle),
+          content: this.props.intl.formatMessage(messages.updateSuccessContent),
+        });
+      });
     });
   };
 
@@ -121,7 +154,7 @@ class QuestionTable extends React.Component {
     const columns = columnOptions(
       formatMessage,
       this.isEditing,
-      this.save,
+      this.handleUpdate,
       this.cancel,
       this.edit,
       this.handleDelete,

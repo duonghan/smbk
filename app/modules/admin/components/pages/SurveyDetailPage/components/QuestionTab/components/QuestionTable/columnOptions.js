@@ -68,7 +68,7 @@ export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
           >
             <Popconfirm
               title={formatMessage(messages.deletePromtMsg)}
-              onConfirm={() => handleDelete(record.orderNumber)}
+              onConfirm={() => handleDelete(record.id)}
               cancelText={formatMessage(messages.cancel)}
               icon={<Icon type="question-circle-o" style={styles.delete} />}
             >

@@ -25,7 +25,7 @@ function* doSignIn(userData) {
     const res = yield call(axios.post, '/api/users/login', userData.payload);
     const { token } = res.data;
 
-    // save to cookies
+    // handleUpdate to cookies
     // if user check remember session, set expire cookie in 1w
     if (userData.payload.isRemember) {
       Cookies.set('token', token, { expires: 7 });

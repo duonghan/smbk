@@ -132,7 +132,7 @@ router.post(
     //   } else {
     //     // Save profile
     //     new Response(responseFields)
-    //       .save()
+    //       .handleUpdate()
     //       .then(newReponse => res.json(newReponse));
     //   }
     // });
@@ -166,7 +166,7 @@ router.post(
             user: mongoose.Types.ObjectId(req.body.userId),
           };
 
-          // using in moc survey to save user profile
+          // using in moc survey to handleUpdate user profile
           if (req.body.profile) {
             initialResponse.profile = mongoose.Types.ObjectId(req.body.profile);
           }

@@ -112,4 +112,35 @@ export default defineMessages({
     defaultMessage: 'Trở về',
   },
 
+  // Update question succeeded
+
+  updateSuccessTitle: {
+    id: `${scope}.updateSuccessTitle`,
+    defaultMessage: 'Thành công',
+  },
+
+  updateSuccessContent: {
+    id: `${scope}.updateSuccessContent`,
+    defaultMessage: 'Xóa câu hỏi thành công',
+  },
+
+  updateFailedTitle: {
+    id: `${scope}.updateFailedTitle`,
+    defaultMessage: 'Lỗi',
+  },
+
+  updateFailedContent: {
+    id: `${scope}.updateFailedContent`,
+    defaultMessage: 'Đã xảy ra lỗi. Vui lòng thử lại',
+  },
+
+  deleteSuccessTitle: {
+    id: `${scope}.deleteSuccessTitle`,
+    defaultMessage: 'Thành công',
+  },
+
+  deleteSuccessContent: {
+    id: `${scope}.deleteSuccessContent`,
+    defaultMessage: 'Xóa câu hỏi thành công',
+  },
 });

@@ -85,7 +85,7 @@ router.post('/register', (req, res) => {
         if (err) throw err;
         newUser.password = hash;
 
-        // then save new user into db
+        // then handleUpdate new user into db
         newUser
           .save()
           .then(user => {

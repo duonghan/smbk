@@ -30,8 +30,8 @@ class QuestionGroup extends React.Component {
     this.fetchQuestions(this.props.group._id);
   }
 
-  fetchQuestions = id => {
-    axios.get(`/api/survey/questions/group/${id}`, config).then(res => {
+  fetchQuestions = groupId => {
+    axios.get(`/api/survey/questions/group/${groupId}`, config).then(res => {
       this.setState({
         questions: res.data,
         loading: false,
