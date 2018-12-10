@@ -1,7 +1,6 @@
 # Don't check auto-generated stuff into git
 coverage
 node_modules
-build
 stats.json
 
 # Cruft
@@ -10,3 +9,6 @@ npm-debug.log
 .idea
 .vscode
 package-lock.json
+
+#key
+/server/config/keys_dev.js
