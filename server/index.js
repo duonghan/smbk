@@ -27,6 +27,9 @@ const questionGroup = require('./routers/api/survey/questionGroup');
 
 const auth = require('./routers/auth');
 
+// chart
+const mocChart = require('./routers/api/chart/moc');
+
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -58,6 +61,8 @@ app.use('/api/survey/questions', questions);
 app.use('/api/survey/result-indicator', resultIndicator);
 app.use('/api/survey/responses', responses);
 app.use('/auth', auth);
+
+app.use('/api/chart/moc', mocChart);
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {

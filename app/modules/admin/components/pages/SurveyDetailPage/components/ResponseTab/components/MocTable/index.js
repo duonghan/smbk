@@ -18,7 +18,6 @@ import config from 'utils/validation/config';
 import messages from './messages';
 import columnOptions from './columnOptions';
 import { fetchResponse } from '../../../../actions';
-// import ExcelData from './ExcelData';
 
 /* eslint-disable react/prefer-stateless-function */
 class MocTable extends React.Component {

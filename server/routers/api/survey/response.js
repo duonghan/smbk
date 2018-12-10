@@ -22,6 +22,7 @@ const resultPsychologic = require('../../../utils/calculate/response/psychologic
 const {
   resultMOC,
   generateData,
+  exportExcel,
 } = require('../../../utils/calculate/response/moc');
 
 // Load excel config
@@ -186,7 +187,7 @@ router.post(
 
 router.get(
   '/export',
-  // passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     if (req.query.survey) {
       const dataSource = {
@@ -202,9 +203,9 @@ router.get(
           $ne: 'text-area',
         },
       }).then(groups => {
-        generateData(dataSource, groups, req.query.survey).then(wb =>
-          wb.write('report.xlsx', res),
-        );
+        generateData(dataSource, groups, req.query.survey)
+          .then(dataSource => exportExcel(dataSource, groups, req.query.survey))
+          .then(wb => wb.write('report.xlsx', res));
       });
     }
   },

@@ -20,6 +20,20 @@ const Survey = require('../../../models/Survey');
 const QuestionGroup = require('../../../models/QuestionGroup');
 const Question = require('../../../models/Question');
 
+const chartColor = {
+  '0': '#f33334',
+  '1': '#f29b1d',
+  '2': '#4cba6b',
+  '3': '#9ea8ad',
+  '4': '#74abe2',
+  '5': '#3fb68e',
+  '6': '#367dc4',
+  '7': '#0e8c62',
+  '8': '#ED4A7B',
+  '9': '#b90c0d',
+  '10': '#FFCE56',
+};
+
 // Load excel config
 const { workbookConfig } = require('../../../config/excel');
 
@@ -52,90 +66,107 @@ const generateData = (dataSource, groups, surveyId) =>
         return { dataSource, groups };
       })
       .then(({ dataSource, groups }) => {
-        Response.find({ survey: surveyId })
-          .then(responses => {
-            responses.map(response => {
-              if (response.answers.length > 0) {
-                response.answers.filter(answer => !answer.text).map(answer => {
-                  if (!answer.value) {
-                    dataSource.result[
-                      answer.questionId.toString()
-                    ].ignored += 1;
-                  } else {
-                    dataSource.result[answer.questionId.toString()].answers[
-                      answer.value
-                    ] += 1;
-                  }
-                });
-              } else {
-                dataSource.emptyItem += 1;
-              }
-            });
-            dataSource.totalItem = responses.length;
-            return dataSource;
-          })
-          .then(dataSource => {
-            // Create excel file
-            // Create a new instance of a Workbook class
-            const wb = new xl.Workbook(workbookConfig);
-
-            Survey.findById(surveyId).then(survey => {
-              groups.map((group, index) => {
-                const ws = wb.addWorksheet(`Câu ${index + 1}`);
-
-                ws.cell(1, 2)
-                  .string(survey.title)
-                  .style({
-                    font: {
-                      bold: true,
-                      size: 18,
-                    },
-                  });
-
-                ws.cell(4, 2).string(`Câu hỏi: ${group.name}`);
-                group.optionAnswers.map((option, index) => {
-                  ws.cell(6, 3 + index).string(option.text);
-                });
-
-                group.questions.map((question, i) => {
-                  ws.cell(7 + i, 2).string(dataSource.result[question].content);
-
-                  group.optionAnswers.map((option, ii) => {
-                    ws.cell(7 + i, 3 + ii).number(
-                      dataSource.result[question].answers[option.score],
-                    );
-                  });
-
-                  if (dataSource.result[question].ignored > 0) {
-                    ws.cell(7 + i, 3 + group.optionAnswers.length).string(
-                      `Có ${
-                        dataSource.result[question].ignored
-                      } phiếu không trả lời ý này`,
-                    );
-                  }
-                });
-
-                ws.cell(7 + group.questions.length + 1, 2).string(
-                  'Tổng số phiếu',
-                );
-                ws.cell(7 + group.questions.length + 2, 2).string(
-                  'Phiếu trống',
-                );
-                ws.cell(7 + group.questions.length + 3, 2).string('Phiếu lỗi');
-
-                ws.cell(7 + group.questions.length + 1, 3).number(
-                  dataSource.totalItem,
-                );
-                ws.cell(7 + group.questions.length + 2, 3).number(
-                  dataSource.emptyItem,
-                );
-                ws.cell(7 + group.questions.length + 3, 3).number(0);
+        Response.find({ survey: surveyId }).then(responses => {
+          responses.map(response => {
+            if (response.answers.length > 0) {
+              response.answers.filter(answer => !answer.text).map(answer => {
+                if (!answer.value) {
+                  dataSource.result[answer.questionId.toString()].ignored += 1;
+                } else {
+                  dataSource.result[answer.questionId.toString()].answers[
+                    answer.value
+                  ] += 1;
+                }
               });
-
-              resolve(wb);
-            });
+            } else {
+              dataSource.emptyItem += 1;
+            }
           });
+          dataSource.totalItem = responses.length;
+          resolve(dataSource);
+        });
       });
   });
 
-module.exports = { resultMOC, generateData };
+const exportExcel = (dataSource, groups, surveyId) =>
+  new Promise((resolve, reject) => {
+    // Create excel file
+    // Create a new instance of a Workbook class
+    const wb = new xl.Workbook(workbookConfig);
+
+    Survey.findById(surveyId).then(survey => {
+      groups.map((group, index) => {
+        const ws = wb.addWorksheet(`Câu ${index + 1}`);
+
+        ws.cell(1, 2)
+          .string(survey.title)
+          .style({
+            font: {
+              bold: true,
+              size: 18,
+            },
+          });
+
+        ws.cell(4, 2).string(`Câu hỏi: ${group.name}`);
+        group.optionAnswers.map((option, index) => {
+          ws.cell(6, 3 + index).string(option.text);
+        });
+
+        group.questions.map((question, i) => {
+          ws.cell(7 + i, 2).string(dataSource.result[question].content);
+
+          group.optionAnswers.map((option, ii) => {
+            ws.cell(7 + i, 3 + ii).number(
+              dataSource.result[question].answers[option.score],
+            );
+          });
+
+          if (dataSource.result[question].ignored > 0) {
+            ws.cell(7 + i, 3 + group.optionAnswers.length).string(
+              `Có ${
+                dataSource.result[question].ignored
+              } phiếu không trả lời ý này`,
+            );
+          }
+        });
+
+        ws.cell(7 + group.questions.length + 1, 2).string('Tổng số phiếu');
+        ws.cell(7 + group.questions.length + 2, 2).string('Phiếu trống');
+        ws.cell(7 + group.questions.length + 3, 2).string('Phiếu lỗi');
+
+        ws.cell(7 + group.questions.length + 1, 3).number(dataSource.totalItem);
+        ws.cell(7 + group.questions.length + 2, 3).number(dataSource.emptyItem);
+        ws.cell(7 + group.questions.length + 3, 3).number(0);
+      });
+
+      resolve(wb);
+    });
+  });
+
+const exportChart = (dataSource, groups) => {
+  const chartData = groups.map(group => {
+    return {
+      name: group.name,
+      labels: group.questions.map(question =>
+        dataSource.result[question].content
+          .split(' ')
+          .map((word, i) => ((i + 1) % 4 === 0 ? `${word}\n` : word))
+          .join(' '),
+      ),
+      datasets: group.optionAnswers.map(answer => ({
+        label: answer.text,
+        backgroundColor: chartColor[answer.score],
+        borderColor: chartColor[answer.score],
+        borderWidth: 1,
+        hoverBackgroundColor: chartColor[10 - answer.score],
+        hoverBorderColor: chartColor[10 - answer.score],
+        data: group.questions.map(
+          question => dataSource.result[question].answers[answer.score],
+        ),
+      })),
+    };
+  });
+  return chartData;
+};
+
+module.exports = { resultMOC, generateData, exportExcel, exportChart };
