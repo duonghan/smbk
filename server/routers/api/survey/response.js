@@ -19,7 +19,10 @@ const MOCProfile = require('../../../models/MOCProfile');
 const resultNEO = require('../../../utils/calculate/response/neo');
 const resultRIASEC = require('../../../utils/calculate/response/riasec');
 const resultPsychologic = require('../../../utils/calculate/response/psychologic');
-const resultMOC = require('../../../utils/calculate/response/moc');
+const {
+  resultMOC,
+  generateData,
+} = require('../../../utils/calculate/response/moc');
 
 // Load excel config
 const { workbookConfig } = require('../../../config/excel');
@@ -198,120 +201,11 @@ router.get(
         inputType: {
           $ne: 'text-area',
         },
-      })
-        .then(groups => {
-          groups.map(group => {
-            if (group.optionAnswers.length > 0) {
-              group.questions.map(questionId => {
-                dataSource.result[questionId] = {
-                  answers: {},
-                  ignored: 0,
-                };
-
-                group.optionAnswers.map(option => {
-                  dataSource.result[questionId].answers[option.score] = 0;
-                });
-              });
-            }
-          });
-
-          // _.mapKeys(dataSource.result, key => {
-          //   Question.findById(key).then(question => {
-          //     dataSource.result[key].content = question.content;
-          //   });
-          // });
-
-          return { dataSource, groups };
-        })
-        .then(({ dataSource, groups }) => {
-          Response.find({ survey: req.query.survey })
-            .then(responses => {
-              responses.map(response => {
-                if (response.answers.length > 0) {
-                  response.answers
-                    .filter(answer => !answer.text)
-                    .map(answer => {
-                      if (!answer.value) {
-                        dataSource.result[
-                          answer.questionId.toString()
-                        ].ignored += 1;
-                      } else {
-                        dataSource.result[answer.questionId.toString()].answers[
-                          answer.value
-                        ] += 1;
-                      }
-                    });
-                } else {
-                  dataSource.emptyItem += 1;
-                }
-              });
-              dataSource.totalItem = responses.length;
-              return dataSource;
-            })
-            .then(dataSource => {
-              // Create excel file
-              // Create a new instance of a Workbook class
-              const wb = new xl.Workbook(workbookConfig);
-
-              Survey.findById(req.query.survey).then(survey => {
-                groups.map((group, index) => {
-                  const ws = wb.addWorksheet(`Câu ${index + 1}`);
-
-                  ws.cell(1, 2)
-                    .string(survey.title)
-                    .style({
-                      font: {
-                        bold: true,
-                        size: 18,
-                      },
-                    });
-
-                  ws.cell(4, 2).string(`Câu hỏi: ${group.name}`);
-                  group.optionAnswers.map((option, index) => {
-                    ws.cell(6, 3 + index).string(option.text);
-                  });
-
-                  group.questions.map((question, i) => {
-                    ws.cell(7 + i, 2).string(question.toString());
-
-                    group.optionAnswers.map((option, ii) => {
-                      ws.cell(7 + i, 3 + ii).number(
-                        dataSource.result[question].answers[option.score],
-                      );
-                    });
-
-                    if (dataSource.result[question].ignored > 0) {
-                      ws.cell(7 + i, 3 + group.optionAnswers.length).string(
-                        `Có ${
-                          dataSource.result[question].ignored
-                        } phiếu không trả lời ý này`,
-                      );
-                    }
-                  });
-
-                  ws.cell(7 + group.questions.length + 1, 2).string(
-                    'Tổng số phiếu',
-                  );
-                  ws.cell(7 + group.questions.length + 2, 2).string(
-                    'Phiếu trống',
-                  );
-                  ws.cell(7 + group.questions.length + 3, 2).string(
-                    'Phiếu lỗi',
-                  );
-
-                  ws.cell(7 + group.questions.length + 1, 3).number(
-                    dataSource.totalItem,
-                  );
-                  ws.cell(7 + group.questions.length + 2, 3).number(
-                    dataSource.emptyItem,
-                  );
-                  ws.cell(7 + group.questions.length + 3, 3).number(0);
-                });
-
-                return wb.write('report.xlsx', res);
-              });
-            });
-        });
+      }).then(groups => {
+        generateData(dataSource, groups, req.query.survey).then(wb =>
+          wb.write('report.xlsx', res),
+        );
+      });
     }
   },
 );

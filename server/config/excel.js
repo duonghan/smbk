@@ -9,7 +9,7 @@ const workbookConfig = {
   },
   dateFormat: 'hh:mm:ss dd/mm/yyyy ',
   workbookView: {
-    activeTab: 1, // Specifies an unsignedInt that contains the index to the active sheet in this book view.
+    activeTab: 0, // Specifies an unsignedInt that contains the index to the active sheet in this book view.
     autoFilterDateGrouping: true, // Specifies a boolean value that indicates whether to group dates when presenting the user with filtering options in the user interface.
     firstSheet: 1, // Specifies the index to the first sheet in this book view.
     minimized: false, // Specifies a boolean value that indicates whether the workbook window is minimized.
