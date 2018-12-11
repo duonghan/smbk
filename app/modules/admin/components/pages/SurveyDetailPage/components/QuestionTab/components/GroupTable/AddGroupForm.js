@@ -1,12 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, Input, Select, Icon, Button, InputNumber } from 'antd';
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  Icon,
+  Button,
+  InputNumber,
+  Radio,
+} from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 
 const FormItem = Form.Item;
 const InputGroup = Input.Group;
 const { Option } = Select;
+const RadioGroup = Radio.Group;
 let id = 0;
 
 // eslint-disable-next-line
@@ -34,7 +44,7 @@ class AddGroupForm extends React.Component {
     const { form } = this.props;
     // can use data-binding to get
     const keys = form.getFieldValue('keys');
-    const nextKeys = keys.concat(++id);
+    const nextKeys = keys.concat((id += 1));
     // can use data-binding to set
     // important! notify form to detect changes
     form.setFieldsValue({
@@ -50,10 +60,6 @@ class AddGroupForm extends React.Component {
     getFieldDecorator('keys', { initialValue: [] });
 
     const keys = getFieldValue('keys');
-
-    const suffixScore = getFieldDecorator('score', {
-      initialValue: '0',
-    })(<InputNumber />);
 
     const formItems = keys.map((k, index) => (
       <FormItem
@@ -72,7 +78,7 @@ class AddGroupForm extends React.Component {
           ],
         })(
           <Input
-            placeholder="passenger name"
+            placeholder="answer name"
             style={{ width: '60%', marginRight: 8 }}
           />,
         )}
@@ -116,6 +122,7 @@ class AddGroupForm extends React.Component {
                   message: formatMessage(messages.inputTypeRequiredMsg),
                 },
               ],
+              initialValue: 'radio',
             })(
               <Select onChange={this.handleChange}>
                 <Option value="radio">Radio</Option>

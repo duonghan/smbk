@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Table, Skeleton, Icon } from 'antd';
+import { Table, Skeleton, Icon, Modal } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
 import messages from './messages';
@@ -32,18 +32,18 @@ class GroupTable extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchSurveys();
+    this.fetchQuestionGroup();
   }
 
-  showModal = () => {
+  showAddGroupModal = () => {
     this.setState({ visible: true });
   };
 
   handleCancel = () => {
-    this.setState({ visible: false });
+    this.setState({ visible: false, visibleParentAddGroup: false });
   };
 
-  handleCreate = () => {
+  handleCreateGroup = () => {
     const { form } = this.formRef.props;
     form.validateFields((err, values) => {
       if (err) {
@@ -60,7 +60,7 @@ class GroupTable extends React.Component {
     this.formRef = formRef;
   };
 
-  fetchSurveys = () => {
+  fetchQuestionGroup = () => {
     this.setState({ loading: true });
 
     axios
@@ -76,6 +76,7 @@ class GroupTable extends React.Component {
               id: child._id,
               inputType: child.inputType,
               name: child.name,
+              parent: child.parent,
             })),
           })),
           loading: false,
@@ -99,33 +100,19 @@ class GroupTable extends React.Component {
         return;
       }
 
-      // update in UI
-      const newData = [...this.state.data];
+      axios
+        .put('/api/survey/question-groups', { ...row, id }, config)
+        .then(res => {
+          this.setState({ editingKey: '' });
+          this.fetchQuestionGroup();
 
-      const index = newData.findIndex(item => {
-        if (item.numofChild > 0) {
-          if (id === item.id) return true;
-          item.children.findIndex(child => id === child.id);
-        }
-        return id === item.id;
-      });
-
-      console.log(index);
-
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
+          Modal.success({
+            title: this.props.intl.formatMessage(messages.successTitle),
+            content: this.props.intl.formatMessage(
+              messages.updateSuccessContent,
+            ),
+          });
         });
-        this.setState({ data: newData, editingKey: '' });
-      } else {
-        newData.push(row);
-        this.setState({ data: newData, editingKey: '' });
-      }
-
-      // update survey name in db
-      axios.post('/api/survey/update', newData[index], config).then(res => {});
     });
   };
 
@@ -151,6 +138,7 @@ class GroupTable extends React.Component {
       this.edit,
       this.handleDelete,
       this.viewQuestion,
+      this.showAddGroupModal,
     ).map(col => {
       if (!col.editable) {
         return col;
@@ -179,7 +167,7 @@ class GroupTable extends React.Component {
           title={() => (
             <h3 style={{ color: '#FA541C' }}>
               <strong>{formatMessage(messages.header)}</strong>
-              <a onClick={this.showModal} style={{ float: 'right' }}>
+              <a onClick={this.showAddGroupModal} style={{ float: 'right' }}>
                 <Icon type="plus" style={{ fontSize: 20, color: '#FA541C' }} />
               </a>
             </h3>
@@ -192,7 +180,7 @@ class GroupTable extends React.Component {
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
+          onCreate={this.handleCreateGroup}
         />
       </Skeleton>
     );

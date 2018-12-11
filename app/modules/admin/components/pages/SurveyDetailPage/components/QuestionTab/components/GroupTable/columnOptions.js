@@ -26,6 +26,7 @@ export default (
   edit,
   handleDelete,
   viewQuestion,
+  handleCreateChild,
 ) => [
   {
     title: formatMessage(messages.nameLabel),
@@ -68,7 +69,7 @@ export default (
               </EditableContext.Consumer>
               <Popconfirm
                 title={formatMessage(messages.cancelPromtMsg)}
-                onConfirm={() => cancel(record.id)}
+                onConfirm={() => cancel()}
                 cancelText={formatMessage(messages.cancel)}
               >
                 <a>
@@ -103,7 +104,16 @@ export default (
             </Popconfirm>
           </Tooltip>
           <Divider type="vertical" />
-          {!record.numofChild && (
+          {!record.parent ? (
+            <Tooltip
+              placement="right"
+              title={formatMessage(messages.addChildToolTip)}
+            >
+              <a onClick={() => handleCreateChild(record)}>
+                <Icon type="plus" style={styles.icon} />
+              </a>
+            </Tooltip>
+          ) : (
             <Tooltip
               placement="right"
               title={formatMessage(messages.detailToolTip)}

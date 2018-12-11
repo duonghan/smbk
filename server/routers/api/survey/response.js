@@ -90,10 +90,13 @@ router.post(
   '/submit',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
+    console.log(req.body);
     Response.findById(req.body.id).then(response => {
       Survey.findById(response.survey).then(survey => {
+        console.log(survey);
         switch (survey.name) {
-          case 'psychological_test':
+          case 'psychologic_test':
+            console.log(req.body.answers);
             return res.json({
               result: resultPsychologic(req.body.answers),
             });

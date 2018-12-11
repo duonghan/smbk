@@ -37,7 +37,7 @@ class QuestionTable extends React.Component {
   }
 
   showModal = () => {
-    this.setState({ visible: this.props.groupId });
+    this.setState({ visible: true });
   };
 
   handleCancel = () => {
@@ -121,7 +121,7 @@ class QuestionTable extends React.Component {
       });
   };
 
-  handleUpdate = (form, orderNumber) => {
+  handleUpdate = (form, id) => {
     form.validateFields((error, row) => {
       if (error) {
         Modal.error({
@@ -131,12 +131,10 @@ class QuestionTable extends React.Component {
         return;
       }
 
-      // update in UI
-      const newData = [...this.state.data];
-      const index = newData.findIndex(item => orderNumber === item.orderNumber);
+      // update question in db
+      axios.put(`/api/survey/questions`, { ...row, id }, config).then(res => {
+        this.setState({ editingKey: '' });
 
-      // update survey name in db
-      axios.put(`/api/survey/questions`, newData[index], config).then(res => {
         this.fetchQuestion(this.props.groupId);
         Modal.success({
           title: this.props.intl.formatMessage(messages.updateSuccessTitle),

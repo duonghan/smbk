@@ -6,6 +6,7 @@ const passport = require('passport');
 
 // Load question group model
 const QuestionGroup = require('../../../models/QuestionGroup');
+const Question = require('../../../models/Question');
 const Survey = require('../../../models/Survey');
 
 /**
@@ -87,6 +88,86 @@ router.post(
   },
 );
 
+router.post(
+  '/',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.query.type === 'parent') {
+      try {
+        const newParentGroup = new QuestionGroup({
+          name: req.body.name.trim(),
+          survey: mongoose.Types.ObjectId(req.body.surveyId),
+          childs: [],
+          questions: [],
+          optionAnswers: [],
+        });
+
+        console.log(JSON.stringify(newParentGroup));
+
+        newParentGroup
+          .save()
+          .then(group => res.json(group))
+          .catch(err => res.status(400).json(err));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  },
+);
+router.put(
+  '/',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.user.role !== 'ADMIN')
+      return res
+        .status(403)
+        .json({ message: "You don't have permission to access this place" });
+
+    if (!req.body.id)
+      return res.status(400).json({ message: 'QuestionId not found' });
+
+    console.log(req.body);
+
+    QuestionGroup.findByIdAndUpdate(
+      req.body.id,
+      {
+        $set: {
+          name: req.body.name,
+        },
+      },
+      { new: true },
+    )
+      .then(() => res.json({ success: true }))
+      .catch(err => res.status(404).json({ message: 'Question not found' }));
+  },
+);
+
+router.delete(
+  '/',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    QuestionGroup.findById(req.body.id).then(group => {
+      if (group.questions.length > 0) {
+        Question.deleteMany({ _id: { $in: group.questions } });
+      }
+
+      if (group.childs.length > 0) {
+        group.childs.map(child => {
+          if (child.questions.length > 0) {
+            Question.deleteMany({ _id: { $in: group.questions } });
+          }
+        });
+
+        QuestionGroup.deleteMany({ _id: { $in: group.childs } });
+      }
+
+      QuestionGroup.findByIdAndRemove(group._id).then(() =>
+        res.json({ success: true }),
+      );
+    });
+  },
+);
+
 /**
  * @function: GET /api/survey/list
  * @desc: Return list survey in db
@@ -100,7 +181,10 @@ router.get(
       { survey: req.params.surveyid, parent: null },
       '_id name childs optionAnswers inputType',
     )
-      .populate({ path: 'childs', select: '_id name optionAnswers inputType' })
+      .populate({
+        path: 'childs',
+        select: '_id name optionAnswers inputType parent',
+      })
       .sort({ date: 1 })
       .exec((error, groups) => res.json(groups));
   },

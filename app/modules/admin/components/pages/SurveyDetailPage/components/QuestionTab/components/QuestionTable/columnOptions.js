@@ -34,7 +34,7 @@ export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
               <EditableContext.Consumer>
                 {form => (
                   <a
-                    onClick={() => save(form, record.orderNumber)}
+                    onClick={() => save(form, record.id)}
                     style={{ marginRight: 8 }}
                   >
                     <FormattedMessage {...messages.save} />

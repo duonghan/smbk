@@ -36,6 +36,11 @@ export default defineMessages({
     defaultMessage: 'Số nhóm con',
   },
 
+  groupTypeLabel: {
+    id: `${scope}.groupTypeLabel`,
+    defaultMessage: 'Danh mục',
+  },
+
   inputTypeLabel: {
     id: `${scope}.inputTypeLabel`,
     defaultMessage: 'Kiểu',
@@ -69,6 +74,11 @@ export default defineMessages({
   detailToolTip: {
     id: `${scope}.detailToolTip`,
     defaultMessage: 'Chi tiết',
+  },
+
+  addChildToolTip: {
+    id: `${scope}.addChildToolTip`,
+    defaultMessage: 'Thêm nhóm con',
   },
 
   cancel: {
@@ -120,5 +130,20 @@ export default defineMessages({
   addGroup: {
     id: `${scope}.addGroup`,
     defaultMessage: 'Thêm nhóm câu hỏi',
+  },
+
+  successTitle: {
+    id: `${scope}.successTitle`,
+    defaultMessage: 'Thành công',
+  },
+
+  updateSuccessContent: {
+    id: `${scope}.updateSuccessContent`,
+    defaultMessage: 'Cập nhật nhóm thành công',
+  },
+
+  addSuccessContent: {
+    id: `${scope}.addSuccessContent`,
+    defaultMessage: 'Thêm nhóm thành công',
   },
 });

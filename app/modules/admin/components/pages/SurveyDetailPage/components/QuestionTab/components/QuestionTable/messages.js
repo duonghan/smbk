@@ -121,7 +121,7 @@ export default defineMessages({
 
   updateSuccessContent: {
     id: `${scope}.updateSuccessContent`,
-    defaultMessage: 'Xóa câu hỏi thành công',
+    defaultMessage: 'Cập nhật câu hỏi thành công',
   },
 
   updateFailedTitle: {
