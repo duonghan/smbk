@@ -65,6 +65,7 @@ class GroupTable extends React.Component {
         });
 
         this.fetchQuestionGroup();
+        this.setState({ parentId: '' });
       });
 
       form.resetFields();
@@ -145,6 +146,7 @@ class GroupTable extends React.Component {
       .then(res => {
         if (res.data.success) {
           this.fetchQuestionGroup();
+          this.setCurrentGroup(null, null);
           Modal.success({
             title: this.props.intl.formatMessage(messages.successTitle),
             content: this.props.intl.formatMessage(

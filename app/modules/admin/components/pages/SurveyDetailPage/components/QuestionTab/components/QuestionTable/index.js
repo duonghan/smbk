@@ -31,8 +31,11 @@ class QuestionTable extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    debugger;
     if (nextProps.groupId) {
       this.fetchQuestion(nextProps.groupId);
+    } else {
+      this.setState({ display: 'none' });
     }
   }
 
@@ -93,7 +96,9 @@ class QuestionTable extends React.Component {
         .then(res => {
           Modal.success({
             title: this.props.intl.formatMessage(messages.createSuccessTitle),
-            content: this.props.intl.formatMessage(messages.createSuccessContent),
+            content: this.props.intl.formatMessage(
+              messages.createSuccessContent,
+            ),
           });
           this.fetchQuestion(this.props.groupId);
         });

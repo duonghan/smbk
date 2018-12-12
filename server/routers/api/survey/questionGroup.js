@@ -204,15 +204,17 @@ router.delete(
               groups.map(group => group.questions),
             );
 
-            // delete all question
-            Question.deleteMany({ _id: { $in: questions } });
-          });
+            console.log(questions);
 
-          // delete all child question group and this question group
-          QuestionGroup.deleteMany(
-            { _id: { $in: [...group.childs, req.body.id] } },
-            () => res.json({ success: true }),
-          );
+            // delete all question
+            Question.deleteMany({ _id: { $in: questions } }, () => {
+              // delete all child question group and this question group
+              QuestionGroup.deleteMany(
+                { _id: { $in: [...group.childs, req.body.id] } },
+                () => res.json({ success: true }),
+              );
+            });
+          });
         }
       });
     } catch (e) {
