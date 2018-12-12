@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const passport = require('passport');
+const _ = require('lodash');
 
 // Load question group model
 const QuestionGroup = require('../../../models/QuestionGroup');
@@ -67,53 +68,80 @@ router.post(
  * @access: private
  */
 router.post(
-  '/add',
-  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
-  (req, res) => {
-    const newQuestionGroup = new QuestionGroup({
-      name: req.body.name.trim(),
-      survey: mongoose.Types.ObjectId(req.body.surveyId),
-      childs: req.body.childs,
-      questions: req.body.questions,
-      inputType: req.body.inputType,
-      optionAnswers: JSON.parse(req.body.optionAnswers),
-    });
-
-    console.log(JSON.stringify(newQuestionGroup));
-
-    newQuestionGroup
-      .save()
-      .then(group => res.json(group))
-      .catch(err => res.status(400).json(err));
-  },
-);
-
-router.post(
   '/',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    if (req.query.type === 'parent') {
-      try {
-        const newParentGroup = new QuestionGroup({
-          name: req.body.name.trim(),
-          survey: mongoose.Types.ObjectId(req.body.surveyId),
-          childs: [],
-          questions: [],
-          optionAnswers: [],
-        });
+    try {
+      console.log(req.body);
 
-        console.log(JSON.stringify(newParentGroup));
+      // initial property
+      const GroupOpt = {
+        name: req.body.name.trim(),
+        survey: mongoose.Types.ObjectId(req.body.surveyId),
+        childs: [],
+        questions: [],
+        optionAnswers: [],
+        inputType: req.body.inputType,
+      };
 
-        newParentGroup
-          .save()
-          .then(group => res.json(group))
-          .catch(err => res.status(400).json(err));
-      } catch (e) {
-        console.log(e);
+      // reduce answer options result
+      if (req.body.keys.length > 0) {
+        GroupOpt.optionAnswers = req.body.keys.map(
+          key => req.body.optionAnswers[key],
+        );
       }
+
+      // handle rate type answer optuion
+      if (req.body.inputType === 'rate') {
+        GroupOpt.optionAnswers = [
+          req.body.lower,
+          ...new Array(req.body.range).fill(0).map((_, index) => index + 1),
+          req.body.upper,
+        ];
+      }
+
+      if (req.body.parent) {
+        GroupOpt.parent = mongoose.Types.ObjectId(req.body.parent);
+      }
+
+      GroupOpt.optionAnswers = GroupOpt.optionAnswers.map((item, index) => ({
+        text: item,
+        score: index,
+      }));
+
+      const newGroup = new QuestionGroup(GroupOpt);
+
+      newGroup
+        .save()
+        .then(group => {
+          QuestionGroup.findByIdAndUpdate(
+            req.body.parent,
+            {
+              $push: {
+                childs: group._id,
+              },
+            },
+            {
+              new: true,
+            },
+          ).then(() =>
+            res.json({
+              success: true,
+            }),
+          );
+        })
+        .catch(err => res.status(400).json(err));
+    } catch (e) {
+      console.log(e);
     }
   },
 );
+
+/**
+ * @function: PUT /api/question-group
+ * @desc: Update question group information
+ * @access: private
+ */
 router.put(
   '/',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
@@ -138,33 +166,59 @@ router.put(
       { new: true },
     )
       .then(() => res.json({ success: true }))
-      .catch(err => res.status(404).json({ message: 'Question not found' }));
+      .catch(() => res.status(404).json({ message: 'Question not found' }));
   },
 );
 
+/**
+ * @function: DELETE /api/question-group
+ * @desc: Delete question group
+ * @access: private
+ */
 router.delete(
   '/',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    QuestionGroup.findById(req.body.id).then(group => {
-      if (group.questions.length > 0) {
-        Question.deleteMany({ _id: { $in: group.questions } });
-      }
+    try {
+      QuestionGroup.findById(req.body.id).then(group => {
+        if (group.parent) {
+          Question.deleteMany({ _id: { $in: group.questions } }).then(() => {
+            QuestionGroup.findByIdAndRemove(req.body.id).then(() => {
+              QuestionGroup.findByIdAndUpdate(
+                group.parent,
+                {
+                  $pull: {
+                    childs: group._id,
+                  },
+                },
+                {
+                  new: true,
+                },
+              ).then(() => res.json({ success: true }));
+            });
+          });
+        } else {
+          // collect all question Id of this group
+          QuestionGroup.find({ _id: { $in: group.childs } }, (err, groups) => {
+            const questions = _.flattenDeep(
+              groups.map(group => group.questions),
+            );
 
-      if (group.childs.length > 0) {
-        group.childs.map(child => {
-          if (child.questions.length > 0) {
-            Question.deleteMany({ _id: { $in: group.questions } });
-          }
-        });
+            // delete all question
+            Question.deleteMany({ _id: { $in: questions } });
+          });
 
-        QuestionGroup.deleteMany({ _id: { $in: group.childs } });
-      }
-
-      QuestionGroup.findByIdAndRemove(group._id).then(() =>
-        res.json({ success: true }),
-      );
-    });
+          // delete all child question group and this question group
+          QuestionGroup.deleteMany(
+            { _id: { $in: [...group.childs, req.body.id] } },
+            () => res.json({ success: true }),
+          );
+        }
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(404).json({ message: 'Error' });
+    }
   },
 );
 

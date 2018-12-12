@@ -137,13 +137,34 @@ export default defineMessages({
     defaultMessage: 'Thành công',
   },
 
+
+  addSuccessContent: {
+    id: `${scope}.addSuccessContent`,
+    defaultMessage: 'Thêm nhóm thành công',
+  },
+
   updateSuccessContent: {
     id: `${scope}.updateSuccessContent`,
     defaultMessage: 'Cập nhật nhóm thành công',
   },
 
-  addSuccessContent: {
-    id: `${scope}.addSuccessContent`,
-    defaultMessage: 'Thêm nhóm thành công',
+  deleteSuccessContent: {
+    id: `${scope}.deleteSuccessContent`,
+    defaultMessage: 'Xóa nhóm thành công',
+  },
+
+  lowerLabel: {
+    id: `${scope}.lowerLabel`,
+    defaultMessage: 'Giá trị thấp nhất',
+  },
+
+  upperLabel: {
+    id: `${scope}.upperLabel`,
+    defaultMessage: 'Giá trị cao nhất',
+  },
+
+  rangeLabel: {
+    id: `${scope}.rangeLabel`,
+    defaultMessage: 'Số cấp độ',
   },
 });

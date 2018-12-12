@@ -1,3 +1,13 @@
+const _ = require('lodash');
+const xl = require('excel4node');
+const Quiche = require('quiche');
+const bar = new Quiche('bar');
+
+// Load question model
+const Response = require('../../../models/Response');
+const Survey = require('../../../models/Survey');
+const Question = require('../../../models/Question');
+
 const resultMOC = answers => {
   return Object.entries(answers).map(entry => {
     const result = { questionId: entry[0] };
@@ -6,19 +16,6 @@ const resultMOC = answers => {
     return result;
   });
 };
-
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const passport = require('passport');
-const _ = require('lodash');
-const xl = require('excel4node');
-
-// Load question model
-const Response = require('../../../models/Response');
-const Survey = require('../../../models/Survey');
-const QuestionGroup = require('../../../models/QuestionGroup');
-const Question = require('../../../models/Question');
 
 const chartColor = {
   '0': '#f33334',
@@ -98,6 +95,7 @@ const exportExcel = (dataSource, groups, surveyId) =>
       groups.map((group, index) => {
         const ws = wb.addWorksheet(`Câu ${index + 1}`);
 
+        // write survey header for each worksheet
         ws.cell(1, 2)
           .string(survey.title)
           .style({
@@ -108,13 +106,17 @@ const exportExcel = (dataSource, groups, surveyId) =>
           });
 
         ws.cell(4, 2).string(`Câu hỏi: ${group.name}`);
+
+        // write answer col title
         group.optionAnswers.map((option, index) => {
           ws.cell(6, 3 + index).string(option.text);
         });
 
         group.questions.map((question, i) => {
+          // write each row question content
           ws.cell(7 + i, 2).string(dataSource.result[question].content);
 
+          // write data
           group.optionAnswers.map((option, ii) => {
             ws.cell(7 + i, 3 + ii).number(
               dataSource.result[question].answers[option.score],

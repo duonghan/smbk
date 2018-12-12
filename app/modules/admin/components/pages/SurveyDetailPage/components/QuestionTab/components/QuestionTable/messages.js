@@ -114,6 +114,16 @@ export default defineMessages({
 
   // Update question succeeded
 
+  createSuccessTitle: {
+    id: `${scope}.createSuccessTitle`,
+    defaultMessage: 'Thành công',
+  },
+
+  createSuccessContent: {
+    id: `${scope}.createSuccessContent`,
+    defaultMessage: 'Cập nhật câu hỏi thành công',
+  },
+
   updateSuccessTitle: {
     id: `${scope}.updateSuccessTitle`,
     defaultMessage: 'Thành công',

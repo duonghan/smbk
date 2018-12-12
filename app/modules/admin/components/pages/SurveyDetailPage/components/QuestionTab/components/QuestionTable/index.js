@@ -91,6 +91,10 @@ class QuestionTable extends React.Component {
           config,
         )
         .then(res => {
+          Modal.success({
+            title: this.props.intl.formatMessage(messages.createSuccessTitle),
+            content: this.props.intl.formatMessage(messages.createSuccessContent),
+          });
           this.fetchQuestion(this.props.groupId);
         });
 

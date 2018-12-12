@@ -29,30 +29,48 @@ class GroupTable extends React.Component {
     visible: false,
     data: [],
     editingKey: '',
+    parentId: '',
   };
 
   componentDidMount() {
     this.fetchQuestionGroup();
   }
 
-  showAddGroupModal = () => {
+  createParentGr = () => {
     this.setState({ visible: true });
   };
 
+  createPChildGr = parentId => {
+    this.setState({ visible: true, parentId });
+  };
+
   handleCancel = () => {
-    this.setState({ visible: false, visibleParentAddGroup: false });
+    this.setState({ visible: false });
   };
 
   handleCreateGroup = () => {
     const { form } = this.formRef.props;
+
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
+      const data = { ...values, surveyId: this.props.surveyId };
+      if (this.state.parentId) data.parent = this.state.parentId;
 
-      console.log('Received values of form: ', values);
+      axios.post('/api/survey/question-groups', data, config).then(() => {
+        Modal.success({
+          title: this.props.intl.formatMessage(messages.successTitle),
+          content: this.props.intl.formatMessage(messages.addSuccessContent),
+        });
+
+        this.fetchQuestionGroup();
+      });
+
       form.resetFields();
-      this.setState({ visible: false });
+      this.setState({
+        visible: false,
+      });
     });
   };
 
@@ -117,8 +135,24 @@ class GroupTable extends React.Component {
   };
 
   handleDelete = id => {
-    const dataSource = [...this.state.dataSource];
-    this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
+    axios
+      .delete('/api/survey/question-groups/', {
+        ...config,
+        data: {
+          id,
+        },
+      })
+      .then(res => {
+        if (res.data.success) {
+          this.fetchQuestionGroup();
+          Modal.success({
+            title: this.props.intl.formatMessage(messages.successTitle),
+            content: this.props.intl.formatMessage(
+              messages.deleteSuccessContent,
+            ),
+          });
+        }
+      });
   };
 
   viewQuestion = (id, name) => {
@@ -138,7 +172,7 @@ class GroupTable extends React.Component {
       this.edit,
       this.handleDelete,
       this.viewQuestion,
-      this.showAddGroupModal,
+      this.createPChildGr,
     ).map(col => {
       if (!col.editable) {
         return col;
@@ -167,7 +201,7 @@ class GroupTable extends React.Component {
           title={() => (
             <h3 style={{ color: '#FA541C' }}>
               <strong>{formatMessage(messages.header)}</strong>
-              <a onClick={this.showAddGroupModal} style={{ float: 'right' }}>
+              <a onClick={this.createParentGr} style={{ float: 'right' }}>
                 <Icon type="plus" style={{ fontSize: 20, color: '#FA541C' }} />
               </a>
             </h3>

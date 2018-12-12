@@ -21,8 +21,14 @@ let id = 0;
 
 // eslint-disable-next-line
 class AddGroupForm extends React.Component {
+  state = {
+    current: 'radio',
+  };
+
   handleChange = value => {
-    console.log(`selected ${value}`);
+    this.setState({ current: value });
+
+    console.log(`selected ${value}`, this.state.isTextArea);
   };
 
   remove = k => {
@@ -56,7 +62,6 @@ class AddGroupForm extends React.Component {
     const { visible, onCancel, onCreate, form } = this.props;
     const { getFieldDecorator, getFieldValue } = form;
     const { formatMessage } = this.props.intl;
-
     getFieldDecorator('keys', { initialValue: [] });
 
     const keys = getFieldValue('keys');
@@ -67,7 +72,7 @@ class AddGroupForm extends React.Component {
         required={false}
         key={k}
       >
-        {getFieldDecorator(`names[${k}]`, {
+        {getFieldDecorator(`optionAnswers[${k}]`, {
           validateTrigger: ['onChange', 'onBlur'],
           rules: [
             {
@@ -132,13 +137,60 @@ class AddGroupForm extends React.Component {
               </Select>,
             )}
           </FormItem>
-          {formItems}
-          <FormItem>
-            <Button type="dashed" onClick={this.add} style={{ width: '40%' }}>
-              <Icon type="plus" />{' '}
-              <FormattedMessage {...messages.addAnswerBtn} />
-            </Button>
-          </FormItem>
+
+          {(this.state.current === 'radio' ||
+            this.state.current === 'select') && (
+            <div>
+              {formItems}
+              <FormItem>
+                <Button
+                  type="dashed"
+                  onClick={this.add}
+                  style={{ width: '40%' }}
+                >
+                  <Icon type="plus" />{' '}
+                  <FormattedMessage {...messages.addAnswerBtn} />
+                </Button>
+              </FormItem>
+            </div>
+          )}
+
+          {this.state.current === 'rate' && (
+            <div>
+              <FormItem label={formatMessage(messages.lowerLabel)}>
+                {getFieldDecorator('lower', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage(messages.lowerLabel),
+                    },
+                  ],
+                })(<Input />)}
+              </FormItem>
+
+              <FormItem label={formatMessage(messages.upperLabel)}>
+                {getFieldDecorator('upper', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage(messages.upperLabel),
+                    },
+                  ],
+                })(<Input />)}
+              </FormItem>
+
+              <FormItem label={formatMessage(messages.rangeLabel)}>
+                {getFieldDecorator('range', {
+                  rules: [
+                    {
+                      required: true,
+                      message: formatMessage(messages.nameRequiredMsg),
+                    },
+                  ],
+                })(<InputNumber min={0} />)}
+              </FormItem>
+            </div>
+          )}
         </Form>
       </Modal>
     );

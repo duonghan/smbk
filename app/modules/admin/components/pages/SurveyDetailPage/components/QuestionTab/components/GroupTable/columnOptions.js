@@ -109,7 +109,7 @@ export default (
               placement="right"
               title={formatMessage(messages.addChildToolTip)}
             >
-              <a onClick={() => handleCreateChild(record)}>
+              <a onClick={() => handleCreateChild(record.id)}>
                 <Icon type="plus" style={styles.icon} />
               </a>
             </Tooltip>
