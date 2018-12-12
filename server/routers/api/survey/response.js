@@ -96,10 +96,33 @@ router.post(
         console.log(survey);
         switch (survey.name) {
           case 'psychologic_test':
-            console.log(req.body.answers);
-            return res.json({
-              result: resultPsychologic(req.body.answers),
-            });
+            QuestionGroup.find({ survey: survey._id, parent: null }).then(
+              groups => {
+                groups.map(group => {
+                  // collect all question Id of this group
+                  QuestionGroup.find(
+                    { _id: { $in: group.childs } },
+                    (err, groups) => {
+                      const questions = _.flattenDeep(
+                        groups.map(group => group.questions),
+                      );
+
+                      console.log(questions);
+
+                      // delete all question
+                      Question.deleteMany({ _id: { $in: questions } }, () => {
+                        // delete all child question group and this question group
+                        QuestionGroup.deleteMany(
+                          { _id: { $in: [...group.childs, req.body.id] } },
+                          () => res.json({ success: true }),
+                        );
+                      });
+                    },
+                  );
+                });
+              },
+            );
+            return res.json(resultPsychologic(req.body.answers, survey._id));
           case 'neo':
             return res.json({
               result: resultNEO(req.body.answers),

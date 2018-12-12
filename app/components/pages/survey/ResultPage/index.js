@@ -16,6 +16,8 @@ import messages from './messages';
 /* eslint-disable react/prefer-stateless-function */
 class ResultPage extends React.Component {
   render() {
+    const result = this.props.location.state.result;
+
     return <div>{JSON.stringify(this.props.location.state.result)}</div>;
   }
 }

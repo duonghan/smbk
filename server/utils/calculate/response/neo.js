@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const reverseIndex = [
   2,
   3,
@@ -82,6 +83,8 @@ const indexScore = {
   },
 };
 
+const resultIndex = require('../index/neo');
+
 const resultNEO = answers => {
   // reverse
   const newResponse = Object.values(answers).map(item => {
@@ -103,9 +106,9 @@ const sumOfScore = (answers, type) =>
     .reduce((acc, cur) => acc + cur.score, 0);
 
 const compare = (lower, upper, num) => {
-  if (num < lower) return -1;
-  if (lower < num && num < upper) return 0;
-  return 1;
+  if (num < lower) return 'low';
+  if (lower < num && num < upper) return 'mid';
+  return 'high';
 };
 
 const compareWithIndex = (response, gender) => {
