@@ -33,7 +33,7 @@ function* submitResponse(data) {
 
     yield put(
       push(`/survey-result`, {
-        result: res.data,
+        result: res.data.result,
       }),
     );
 

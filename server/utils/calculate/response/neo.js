@@ -85,6 +85,21 @@ const indexScore = {
 
 const resultIndex = require('../index/neo');
 
+const level = {
+  low: {
+    text: 'Thấp',
+    color: 'blue',
+  },
+  mid: {
+    text: 'Trung bình',
+    color: 'green',
+  },
+  high: {
+    text: 'Cao',
+    color: 'red',
+  },
+};
+
 const resultNEO = answers => {
   // reverse
   const newResponse = Object.values(answers).map(item => {
@@ -120,7 +135,11 @@ const compareWithIndex = (response, gender) => {
     test[type] = compare(range.lower, range.upper, sum);
   });
 
-  return test;
+  return _.toPairs(test).map(entry => ({
+    name: resultIndex[entry[0]].name,
+    level: level[entry[1]],
+    description: resultIndex[entry[0]][entry[1]],
+  }));
 };
 
 module.exports = resultNEO;
