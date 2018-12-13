@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import { Table, Button, Input, Icon, Form, AutoComplete } from 'antd';
+import { Table, Modal, Input, Icon, Form, AutoComplete } from 'antd';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
@@ -9,6 +9,7 @@ import messages from './messages';
 import EditableCell, { EditableContext } from './EditableCell';
 import { styles } from './styles';
 import columnOptions from './columnOptions';
+
 const { Search } = Input;
 
 const EditableRow = ({ form, index, ...props }) => (
@@ -44,10 +45,25 @@ class AccountTable extends React.Component {
     });
   };
 
-  handleDelete = key => {
-    this.setState(prevState => ({
-      data: [...prevState.data].filter(item => item.key !== key),
-    }));
+  handleDelete = id => {
+    axios
+      .delete('/api/users/', {
+        ...config,
+        data: {
+          id,
+        },
+      })
+      .then(res => {
+        if (res.data.success) {
+          this.fetchUser();
+          Modal.success({
+            title: this.props.intl.formatMessage(messages.successTitle),
+            content: this.props.intl.formatMessage(
+              messages.deleteSuccessContent,
+            ),
+          });
+        }
+      });
   };
 
   isEditing = record => record.key === this.state.editingKey;
@@ -56,40 +72,43 @@ class AccountTable extends React.Component {
     this.setState({ editingKey: key });
   };
 
-  save(form, record, text) {
+  save = (form, id) => {
+    this.setState({ loading: true });
+
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
 
-      console.log(row);
-      console.log(record);
-      console.log(text);
-
-      // debugger;
-      // const newData = [...this.state.data];
-      // debugger;
-      // const index = newData.findIndex(item => key === item.key);
-      // if (index > -1) {
-      //   const item = newData[index];
-      //   newData.splice(index, 1, {
-      //     ...item,
-      //     ...row,
-      //   });
-      //   this.setState({ data: newData, editingKey: '' });
-      // } else {
-      //   newData.push(row);
-      //   this.setState({ data: newData, editingKey: '' });
-      // }
+      // update user infomation
+      axios
+        .put(
+          '/api/users/',
+          {
+            id,
+            ...row,
+          },
+          config,
+        )
+        .then(res => {
+          if (res.data.success) {
+            Modal.success({
+              title: this.props.intl.formatMessage(messages.successTitle),
+              content: this.props.intl.formatMessage(
+                messages.updateSuccessContent,
+              ),
+            });
+            this.fetchUser();
+            this.setState({ loading: false });
+          }
+        });
     });
-  }
 
-  cancel = () => {
     this.setState({ editingKey: '' });
   };
 
-  emitEmpty = () => {
-    this.setState({ searchText: '' });
+  cancel = () => {
+    this.setState({ editingKey: '' });
   };
 
   fetchUser = () => {
@@ -124,6 +143,7 @@ class AccountTable extends React.Component {
       this.cancel,
       this.edit,
       this.handleDelete,
+      this.state.searchText,
     ).map(col => {
       if (!col.editable) {
         return col;
@@ -150,29 +170,15 @@ class AccountTable extends React.Component {
         </Helmet>
 
         <div style={styles.tableOperations}>
-          <AutoComplete
-            dataSource={this.state.data.map(item => item.email)}
-            onSelect={this.onSelect}
-            onSearch={this.handleSearch}
-            value={this.state.searchText}
-            onChange={e => this.setState({ searchText: e.target.value })}
-            filterOption={(inputValue, option) =>
-              option.props.children
-                .toUpperCase()
-                .indexOf(inputValue.toUpperCase()) !== -1
+          <Search
+            placeholder={formatMessage(messages.searchInput)}
+            onSearch={value =>
+              this.setState({
+                searchText: value,
+              })
             }
-          >
-            <Search
-              placeholder={formatMessage(messages.searchInput)}
-              prefix={
-                this.state.searchText !== '' ? (
-                  <Icon type="close-circle" onClick={this.emitEmpty} />
-                ) : null
-              }
-              onSearch={value => console.log(value)}
-              style={{ ...styles.button }}
-            />
-          </AutoComplete>
+            style={{ ...styles.button }}
+          />
         </div>
 
         <Table

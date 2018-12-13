@@ -23,6 +23,7 @@ export default (
   cancel,
   edit,
   handleDelete,
+  searchText,
 ) => [
   {
     title: '#',
@@ -40,6 +41,8 @@ export default (
     editable: true,
     sorter: (a, b) => a.name.localeCompare(b.name),
     sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
+    onFilter: (value, record) =>
+      record.name.toLowerCase().includes(searchText.toLowerCase()),
   },
   {
     title: 'Email',
@@ -53,7 +56,7 @@ export default (
     title: formatMessage(messages.roleTitle),
     dataIndex: 'role',
     key: 'role',
-    editable: false,
+    editable: true,
     render: role => (
       <span>
         <Tag color={colorTag(role)}>
@@ -74,7 +77,7 @@ export default (
     title: formatMessage(messages.dateTitle),
     dataIndex: 'date',
     key: 'date',
-    sorter: (a, b) => a.date < b.date,
+    sorter: (a, b) => new Date(b.date) - new Date(a.date),
     sortOrder: sortedInfo.columnKey === 'date' && sortedInfo.order,
     render: text => new Date(text).toLocaleString('vi-VN'),
   },
@@ -93,7 +96,7 @@ export default (
               <EditableContext.Consumer>
                 {form => (
                   <a
-                    onClick={() => save(form, record, text)}
+                    onClick={() => save(form, record.id)}
                     style={{ marginRight: 8 }}
                   >
                     <FormattedMessage {...messages.save} />
@@ -127,7 +130,7 @@ export default (
           >
             <Popconfirm
               title={formatMessage(messages.deletePromtMsg)}
-              onConfirm={() => handleDelete(record.key)}
+              onConfirm={() => handleDelete(record.id)}
               cancelText={formatMessage(messages.cancel)}
               icon={<Icon type="question-circle-o" style={styles.delete} />}
             >
@@ -139,6 +142,5 @@ export default (
         </span>
       );
     },
-    fixed: 'right',
   },
 ];

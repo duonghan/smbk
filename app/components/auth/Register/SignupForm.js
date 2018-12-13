@@ -12,6 +12,7 @@ import axios from 'axios';
 
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Form, Input, Tooltip, Button, Modal } from 'antd';
+import { withRouter } from 'react-router';
 import Captcha from './Captcha';
 import messages from './messages';
 import * as styles from './styles';
@@ -78,6 +79,7 @@ class SignupForm extends React.Component {
             this.formatMessage(messages.resigterSuccessContentAfter),
         });
         this.setState(initialState);
+        this.props.history.push('/login');
       })
       .catch(err =>
         this.setState({
@@ -220,4 +222,4 @@ SignupForm.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(SignupForm);
+export default withRouter(injectIntl(SignupForm));

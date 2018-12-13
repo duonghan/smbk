@@ -113,4 +113,19 @@ export default defineMessages({
     id: `${scope}.deletePromtMsg`,
     defaultMessage: 'Bạn chắc chắn muốn xóa?',
   },
+
+  successTitle: {
+    id: `${scope}.successTitle`,
+    defaultMessage: 'Thành công',
+  },
+
+  updateSuccessContent: {
+    id: `${scope}.updateSuccessContent`,
+    defaultMessage: 'Cập nhật thông tin người dùng thành công',
+  },
+
+  deleteSuccessContent: {
+    id: `${scope}.deleteSuccessContent`,
+    defaultMessage: 'Xóa người dùng thành công',
+  },
 });

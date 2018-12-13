@@ -1,6 +1,7 @@
 export const styles = {
   tableOperations: {
     marginBottom: 16,
+    width: '25%',
   },
   button: {
     marginRight: 8,

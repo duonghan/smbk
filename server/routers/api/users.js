@@ -18,6 +18,7 @@ const emailConfig = require('../../config/email');
 
 // Load user model
 const User = require('../../models/User');
+const Response = require('../../models/Response');
 const keys = require('../../config/keys');
 
 // Load user roles
@@ -259,6 +260,28 @@ router.put(
       return res
         .status(403)
         .send({ message: 'You have no rights to visit this page' });
+    }
+  },
+);
+
+router.delete(
+  '/',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.user.role === 'ADMIN') {
+      try {
+        Response.deleteMany({ user: req.body.id }, err => {
+          if (!err) {
+            User.findByIdAndDelete(req.body.id).then(() =>
+              res.json({ success: true }),
+            );
+          }
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      return res.json({ sucess: false });
     }
   },
 );

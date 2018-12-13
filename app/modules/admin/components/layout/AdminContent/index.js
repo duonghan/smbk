@@ -9,7 +9,6 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import DashBoard from '../../pages/DashBoardPage/Loadable';
 import AccountPage from '../../pages/AccountPage/Loadable';
-import TestAccountPage from '../../pages/AccountPage/test';
 import SurveyPage from '../../pages/SurveyDetailPage/Loadable';
 import SurveyTable from '../../pages/SurveyPage/Loadable';
 // import PropTypes from 'prop-types';
@@ -21,7 +20,7 @@ class AdminContent extends React.Component {
     return (
       <Switch>
         <Route exact path="/admin/dashboard" component={DashBoard} />
-        <Route exact path="/admin/account-list" component={TestAccountPage} />
+        <Route exact path="/admin/account-list" component={AccountPage} />
         <Route exact path="/admin/survey" component={SurveyTable} />
         <Route exact path="/admin/survey/detail" component={SurveyPage} />
         <Route component={DashBoard} />
