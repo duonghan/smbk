@@ -11,7 +11,7 @@ export const scope = 'app.modules.admin.components.AccountPage';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'Trang quản trị',
+    defaultMessage: 'Tài khoản người dùng',
   },
 
   clearFiltersBtn: {

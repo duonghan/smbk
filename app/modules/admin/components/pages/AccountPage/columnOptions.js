@@ -1,14 +1,12 @@
 import React from 'react';
 import { Divider, Icon, Popconfirm, Tag, Tooltip } from 'antd';
 import { FormattedMessage } from 'react-intl';
-import { EditableContext } from '../EditableCell';
-import messages from '../messages';
-import { styles } from '../styles';
+import { EditableContext } from './EditableCell';
+import messages from './messages';
+import { styles } from './styles';
 
 const colorTag = role => {
   switch (role) {
-    case 'GUEST':
-      return 'green';
     case 'ADMIN':
       return 'volcano';
     default:
@@ -40,7 +38,7 @@ export default (
     dataIndex: 'name',
     key: 'name',
     editable: true,
-    sorter: (a, b) => a.name < b.name,
+    sorter: (a, b) => a.name.localeCompare(b.name),
     sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
   },
   {
@@ -48,14 +46,14 @@ export default (
     dataIndex: 'email',
     key: 'email',
     editable: true,
-    sorter: (a, b) => a.email < b.email,
+    sorter: (a, b) => a.email.localeCompare(b.email),
     sortOrder: sortedInfo.columnKey === 'email' && sortedInfo.order,
   },
   {
     title: formatMessage(messages.roleTitle),
     dataIndex: 'role',
     key: 'role',
-    editable: true,
+    editable: false,
     render: role => (
       <span>
         <Tag color={colorTag(role)}>
@@ -64,13 +62,12 @@ export default (
       </span>
     ),
     filters: [
-      { text: formatMessage(messages.admin), value: 'Admin' },
-      { text: formatMessage(messages.default), value: 'User' },
-      { text: formatMessage(messages.guest), value: 'Guest' },
+      { text: formatMessage(messages.admin), value: 'ADMIN' },
+      { text: formatMessage(messages.default), value: 'DEFAULT' },
     ],
     filteredValue: filteredInfo.role || null,
     onFilter: (value, record) => record.role.includes(value),
-    sorter: (a, b) => a.role.length - b.role.length,
+    sorter: (a, b) => a.role.localeCompare(b.role),
     sortOrder: sortedInfo.columnKey === 'role' && sortedInfo.order,
   },
   {
@@ -96,7 +93,7 @@ export default (
               <EditableContext.Consumer>
                 {form => (
                   <a
-                    onClick={() => save(form, record.key)}
+                    onClick={() => save(form, record, text)}
                     style={{ marginRight: 8 }}
                   >
                     <FormattedMessage {...messages.save} />

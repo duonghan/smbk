@@ -19,9 +19,6 @@ class EditableCell extends React.Component {
           <Option value="DEFAULT">
             <FormattedMessage {...messages.default} />
           </Option>
-          <Option value="GUEST">
-            <FormattedMessage {...messages.guest} />
-          </Option>
         </Select>
       );
     }
@@ -40,10 +37,12 @@ class EditableCell extends React.Component {
     } = this.props;
 
     const { formatMessage } = this.props.intl;
+
     return (
       <EditableContext.Consumer>
         {form => {
           const { getFieldDecorator } = form;
+
           return (
             <td {...restProps}>
               {editing ? (

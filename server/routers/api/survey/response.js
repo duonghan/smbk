@@ -108,15 +108,6 @@ router.post(
                       );
 
                       console.log(questions);
-
-                      // delete all question
-                      Question.deleteMany({ _id: { $in: questions } }, () => {
-                        // delete all child question group and this question group
-                        QuestionGroup.deleteMany(
-                          { _id: { $in: [...group.childs, req.body.id] } },
-                          () => res.json({ success: true }),
-                        );
-                      });
                     },
                   );
                 });

@@ -35,17 +35,6 @@ const options = {
 };
 
 /**
- * @function: GET /api/users/test
- * @desc: Test user router
- * @access: public
- */
-router.get('/test', (req, res) =>
-  res.json({
-    msg: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
-  }),
-);
-
-/**
  * @function: POST /api/users/register
  * @desc: Register user
  * @access: public
@@ -90,7 +79,6 @@ router.post('/register', (req, res) => {
           .save()
           .then(user => {
             res.json(user);
-            console.log(`User is ${JSON.stringify(user)}`);
 
             // send email to validate email
             jwt.sign(
@@ -249,54 +237,29 @@ router.get(
  * @desc: Update user info
  * @access: private
  */
-router.post(
-  '/update',
+router.put(
+  '/',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    const newProfile = {
-      email: req.body.email,
-      name: req.body.name,
-    };
-
-    const { id } = req.body;
-    const errors = {};
-
-    User.findById(id)
-      .then(user => {
-        if (!req.body.currentPassword) {
-          User.findByIdAndUpdate(id, { $set: newProfile }).then(user =>
-            res.json(newProfile),
-          );
-        } else {
-          const { currentPassword } = req.body;
-
-          // Check current password
-          bcrypt.compare(currentPassword, user.password).then(isMatch => {
-            if (isMatch) {
-              newProfile.password = req.body.newPassword;
-
-              // encrypt password with bcrypt
-              bcrypt.genSalt(10, (e, salt) => {
-                bcrypt.hash(newProfile.password, salt, (err, hash) => {
-                  if (err) throw err;
-                  newProfile.password = hash;
-
-                  // then update new user into db
-                  User.findByIdAndUpdate(id, {
-                    $set: newProfile,
-                  }).then(user => {
-                    res.json(newProfile);
-                  });
-                });
-              });
-            } else {
-              errors.password = 'incorrectCurrentPassword';
-              return res.status(400).json(errors);
-            }
-          });
-        }
-      })
-      .catch(err => res.json({ other: err }));
+    if (req.user.role === 'ADMIN') {
+      User.findByIdAndUpdate(
+        req.body.id,
+        {
+          $set: {
+            email: req.body.email,
+            name: req.body.name,
+            role: req.body.role,
+          },
+        },
+        { new: true },
+      )
+        .then(() => res.json({ success: true }))
+        .catch(() => res.json({ success: false }));
+    } else {
+      return res
+        .status(403)
+        .send({ message: 'You have no rights to visit this page' });
+    }
   },
 );
 
@@ -311,7 +274,11 @@ router.get(
   (req, res) => {
     // only return result when user has admin role
     if (req.user.role === 'ADMIN') {
-      User.find()
+      User.find({
+        role: {
+          $ne: 'GUEST',
+        },
+      })
         .sort({ date: -1 })
         .then(users =>
           res.json(

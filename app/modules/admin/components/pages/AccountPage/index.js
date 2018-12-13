@@ -3,13 +3,12 @@ import axios from 'axios';
 
 import { Table, Button, Input, Icon, Form, AutoComplete } from 'antd';
 import { Helmet } from 'react-helmet';
-import Cookies from 'js-cookie';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
 import messages from './messages';
 import EditableCell, { EditableContext } from './EditableCell';
 import { styles } from './styles';
-import columnOptions from './data/columnOptions';
+import columnOptions from './columnOptions';
 const { Search } = Input;
 
 const EditableRow = ({ form, index, ...props }) => (
@@ -27,13 +26,11 @@ class AccountTable extends React.Component {
     this.state = {
       filteredInfo: null,
       sortedInfo: null,
-      dataSource: [],
+      data: [],
       editingKey: '',
       searchText: '',
       loading: false,
     }; // Check here to configure the default column
-
-    // this.fetch();
   }
 
   componentDidMount() {
@@ -47,20 +44,9 @@ class AccountTable extends React.Component {
     });
   };
 
-  clearFilters = () => {
-    this.setState({ filteredInfo: null });
-  };
-
-  clearAll = () => {
-    this.setState({
-      filteredInfo: null,
-      sortedInfo: null,
-    });
-  };
-
   handleDelete = key => {
     this.setState(prevState => ({
-      dataSource: [...prevState.dataSource].filter(item => item.key !== key),
+      data: [...prevState.data].filter(item => item.key !== key),
     }));
   };
 
@@ -70,26 +56,31 @@ class AccountTable extends React.Component {
     this.setState({ editingKey: key });
   };
 
-  save(form, key) {
+  save(form, record, text) {
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
-      debugger;
-      const newData = [...this.state.dataSource];
-      debugger;
-      const index = newData.findIndex(item => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        this.setState({ dataSource: newData, editingKey: '' });
-      } else {
-        newData.push(row);
-        this.setState({ dataSource: newData, editingKey: '' });
-      }
+
+      console.log(row);
+      console.log(record);
+      console.log(text);
+
+      // debugger;
+      // const newData = [...this.state.data];
+      // debugger;
+      // const index = newData.findIndex(item => key === item.key);
+      // if (index > -1) {
+      //   const item = newData[index];
+      //   newData.splice(index, 1, {
+      //     ...item,
+      //     ...row,
+      //   });
+      //   this.setState({ data: newData, editingKey: '' });
+      // } else {
+      //   newData.push(row);
+      //   this.setState({ data: newData, editingKey: '' });
+      // }
     });
   }
 
@@ -107,7 +98,7 @@ class AccountTable extends React.Component {
       .get('/api/users/list', config)
       .then(res => {
         this.setState({
-          dataSource: res.data.map((account, i) => ({
+          data: res.data.map((account, i) => ({
             key: i + 1,
             ...account,
           })),
@@ -119,7 +110,6 @@ class AccountTable extends React.Component {
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { dataSource } = this.state;
     const sortedInfo = this.state.sortedInfo || {};
     const filteredInfo = this.state.filteredInfo || {};
 
@@ -158,15 +148,10 @@ class AccountTable extends React.Component {
             content="Description of AccountTableContainer"
           />
         </Helmet>
+
         <div style={styles.tableOperations}>
-          <Button onClick={this.clearFilters} style={styles.button}>
-            <FormattedMessage {...messages.clearFiltersBtn} />
-          </Button>
-          <Button onClick={this.clearAll} style={styles.button}>
-            <FormattedMessage {...messages.clearFiltersSortedBtn} />
-          </Button>
           <AutoComplete
-            dataSource={dataSource.map(item => item.email)}
+            dataSource={this.state.data.map(item => item.email)}
             onSelect={this.onSelect}
             onSearch={this.handleSearch}
             value={this.state.searchText}
@@ -193,13 +178,12 @@ class AccountTable extends React.Component {
         <Table
           components={components}
           bordered
-          rowKey="uid"
-          dataSource={dataSource}
+          rowKey={record => record.id}
+          dataSource={this.state.data}
           loading={this.state.loading}
           columns={columns}
           onChange={this.handleChange}
           size="middle"
-          rowClassName="editable-row"
           scroll={{ x: 715 }}
         />
       </div>
