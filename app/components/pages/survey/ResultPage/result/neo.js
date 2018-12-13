@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Route, Redirect } from 'react-router'
+
 // import styled from 'styled-components';
 
 import { Row, Col, Tag, Radio, Button } from 'antd';
@@ -18,6 +20,8 @@ class NeoResult extends React.Component {
       gender: e.target.value,
     });
   };
+
+  onBackHome = () => <Redirect to="/" />;
 
   render() {
     return (
@@ -72,7 +76,7 @@ class NeoResult extends React.Component {
           </Col>
         ))}
 
-        <Button type="primary">
+        <Button type="primary" onClick={this.onBackHome}>
           <FormattedMessage {...messages.backHomeBtn} />
         </Button>
       </Row>

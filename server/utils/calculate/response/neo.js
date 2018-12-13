@@ -112,7 +112,7 @@ const resultNEO = answers => {
     male: compareWithIndex(newResponse, 'male'),
   };
 
-  return resultScore;
+  return { name: 'neo', ...resultScore };
 };
 
 const sumOfScore = (answers, type) =>

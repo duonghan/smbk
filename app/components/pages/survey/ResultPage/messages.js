@@ -26,6 +26,16 @@ export default defineMessages({
     defaultMessage: 'KẾT QUẢ KHẢO SÁT',
   },
 
+  riasecEntrytTitleBegin: {
+    id: `${scope}.riasecEntrytTitleBegin`,
+    defaultMessage: 'Theo kết quả đánh giá, bạn vượt trội ở lĩnh vực',
+  },
+
+  riasecEntrytConjTitle: {
+    id: `${scope}.riasecEntrytConjTitle`,
+    defaultMessage: 'và lĩnh vực',
+  },
+
   selectGenderLabel: {
     id: `${scope}.selectGenderLabel`,
     defaultMessage: 'Vui lòng chọn giới tính của bạn',
