@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route, Redirect } from 'react-router';
+import { withRouter } from 'react-router';
 import { Radar } from 'react-chartjs-2';
 // import styled from 'styled-components';
 
@@ -11,11 +11,8 @@ import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
 class RiasecResult extends React.Component {
-  onBackHome = () => <Redirect to="/" />;
-
   render() {
     const resultRiasec = this.props.result;
-    console.log(resultRiasec);
     const firstField = resultRiasec.resultIndex[resultRiasec.orderedKeys[0]];
     const secondField = resultRiasec.resultIndex[resultRiasec.orderedKeys[1]];
 
@@ -100,7 +97,7 @@ class RiasecResult extends React.Component {
 
         <Button
           type="primary"
-          onClick={this.onBackHome}
+          onClick={() => this.props.history.replace('/')}
           style={{ marginTop: 40 }}
         >
           <FormattedMessage {...messages.backHomeBtn} />
@@ -109,4 +106,4 @@ class RiasecResult extends React.Component {
     );
   }
 }
-export default RiasecResult;
+export default withRouter(RiasecResult);

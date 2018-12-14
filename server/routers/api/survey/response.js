@@ -104,20 +104,23 @@ router.post(
                     name: group.name,
                   };
 
-                  if (group.childs.length > 0) {
+                  if (!resultScore[group._id] && group.childs.length === 0) {
+                    resultItem.score = -1;
+                  } else if (group.childs.length > 0) {
                     resultItem.score = group.childs.reduce(
                       (acc, cur) => acc + resultScore[cur._id],
                       0,
                     );
-                  } else if (!resultScore[group._id]) {
-                    resultItem.score = -1;
+                  } else {
+                    resultItem.score = resultScore[group._id];
                   }
 
-                  resultItem.score = resultScore[group._id];
                   const i = _.findIndex(
                     psychologicIndex,
                     obj => obj.name === group.name,
                   );
+
+                  console.log(i, group.name);
 
                   if (resultItem.score < 0) {
                     resultItem.description = 'Phiếu trống';
@@ -139,7 +142,10 @@ router.post(
                 });
 
                 console.log(result);
+                return res.json({ result: { name: 'psychologic', result } });
               });
+
+            break;
 
           // return res.json(resultPsychologic(req.body.answers, survey._id));
           case 'neo':

@@ -50,7 +50,7 @@ const indexScore = [
     sd: 3.41427,
   },
   {
-    name: 'Khó khăn trong mối quan hệ với em bè',
+    name: 'Khó khăn trong mối quan hệ với bạn bè',
     m: 6.7982,
     sd: 5.11637,
   },

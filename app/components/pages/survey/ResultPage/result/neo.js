@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route, Redirect } from 'react-router'
+import { withRouter } from 'react-router';
 
 // import styled from 'styled-components';
 
@@ -20,8 +20,6 @@ class NeoResult extends React.Component {
       gender: e.target.value,
     });
   };
-
-  onBackHome = () => <Redirect to="/" />;
 
   render() {
     return (
@@ -76,11 +74,11 @@ class NeoResult extends React.Component {
           </Col>
         ))}
 
-        <Button type="primary" onClick={this.onBackHome}>
+        <Button type="primary" onClick={() => this.props.history.replace('/')}>
           <FormattedMessage {...messages.backHomeBtn} />
         </Button>
       </Row>
     );
   }
 }
-export default NeoResult;
+export default withRouter(NeoResult);
