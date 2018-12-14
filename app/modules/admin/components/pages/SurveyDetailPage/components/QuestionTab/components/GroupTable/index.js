@@ -209,6 +209,7 @@ class GroupTable extends React.Component {
             </h3>
           )}
           size="middle"
+          scroll={{ x: 715 }}
           rowClassName="editable-row"
         />
 

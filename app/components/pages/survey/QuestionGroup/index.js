@@ -12,8 +12,8 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Spin } from 'antd';
 import config from 'utils/validation/config';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 import Question from '../Question';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -50,6 +50,7 @@ class QuestionGroup extends React.Component {
               id={question._id}
               answers={this.props.group.optionAnswers}
               inputType={this.props.group.inputType}
+              groupId={this.props.group._id}
               key={question._id}
             />
           ))}

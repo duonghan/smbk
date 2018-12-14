@@ -8,7 +8,7 @@ const data = {
   // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   datasets: [
     {
-      label: 'Sales',
+      label: 'Phản hồi',
       type: 'line',
       data: [51, 65, 40, 49, 60, 37, 40, 51, 65, 40, 49, 60],
       fill: false,
@@ -22,7 +22,7 @@ const data = {
     },
     {
       type: 'bar',
-      label: 'Visitor',
+      label: 'Người dùng',
       data: [200, 185, 590, 621, 250, 400, 95, 200, 185, 590, 621, 250],
       fill: false,
       backgroundColor: '#71B37C',

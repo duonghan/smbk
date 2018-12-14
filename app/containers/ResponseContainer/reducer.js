@@ -41,7 +41,7 @@ function responseContainerReducer(state = initialState, action) {
 
     case ADD_ANSWER:
       return state.setIn(
-        ['answers', action.answer.questionId],
+        ['answers', action.answer.groupId, action.answer.questionId],
         fromJS({
           orderNum: action.answer.orderNum,
           score: action.answer.score,

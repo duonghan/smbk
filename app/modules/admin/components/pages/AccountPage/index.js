@@ -143,7 +143,6 @@ class AccountTable extends React.Component {
       this.cancel,
       this.edit,
       this.handleDelete,
-      this.state.searchText,
     ).map(col => {
       if (!col.editable) {
         return col;
@@ -169,17 +168,17 @@ class AccountTable extends React.Component {
           />
         </Helmet>
 
-        <div style={styles.tableOperations}>
-          <Search
-            placeholder={formatMessage(messages.searchInput)}
-            onSearch={value =>
-              this.setState({
-                searchText: value,
-              })
-            }
-            style={{ ...styles.button }}
-          />
-        </div>
+        {/* <div style={styles.tableOperations}> */}
+        {/* <Search */}
+        {/* placeholder={formatMessage(messages.searchInput)} */}
+        {/* onSearch={value => */}
+        {/* this.setState({ */}
+        {/* searchText: value, */}
+        {/* }) */}
+        {/* } */}
+        {/* style={{ ...styles.button }} */}
+        {/* /> */}
+        {/* </div> */}
 
         <Table
           components={components}

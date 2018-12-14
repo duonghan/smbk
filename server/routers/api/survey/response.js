@@ -25,8 +25,7 @@ const {
   exportExcel,
 } = require('../../../utils/calculate/response/moc');
 
-// Load excel config
-const { workbookConfig } = require('../../../config/excel');
+const psychologicIndex = require('../../../utils/calculate/index/psychologic');
 
 router.get(
   '/',
@@ -90,30 +89,59 @@ router.post(
   '/submit',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    console.log(req.body);
     Response.findById(req.body.id).then(response => {
       Survey.findById(response.survey).then(survey => {
-        console.log(survey);
         switch (survey.name) {
           case 'psychologic_test':
-            QuestionGroup.find({ survey: survey._id, parent: null }).then(
-              groups => {
-                groups.map(group => {
-                  // collect all question Id of this group
-                  QuestionGroup.find(
-                    { _id: { $in: group.childs } },
-                    (err, groups) => {
-                      const questions = _.flattenDeep(
-                        groups.map(group => group.questions),
-                      );
+            const resultScore = resultPsychologic(req.body.answers);
+            QuestionGroup.find({ survey: survey._id, parent: null })
+              .select('childs name')
+              .then(groups => {
+                const result = [];
 
-                      console.log(questions);
-                    },
+                groups.map(group => {
+                  const resultItem = {
+                    name: group.name,
+                  };
+
+                  if (group.childs.length > 0) {
+                    resultItem.score = group.childs.reduce(
+                      (acc, cur) => acc + resultScore[cur._id],
+                      0,
+                    );
+                  } else if (!resultScore[group._id]) {
+                    resultItem.score = -1;
+                  }
+
+                  resultItem.score = resultScore[group._id];
+                  const i = _.findIndex(
+                    psychologicIndex,
+                    obj => obj.name === group.name,
                   );
+
+                  if (resultItem.score < 0) {
+                    resultItem.description = 'Phiếu trống';
+                  } else if (
+                    resultItem.score <
+                    psychologicIndex[i].m + psychologicIndex[i].sd
+                  ) {
+                    resultItem.description = 'Không gặp vấn đề';
+                  } else if (
+                    resultItem.score >
+                    psychologicIndex[i].m + 2 * psychologicIndex[i].sd
+                  ) {
+                    resultItem.description = 'Nguy cơ';
+                  } else {
+                    resultItem.description = 'Nên gặp chuyên gia';
+                  }
+
+                  result.push(resultItem);
                 });
-              },
-            );
-            return res.json(resultPsychologic(req.body.answers, survey._id));
+
+                console.log(result);
+              });
+
+          // return res.json(resultPsychologic(req.body.answers, survey._id));
           case 'neo':
             return res.json({
               result: resultNEO(req.body.answers),

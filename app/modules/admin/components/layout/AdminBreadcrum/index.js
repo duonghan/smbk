@@ -24,10 +24,8 @@ class AdminBreadcrum extends React.Component {
       '/admin': 'Admin',
       '/admin/dashboard': 'Dashboard',
       '/admin/survey': 'Survey',
-      '/admin/survey/check': 'Check',
-      '/admin/survey/neo': 'NEO',
-      '/admin/survey/riasec': 'RIASEC',
       '/admin/survey/detail': 'Detail',
+      '/admin/account-list': 'Account List',
     };
   }
 

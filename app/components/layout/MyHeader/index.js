@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Avatar, Row, Col } from 'antd';
+import { Layout, Menu, Avatar, Row, Col, Dropdown, Icon } from 'antd';
 import Logo from 'images/logo.svg';
 import LogoText from 'images/logo_text.svg';
 
@@ -16,7 +16,7 @@ import messages from './messages';
 import { styles } from './styles';
 import { PROFILE, LOGOUT, UPDATE_INFO } from './constants';
 import { Helmet } from 'react-helmet';
-
+import MediaQuery from 'react-responsive';
 const { Header } = Layout;
 const { SubMenu } = Menu;
 
@@ -25,6 +25,20 @@ class MainHeader extends React.Component {
   debugger;
 
   render() {
+    const menu = (
+      <Menu style={{ paddingRight: 15, paddingLeft: 15 }}>
+        <Menu.Item key="1">
+          <Link to="/login">
+            <FormattedMessage {...messages.login} />
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <Link to="/register">
+            <FormattedMessage {...messages.signup} />
+          </Link>
+        </Menu.Item>
+      </Menu>
+    );
     return (
       <Row>
         <Header style={{ background: '#1373CC', color: 'white' }}>
@@ -36,28 +50,46 @@ class MainHeader extends React.Component {
           </Col>
           <Col span="12">
             {!this.props.auth.get('isAuthorized') ? (
-              <Menu
-                mode="horizontal"
-                theme="dark"
+              <div
                 style={{
                   float: 'right',
                   backgroundColor: '#1373CC',
                   lineHeight: '64px',
                 }}
-                selectable={false}
-                onSelect={this.handleSelect}
+                onClick={this.handleSelect}
               >
-                <Menu.Item key="1">
-                  <Link to="/login">
+                <MediaQuery minDeviceWidth={426}>
+                  <Link
+                    style={{
+                      paddingRight: 10,
+                      paddingLeft: 10,
+                      color: '#fff',
+                      textDecoration: 'none',
+                    }}
+                    to="/login"
+                  >
                     <FormattedMessage {...messages.login} />
                   </Link>
-                </Menu.Item>
-                <Menu.Item key="2">
-                  <Link to="/register">
+                  <Link
+                    style={{
+                      paddingLeft: 10,
+                      color: '#fff',
+                      textDecoration: 'none',
+                    }}
+                    to="/register"
+                  >
                     <FormattedMessage {...messages.signup} />
                   </Link>
-                </Menu.Item>
-              </Menu>
+                </MediaQuery>
+                <MediaQuery maxDeviceWidth={425}>
+                  <Dropdown overlay={menu} trigger={['click']}>
+                    <Icon
+                      type="menu-fold"
+                      style={{ fontSize: '20px', color: '#fff' }}
+                    />
+                  </Dropdown>
+                </MediaQuery>
+              </div>
             ) : (
               <Menu
                 mode="horizontal"

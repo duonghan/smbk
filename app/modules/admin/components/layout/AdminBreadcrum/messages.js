@@ -15,4 +15,29 @@ export default defineMessages({
   //   id: `${scope}.header`,
   //   defaultMessage: 'This is the AdminBreadcrum component!',
   // },
+
+  adminLabel: {
+    id: `${scope}.adminLabel`,
+    defaultMessage: 'Người quản trị',
+  },
+
+  dashboardLabel: {
+    id: `${scope}.dashboardLabel`,
+    defaultMessage: 'Bảng điều khiển',
+  },
+
+  accountLabel: {
+    id: `${scope}.accountLabel`,
+    defaultMessage: 'Danh sách tài khoản',
+  },
+
+  surveyLabel: {
+    id: `${scope}.surveyLabel`,
+    defaultMessage: 'Khảo sát',
+  },
+
+  surveyDetailLabel: {
+    id: `${scope}.surveyDetailLabel`,
+    defaultMessage: 'Chi tiết',
+  },
 });

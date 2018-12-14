@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Icon, Popconfirm, Tag, Tooltip } from 'antd';
+import { Button, Divider, Icon, Input, Popconfirm, Tag, Tooltip } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { EditableContext } from './EditableCell';
 import messages from './messages';
@@ -23,7 +23,6 @@ export default (
   cancel,
   edit,
   handleDelete,
-  searchText,
 ) => [
   {
     title: '#',
@@ -41,8 +40,6 @@ export default (
     editable: true,
     sorter: (a, b) => a.name.localeCompare(b.name),
     sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
-    onFilter: (value, record) =>
-      record.name.toLowerCase().includes(searchText.toLowerCase()),
   },
   {
     title: 'Email',

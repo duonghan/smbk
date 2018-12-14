@@ -23,42 +23,35 @@ class Question extends React.Component {
     isSelected: false,
   };
 
-  onChangeRadio = e => {
-    this.setState(prevState => ({ isSelected: true }));
-
+  handleAddAnswer = value => {
     this.props.addAnswer({
       questionId: this.props.id,
-      orderNum: this.props.orderNumber,
-      score: e.target.value,
-    });
-  };
-
-  onChangeRate = value => {
-    this.setState(prevState => ({ isSelected: true }));
-
-    this.props.addAnswer({
-      questionId: this.props.id,
+      groupId: this.props.groupId,
       orderNum: this.props.orderNumber,
       score: value,
     });
   };
 
+  onChangeRadio = e => {
+    this.setState(prevState => ({ isSelected: true }));
+
+    this.handleAddAnswer(e.target.value);
+  };
+
+  onChangeRate = value => {
+    this.setState(prevState => ({ isSelected: true }));
+
+    this.handleAddAnswer(value);
+  };
+
   onChangeCheckbox = e => {
     this.setState(prevState => ({ isSelected: e.target.checked }));
 
-    this.props.addAnswer({
-      questionId: this.props.id,
-      orderNum: this.props.orderNumber,
-      score: e.target.checked ? 1 : 0,
-    });
+    this.handleAddAnswer(e.target.checked ? 1 : 0);
   };
 
   onChangeTextArea = e => {
-    this.props.addAnswer({
-      questionId: this.props.id,
-      orderNum: this.props.orderNumber,
-      text: e.target.value,
-    });
+    this.handleAddAnswer(e.target.value);
   };
 
   renderQuestion = type => {
@@ -70,8 +63,9 @@ class Question extends React.Component {
               {this.props.content}
             </strong>
             <br />
+
             <RadioGroup onChange={this.onChangeRadio}>
-              {this.props.answers.map((item, index) => (
+              {this.props.answers.map(item => (
                 <Radio
                   style={{
                     display: 'block',
@@ -79,7 +73,7 @@ class Question extends React.Component {
                     lineHeight: '30px',
                   }}
                   value={item.score}
-                  key={index}
+                  key={item._id}
                 >
                   {item.text}
                 </Radio>
@@ -145,6 +139,7 @@ Question.propTypes = {
   content: PropTypes.string,
   inputType: PropTypes.string,
   id: PropTypes.string.isRequired,
+  groupId: PropTypes.string.isRequired,
   orderNumber: PropTypes.number.isRequired,
   answers: PropTypes.array,
   addAnswer: PropTypes.func.isRequired,

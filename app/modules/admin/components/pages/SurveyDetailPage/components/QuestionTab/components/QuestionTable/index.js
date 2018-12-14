@@ -200,6 +200,7 @@ class QuestionTable extends React.Component {
           )}
           size="middle"
           rowClassName="editable-row"
+          scroll={{ x: 715 }}
           style={{ display: this.state.display }}
         />
 
