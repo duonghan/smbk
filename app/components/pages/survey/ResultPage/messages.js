@@ -55,4 +55,14 @@ export default defineMessages({
     id: `${scope}.backHomeBtn`,
     defaultMessage: 'Về trang chủ',
   },
+
+  psychologicNameLabel: {
+    id: `${scope}.psychologicNameLabel`,
+    defaultMessage: 'Kiểu tâm lý',
+  },
+
+  psychologicLevelLabel: {
+    id: `${scope}.psychologicLevelLabel`,
+    defaultMessage: 'Mức độ khó khăn',
+  },
 });

@@ -149,11 +149,17 @@ router.post(
 
           // return res.json(resultPsychologic(req.body.answers, survey._id));
           case 'neo':
-            return res.json({
-              result: resultNEO(req.body.answers),
-            });
+            QuestionGroup.findOne({ survey: survey._id }).then(group =>
+              res.json({
+                result: resultNEO(req.body.answers[group._id]),
+              }),
+            );
+            break;
           case 'riasec':
-            return res.json({ result: resultRIASEC(req.body.answers) });
+            QuestionGroup.findOne({ survey: survey._id }).then(group =>
+              res.json({ result: resultRIASEC(req.body.answers[group._id]) }),
+            );
+            break;
           case 'moc':
           case 'moc2':
             Response.findByIdAndUpdate(

@@ -5,7 +5,8 @@ import { withRouter } from 'react-router';
 // import styled from 'styled-components';
 
 import { Row, Col, Tag, Table, Button } from 'antd';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { Line } from 'react-chartjs-2';
 import messages from '../messages';
 
 const colorTag = [
@@ -26,16 +27,103 @@ const colorTag = [
     color: 'green',
   },
 ];
+const dataChart = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  datasets: [
+    {
+      label: 'My First dataset',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(75,192,192,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(75,192,192,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [65, 59, 80, 81, 56, 55, 40],
+    },
+    {
+      label: 'My First dataset',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(75,192,192,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(75,192,192,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [65, 59, 55, 40, 80, 81, 56],
+    },
+    {
+      label: 'My First dataset',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(75,192,192,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(75,192,192,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [56, 55, 40, 65, 59, 80, 81],
+    },
+  ],
+};
+const plugins = [
+  {
+    beforeInit(chart) {
+      chart.data.labels.forEach((e, i, a) => {
+        // const eMultiLine = e
+        //   .split(' ')
+        //   .map((word, ii) => ((ii + 1) % 3 === 0 ? `${word}\n` : word))
+        //   .join(' ');
+        //
+        // if (/\n/.test(eMultiLine)) {
+        //   a[i] = e.split(/\n/);
+        // }
+
+        a[i] = 'asdasd';
+      });
+    },
+  },
+];
 
 class PsychologicResult extends React.Component {
   render() {
     const resultPsychologic = this.props.result;
+    const { formatMessage } = this.props.intl;
     const data = resultPsychologic.result.map((item, index) => ({
       key: index,
       ...item,
     }));
 
-    console.log(data);
+    dataChart.labels = resultPsychologic.result.map(item => item.name);
 
     const columns = [
       {
@@ -46,15 +134,16 @@ class PsychologicResult extends React.Component {
         sorter: (a, b) => a < b,
       },
       {
-        title: 'Name',
+        title: formatMessage(messages.psychologicNameLabel),
         dataIndex: 'name',
         key: 'name',
         sorter: (a, b) => a.name.localeCompare(b.name),
       },
       {
-        title: 'Description',
+        title: formatMessage(messages.psychologicLevelLabel),
         key: 'description',
         dataIndex: 'description',
+        align: 'center',
         sorter: (a, b) => a.description.localeCompare(b.description),
         render: text => (
           <span>
@@ -80,12 +169,28 @@ class PsychologicResult extends React.Component {
         </h2>
 
         <Row type="flex" justify="center" style={{ margin: 20 }}>
-          <Col>
-            <Table columns={columns} dataSource={data} />
+          <Col md={16}>
+            <Line data={dataChart} />
+          </Col>
+        </Row>
+
+        <Row type="flex" justify="center" style={{ margin: 20 }}>
+          <Col md={16}>
+            <Table
+              bordered
+              columns={columns}
+              dataSource={data}
+              plugins={plugins}
+            />
           </Col>
         </Row>
       </div>
     );
   }
 }
-export default withRouter(PsychologicResult);
+
+PsychologicResult.propTypes = {
+  intl: intlShape.isRequired,
+};
+
+export default withRouter(injectIntl(PsychologicResult));
