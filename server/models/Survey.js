@@ -6,34 +6,33 @@ const SurveySchema = new Schema({
   name: {
     type: String,
     required: true,
+    lowercase: true,
+    trim: true,
   },
 
   description: {
     type: String,
     required: true,
     default: '',
+    trim: true,
   },
 
   cover: {
     type: String,
     required: true,
     default: '',
+    trim: true,
   },
 
   title: {
     type: String,
     required: true,
+    trim: true,
   },
 
   date: {
     type: Date,
     default: Date.now,
-  },
-
-  requiredProfile: {
-    type: Boolean,
-    required: true,
-    default: false,
   },
 
   lastUpdate: {

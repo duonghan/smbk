@@ -8,11 +8,13 @@ const UserSchema = new Schema({
   name: {
     type: String,
     required: true,
+    trim: true,
   },
 
   email: {
     type: String,
     required: true,
+    trim: true,
   },
 
   password: {
@@ -23,6 +25,9 @@ const UserSchema = new Schema({
   role: {
     type: String,
     required: true,
+    trim: true,
+    uppercase: true,
+    enum: ['ADMIN', 'DEFAULT', 'GUEST'],
   },
 
   avatar: {

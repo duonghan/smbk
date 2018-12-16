@@ -28,7 +28,6 @@ const colorTag = [
   },
 ];
 const dataChart = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   datasets: [
     {
       label: 'My First dataset',
@@ -95,24 +94,6 @@ const dataChart = {
     },
   ],
 };
-const plugins = [
-  {
-    beforeInit(chart) {
-      chart.data.labels.forEach((e, i, a) => {
-        // const eMultiLine = e
-        //   .split(' ')
-        //   .map((word, ii) => ((ii + 1) % 3 === 0 ? `${word}\n` : word))
-        //   .join(' ');
-        //
-        // if (/\n/.test(eMultiLine)) {
-        //   a[i] = e.split(/\n/);
-        // }
-
-        a[i] = 'asdasd';
-      });
-    },
-  },
-];
 
 class PsychologicResult extends React.Component {
   render() {
@@ -123,7 +104,7 @@ class PsychologicResult extends React.Component {
       ...item,
     }));
 
-    dataChart.labels = resultPsychologic.result.map(item => item.name);
+    dataChart.labels = resultPsychologic.result.map((item, index) => index + 1);
 
     const columns = [
       {
@@ -176,12 +157,7 @@ class PsychologicResult extends React.Component {
 
         <Row type="flex" justify="center" style={{ margin: 20 }}>
           <Col md={16}>
-            <Table
-              bordered
-              columns={columns}
-              dataSource={data}
-              plugins={plugins}
-            />
+            <Table bordered columns={columns} dataSource={data} />
           </Col>
         </Row>
       </div>

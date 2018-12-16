@@ -6,6 +6,7 @@ const QuestionSchema = new Schema({
   name: {
     type: String,
     required: true,
+    trim: true,
   },
 
   survey: {
@@ -38,6 +39,8 @@ const QuestionSchema = new Schema({
     type: String,
     required: true,
     default: 'radio',
+    lowercase: true,
+    trim: true,
   },
 
   optionAnswers: [

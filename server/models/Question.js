@@ -11,6 +11,7 @@ const QuestionSchema = new Schema({
   content: {
     type: String,
     required: true,
+    trim: true,
   },
 
   group: {
