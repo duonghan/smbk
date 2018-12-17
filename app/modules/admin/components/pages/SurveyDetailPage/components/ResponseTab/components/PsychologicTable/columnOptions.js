@@ -1,56 +1,30 @@
 import React from 'react';
-import { Divider, Icon, Popconfirm, Tooltip, Tag } from 'antd';
+import { Divider, Icon, Popconfirm, Tooltip } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { EditableContext } from '../../../../../../utils/EditableCell';
 import messages from './messages';
 import { styles } from '../../../../../../utils/styles';
 
-const colorTag = inputType => {
-  switch (inputType) {
-    case 'text-area':
-      return 'green';
-    case 'select':
-      return 'volcano';
-    case 'rate':
-      return 'purple';
-    default:
-      return 'blue';
-  }
-};
-
-export default (
-  formatMessage,
-  isEditing,
-  save,
-  cancel,
-  edit,
-  handleDelete,
-  viewQuestion,
-  handleCreateChild,
-) => [
+export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
+  {
+    title: '#',
+    dataIndex: 'orderNumber',
+    key: 'orderNumber',
+    align: 'center',
+    sorter: (a, b) => a.orderNumber < b.orderNumber,
+  },
   {
     title: formatMessage(messages.nameLabel),
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'content',
+    key: 'content',
     editable: true,
-    sorter: (a, b) => a.title.localeCompare(b.title),
+    sorter: (a, b) => a.content.localeCompare(b.content),
   },
   {
-    title: formatMessage(messages.numofChildLabel),
-    dataIndex: 'numofChild',
-    key: 'numofChild',
-    sorter: (a, b) => a > b,
-  },
-  {
-    title: formatMessage(messages.inputTypeLabel),
-    dataIndex: 'inputType',
-    key: 'inputType',
-    render: text => (text ? <Tag color={colorTag(text)}>{text}</Tag> : null),
-  },
-  {
-    title: formatMessage(messages.actionLabel),
+    title: formatMessage(messages.actionTitle),
     dataIndex: 'action',
     key: 'action',
+    align: 'center',
     render: (text, record) => {
       const editable = isEditing(record);
       return (
@@ -69,7 +43,7 @@ export default (
               </EditableContext.Consumer>
               <Popconfirm
                 title={formatMessage(messages.cancelPromtMsg)}
-                onConfirm={() => cancel()}
+                onConfirm={() => cancel(record.orderNumber)}
                 cancelText={formatMessage(messages.cancel)}
               >
                 <a>
@@ -82,14 +56,14 @@ export default (
               placement="left"
               title={formatMessage(messages.editToolTip)}
             >
-              <a onClick={() => edit(record.id)}>
+              <a onClick={() => edit(record.orderNumber)}>
                 <Icon type="edit" style={styles.icon} />
               </a>
             </Tooltip>
           )}
           <Divider type="vertical" />
           <Tooltip
-            placement="top"
+            placement="right"
             title={formatMessage(messages.deleteToolTip)}
           >
             <Popconfirm
@@ -103,29 +77,6 @@ export default (
               </a>
             </Popconfirm>
           </Tooltip>
-          <Divider type="vertical" />
-          {!record.parent && (
-            <Tooltip
-              placement="right"
-              title={formatMessage(messages.addChildToolTip)}
-            >
-              <a onClick={() => handleCreateChild(record.id)}>
-                <Icon type="plus" style={styles.icon} />
-              </a>
-              <Divider type="vertical" />
-            </Tooltip>
-          )}
-
-          {!record.numofChild && (
-            <Tooltip
-              placement="right"
-              title={formatMessage(messages.detailToolTip)}
-            >
-              <a onClick={() => viewQuestion(record.id, record.name)}>
-                <Icon type="eye" style={styles.icon} />
-              </a>
-            </Tooltip>
-          )}
         </span>
       );
     },

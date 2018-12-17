@@ -68,8 +68,6 @@ class PsychologicResult extends React.Component {
       };
     });
 
-    console.log(data);
-
     const dataChart = {
       datasets: [
         { ...datasetDefault('#4cba6b'), ...lowerData },

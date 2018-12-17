@@ -123,7 +123,11 @@ class SurveyTable extends React.Component {
         loading={this.state.loading}
         dataSource={this.state.data}
         columns={columns}
-        title={() => <strong>{formatMessage(messages.header)}</strong>}
+        title={() => (
+          <h3 style={{ color: '#FA541C', textAlign: 'center' }}>
+            <strong>{formatMessage(messages.header)}</strong>
+          </h3>
+        )}
         size="middle"
         rowClassName="editable-row"
       />

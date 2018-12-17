@@ -1,16 +1,18 @@
 import React from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Bar } from 'react-chartjs-2';
+import axios from 'axios';
+import config from 'utils/validation/config';
 
 import messages from '../messages';
 
 const data = {
-  // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
   datasets: [
     {
       label: 'Phản hồi',
       type: 'line',
-      data: [51, 65, 40, 49, 60, 37, 40, 51, 65, 40, 49, 60],
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       fill: false,
       borderColor: '#EC932F',
       backgroundColor: '#EC932F',
@@ -23,7 +25,7 @@ const data = {
     {
       type: 'bar',
       label: 'Người dùng',
-      data: [200, 185, 590, 621, 250, 400, 95, 200, 185, 590, 621, 250],
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       fill: false,
       backgroundColor: '#71B37C',
       borderColor: '#71B37C',
@@ -36,7 +38,6 @@ const data = {
 
 const options = {
   responsive: true,
-  // labels: ["January", "February", "March", "April", "May", "June", "July"],
   tooltips: {
     mode: 'label',
   },
@@ -52,21 +53,11 @@ const options = {
         gridLines: {
           display: false,
         },
-
-        labels: [
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
-        ],
+        scaleLabel: {
+          display: true,
+          labelString: 'Tháng',
+          fontColor: '#fb6f62',
+        },
       },
     ],
     yAxes: [
@@ -81,6 +72,11 @@ const options = {
         labels: {
           show: true,
         },
+        scaleLabel: {
+          display: true,
+          labelString: 'Số lượng người dùng đăng ký',
+          fontColor: '#71B37C',
+        },
       },
       {
         type: 'linear',
@@ -93,29 +89,44 @@ const options = {
         labels: {
           show: true,
         },
+        scaleLabel: {
+          display: true,
+          labelString: 'Số lượng phản hồi',
+          fontColor: '#EC932F',
+        },
       },
     ],
   },
 };
 
-const plugins = [
-  {
-    afterDraw: (chartInstance, easing) => {
-      const ctx = chartInstance.chart.ctx;
-      // ctx.fillText('This text drawn by a plugin', 100, 100);
-    },
-  },
-];
-
 /* eslint-disable react/prefer-stateless-function */
 class ResponseChart extends React.Component {
+  fetchUserPerMonth = () => {
+    axios.get('/api/chart/dashboard/user', config).then(res => {
+      if (res.data.length > 0) {
+        res.data[0].monthlyusage.map(item => {
+          data.datasets[1].data[item.month - 1] = item.count;
+        });
+
+        console.log(res.data);
+      }
+    });
+  };
+
+  componentDidMount() {
+    this.fetchUserPerMonth();
+  }
+
   render() {
     return (
       <div>
-        <h2>
+        <h2 style={{ textAlign: 'center', marginTop: 20 }}>
           <FormattedMessage {...messages.responseChartHeader} />
         </h2>
-        <Bar data={data} options={options} plugins={plugins} />
+
+        <br />
+
+        <Bar data={data} options={options} />
       </div>
     );
   }

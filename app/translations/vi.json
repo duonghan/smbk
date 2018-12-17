@@ -268,7 +268,7 @@
   "app.components.SurveyPage.deleteToolTip": "Xóa",
   "app.components.SurveyPage.detailToolTip": "Chi tiết",
   "app.components.SurveyPage.editToolTip": "Sửa",
-  "app.components.SurveyPage.header": "This is the SurveyPage component!",
+  "app.components.SurveyPage.header": "Danh sách khảo sát",
   "app.components.SurveyPage.rulesMsg": "Làm ơn nhập",
   "app.components.SurveyPage.save": "Lưu",
   "app.components.SurveyPage.titleLabel": "Tiêu đề",

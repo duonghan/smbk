@@ -29,6 +29,7 @@ const auth = require('./routers/auth');
 
 // chart
 const mocChart = require('./routers/api/chart/moc');
+const dashboardChart = require('./routers/api/chart/dashboard');
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -63,6 +64,7 @@ app.use('/api/survey/responses', responses);
 app.use('/auth', auth);
 
 app.use('/api/chart/moc', mocChart);
+app.use('/api/chart/dashboard', dashboardChart);
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {

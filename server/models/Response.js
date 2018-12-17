@@ -35,6 +35,11 @@ const ResponseSchema = new Schema({
       text: String, // when question has type text-area
     },
   ],
+
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Response = mongoose.model('responses', ResponseSchema);

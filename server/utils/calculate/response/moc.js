@@ -60,7 +60,7 @@ const generateData = (dataSource, groups, surveyId) =>
         questions.map(question => {
           dataSource.result[question._id].content = question.content;
         });
-        return { dataSource: data, groups };
+        return { dataSource, groups };
       })
       .then(({ dataSource, groups }) => {
         Response.find({ survey: surveyId }).then(responses => {
