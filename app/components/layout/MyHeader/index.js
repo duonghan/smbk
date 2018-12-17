@@ -7,16 +7,10 @@ import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { signoutRequest } from 'containers/Authentication/actions';
-import injectReducer from 'utils/injectReducer';
-import injectSaga from 'utils/injectSaga';
-import saga from 'containers/Authentication/saga';
-import reducer from 'containers/Authentication/reducer';
-import { compose } from 'redux';
+import MediaQuery from 'react-responsive';
 import messages from './messages';
 import { styles } from './styles';
 import { PROFILE, LOGOUT, UPDATE_INFO } from './constants';
-import { Helmet } from 'react-helmet';
-import MediaQuery from 'react-responsive';
 const { Header } = Layout;
 const { SubMenu } = Menu;
 

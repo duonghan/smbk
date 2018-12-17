@@ -100,4 +100,20 @@ export default defineMessages({
     id: `${scope}.btnSubmit`,
     defaultMessage: 'Cập nhật',
   },
+
+  updateSuccessLabel: {
+    id: `${scope}.updateSuccessLabel`,
+    defaultMessage: 'Thành công',
+  },
+
+  updateFailedLabel: {
+    id: `${scope}.updateFailedLabel`,
+    defaultMessage: 'Lỗi',
+  },
+
+  updateSuccessContent: {
+    id: `${scope}.updateSuccessContent`,
+    defaultMessage:
+      'Cập nhật thông tin thành công, vui lòng quay lại trang chủ để tiếp tục',
+  },
 });

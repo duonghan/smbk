@@ -33,7 +33,7 @@ import ResultPage from 'components/pages/survey/ResultPage/Loadable';
 import Survey from 'containers/ResponseContainer/Loadable';
 import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
 import ResetPassword from 'components/auth/ResetPassword/Loadable';
-import Setting from 'containers/SettingContainer/Loadable';
+import Setting from 'components/pages/Setting/Loadable';
 import HomePage from 'containers/HomePageContainer/Loadable';
 import LoginPage from 'containers/Authentication/Loadable';
 import injectReducer from 'utils/injectReducer';

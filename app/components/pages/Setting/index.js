@@ -5,9 +5,17 @@
  *
  */
 import React from 'react';
+import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { Form, Input, Switch, Button } from 'antd';
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
+import Cookies from 'js-cookie';
+
+import { Form, Input, Switch, Button, Modal } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import config from 'utils/validation/config';
+import { setCurrentUser } from 'containers/Authentication/actions';
+
 import styled from 'styled-components';
 import messages from './messages';
 
@@ -27,20 +35,22 @@ class SettingForm extends React.Component {
     this.state = {
       confirmDirty: false,
       isChangePass: false,
+      current: {},
     };
   }
 
   componentWillMount() {
-    this.props.onFetchProfile();
+    this.fetchCurrentUser();
   }
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const id = this.props.auth.getIn(['user', 'id']);
+        const doSetCurrentUser = this.props.setCurrentUser;
+
         const newProfile = {
-          id,
+          id: this.state.current.id,
           email: values.email,
           name: values.name,
         };
@@ -50,8 +60,31 @@ class SettingForm extends React.Component {
           newProfile.newPassword = values.newPassword;
         }
 
-        // update profile through saga
-        this.props.onUpdateProfile(newProfile);
+        // update profile
+        axios.put('/api/users/', newProfile, config).then(res => {
+          if (res.data.success) {
+            Cookies.set('token', res.data.token);
+            const userInfo = jwtDecode(res.data.token);
+            doSetCurrentUser(userInfo);
+            debugger;
+
+            Modal.success({
+              title: this.props.intl.formatMessage(messages.updateSuccessLabel),
+              content: this.props.intl.formatMessage(
+                messages.updateSuccessContent,
+              ),
+            });
+          } else {
+            Modal.error({
+              title: this.props.intl.formatMessage(messages.updateFailedLabel),
+              content: this.props.intl.formatMessage(
+                messages[res.data.message],
+              ),
+            });
+          }
+        });
+
+        this.props.form.resetFields();
       }
     });
   };
@@ -59,7 +92,7 @@ class SettingForm extends React.Component {
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('newPassword')) {
-      callback(this.props.intls.formatMessage(messages.validatePassword2));
+      callback(this.props.intl.formatMessage(messages.validatePassword2));
     } else {
       callback();
     }
@@ -78,10 +111,16 @@ class SettingForm extends React.Component {
     this.setState({ isChangePass: checked });
   };
 
+  fetchCurrentUser = () => {
+    axios
+      .get('/api/users/current', config)
+      .then(res => this.setState({ current: res.data }))
+      .catch(errors => this.setState({ errors }));
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const { formatMessage } = this.props.intl;
-    const { profile, errors } = this.props;
 
     const formItemLayout = {
       labelCol: {
@@ -112,6 +151,7 @@ class SettingForm extends React.Component {
         <Helmet title={formatMessage(messages.header)}>
           <meta name="description" content="Update profile information" />
         </Helmet>
+
         <Form onSubmit={this.handleSubmit}>
           <Title>
             <FormattedMessage {...messages.title} />
@@ -129,7 +169,8 @@ class SettingForm extends React.Component {
                   message: formatMessage(messages.requiredEmail),
                 },
               ],
-              initialValue: profile.get('email'),
+
+              initialValue: this.state.current.email,
             })(<Input />)}
           </FormItem>
 
@@ -141,7 +182,7 @@ class SettingForm extends React.Component {
                   message: formatMessage(messages.requiredName),
                 },
               ],
-              initialValue: profile.get('name'),
+              initialValue: this.state.current.name,
             })(<Input />)}
           </FormItem>
 
@@ -155,70 +196,69 @@ class SettingForm extends React.Component {
             })(<Switch onChange={this.toggleChangePassword} />)}
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label={formatMessage(messages.currentPassword)}
-          >
-            {getFieldDecorator('currentPassword', {
-              rules: [
-                {
-                  required: this.state.isChangePass,
-                  message: formatMessage(messages.requiredCurrentPassword),
-                },
-                {
-                  validate: errors.get('password'),
-                  message: formatMessage(messages.incorrectCurrentPassword),
-                },
-              ],
-            })(<Input disabled={!this.state.isChangePass} type="password" />)}
-          </FormItem>
+          <div style={{ display: !this.state.isChangePass && 'none' }}>
+            <FormItem
+              {...formItemLayout}
+              label={formatMessage(messages.currentPassword)}
+            >
+              {getFieldDecorator('currentPassword', {
+                rules: [
+                  {
+                    required: this.state.isChangePass,
+                    message: formatMessage(messages.requiredCurrentPassword),
+                  },
+                ],
+              })(<Input disabled={!this.state.isChangePass} type="password" />)}
+            </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label={formatMessage(messages.newPassword)}
-          >
-            {getFieldDecorator('newPassword', {
-              rules: [
-                {
-                  required: this.state.isChangePass,
-                  message: formatMessage(messages.requiredNewPassword),
-                },
-                {
-                  min: 6,
-                  message: formatMessage(messages.validatePassword),
-                },
-                {
-                  validator:
-                    this.state.isChangePass && this.validateToNextPassword,
-                },
-              ],
-            })(<Input disabled={!this.state.isChangePass} type="password" />)}
-          </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label={formatMessage(messages.newPassword)}
+            >
+              {getFieldDecorator('newPassword', {
+                rules: [
+                  {
+                    required: this.state.isChangePass,
+                    message: formatMessage(messages.requiredNewPassword),
+                  },
+                  {
+                    min: 6,
+                    message: formatMessage(messages.validatePassword),
+                  },
+                  {
+                    validator:
+                      this.state.isChangePass && this.validateToNextPassword,
+                  },
+                ],
+              })(<Input disabled={!this.state.isChangePass} type="password" />)}
+            </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label={formatMessage(messages.labelPassword2)}
-          >
-            {getFieldDecorator('confirmNewPassword', {
-              rules: [
-                {
-                  required: this.state.isChangePass,
-                  message: formatMessage(messages.requiredPassword2),
-                },
-                {
-                  validator:
-                    this.state.isChangePass && this.compareToFirstPassword,
-                  message: formatMessage(messages.validatePassword2),
-                },
-              ],
-            })(
-              <Input
-                type="password"
-                disabled={!this.state.isChangePass}
-                onBlur={this.handleConfirmBlur}
-              />,
-            )}
-          </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label={formatMessage(messages.labelPassword2)}
+            >
+              {getFieldDecorator('confirmNewPassword', {
+                rules: [
+                  {
+                    required: this.state.isChangePass,
+                    message: formatMessage(messages.requiredPassword2),
+                  },
+                  {
+                    validator:
+                      this.state.isChangePass && this.compareToFirstPassword,
+                    message: formatMessage(messages.validatePassword2),
+                  },
+                ],
+              })(
+                <Input
+                  type="password"
+                  disabled={!this.state.isChangePass}
+                  onBlur={this.handleConfirmBlur}
+                />,
+              )}
+            </FormItem>
+          </div>
+
           <FormItem {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
               <FormattedMessage {...messages.btnSubmit} />
@@ -234,4 +274,11 @@ SettingForm.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default Form.create()(injectIntl(SettingForm));
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: userInfo => dispatch(setCurrentUser(userInfo)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Form.create()(injectIntl(SettingForm)));

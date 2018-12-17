@@ -242,21 +242,103 @@ router.put(
   '/',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    if (req.user.role === 'ADMIN') {
-      User.findByIdAndUpdate(
-        req.body.id,
-        {
-          $set: {
-            email: req.body.email,
-            name: req.body.name,
-            role: req.body.role,
-          },
-        },
-        { new: true },
-      )
-        .then(() => res.json({ success: true }))
-        .catch(() => res.json({ success: false }));
-    } else {
+    try {
+      User.findById(req.body.id).then(user => {
+        const updatedUser = {
+          email: req.body.email,
+          name: req.body.name,
+        };
+
+        // when admin update user info
+        if (req.user.role === 'ADMIN') {
+          updatedUser.role = req.body.role;
+        }
+
+        // if update user's password
+        if (req.body.currentPassword && req.body.newPassword) {
+          bcrypt
+            .compare(req.body.currentPassword, user.password)
+            .then(isMatch => {
+              // Check password
+              if (isMatch) {
+                bcrypt.genSalt(10, (e, salt) => {
+                  bcrypt.hash(req.body.newPassword, salt, (err, hash) => {
+                    if (err) throw err;
+
+                    updatedUser.password = hash;
+
+                    User.findByIdAndUpdate(
+                      req.body.id,
+                      {
+                        $set: updatedUser,
+                      },
+                      { new: true },
+                    )
+                      .then(newUser => {
+                        const payload = {
+                          id: newUser.id,
+                          name: newUser.name,
+                          avatar: newUser.avatar,
+                          role: newUser.role,
+                        }; // Create JWT payload
+
+                        // Sign token
+                        jwt.sign(
+                          payload,
+                          keys.secretOrKey,
+                          { expiresIn: '1d' },
+                          (err, token) => {
+                            res.json({
+                              success: true,
+                              token: `Bearer ${token}`,
+                            });
+                          },
+                        );
+                      })
+                      .catch(() => res.json({ success: false }));
+                  });
+                });
+              } else {
+                return res.json({
+                  success: false,
+                  message: 'incorrectCurrentPassword',
+                });
+              }
+            });
+        } else {
+          // if only update base information
+          User.findByIdAndUpdate(
+            req.body.id,
+            {
+              $set: updatedUser,
+            },
+            { new: true },
+          )
+            .then(newUser => {
+              const payload = {
+                id: newUser.id,
+                name: newUser.name,
+                avatar: newUser.avatar,
+                role: newUser.role,
+              }; // Create JWT payload
+
+              // Sign token
+              jwt.sign(
+                payload,
+                keys.secretOrKey,
+                { expiresIn: '1d' },
+                (err, token) => {
+                  res.json({
+                    success: true,
+                    token: `Bearer ${token}`,
+                  });
+                },
+              );
+            })
+            .catch(() => res.json({ success: false }));
+        }
+      });
+    } catch (e) {
       return res
         .status(403)
         .send({ message: 'You have no rights to visit this page' });
