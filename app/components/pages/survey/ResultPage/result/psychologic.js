@@ -15,7 +15,7 @@ const colorTag = [
     color: 'gold',
   },
   {
-    name: 'Phiếu trống',
+    name: 'Bạn chưa trả lời',
     color: 'geekblue',
   },
   {
@@ -27,82 +27,79 @@ const colorTag = [
     color: 'green',
   },
 ];
-const dataChart = {
-  datasets: [
-    {
-      label: 'My First dataset',
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [65, 59, 80, 81, 56, 55, 40],
-    },
-    {
-      label: 'My First dataset',
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [65, 59, 55, 40, 80, 81, 56],
-    },
-    {
-      label: 'My First dataset',
-      fill: false,
-      lineTension: 0.1,
-      backgroundColor: 'rgba(75,192,192,0.4)',
-      borderColor: 'rgba(75,192,192,1)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgba(75,192,192,1)',
-      pointBackgroundColor: '#fff',
-      pointBorderWidth: 1,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-      pointHoverBorderColor: 'rgba(220,220,220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [56, 55, 40, 65, 59, 80, 81],
-    },
-  ],
-};
+
+const datasetDefault = color => ({
+  fill: false,
+  lineTension: 0.1,
+  backgroundColor: color,
+  borderColor: color,
+  borderCapStyle: 'butt',
+  borderDash: [],
+  borderDashOffset: 0.0,
+  borderJoinStyle: 'miter',
+  pointBorderColor: 'rgba(75,192,192,1)',
+  pointBackgroundColor: '#fff',
+  pointBorderWidth: 1,
+  pointHoverRadius: 5,
+  pointHoverBackgroundColor: color,
+  pointHoverBorderColor: color,
+  pointHoverBorderWidth: 2,
+  pointRadius: 1,
+  pointHitRadius: 10,
+});
 
 class PsychologicResult extends React.Component {
   render() {
     const resultPsychologic = this.props.result;
     const { formatMessage } = this.props.intl;
-    const data = resultPsychologic.result.map((item, index) => ({
-      key: index,
-      ...item,
-    }));
+
+    const lowerData = { label: formatMessage(messages.lowerLabel), data: [] };
+    const upperData = { label: formatMessage(messages.upperLabel), data: [] };
+    const valueData = { label: formatMessage(messages.valueLabel), data: [] };
+
+    const data = resultPsychologic.result.map((item, index) => {
+      lowerData.data.push(item.lower);
+      upperData.data.push(item.upper);
+      valueData.data.push(item.value);
+
+      return {
+        key: index,
+        ...item,
+      };
+    });
+
+    console.log(data);
+
+    const dataChart = {
+      datasets: [
+        { ...datasetDefault('#4cba6b'), ...lowerData },
+        { ...datasetDefault('#f33334'), ...upperData },
+        { ...datasetDefault('#367dc4'), ...valueData },
+      ],
+    };
+
+    const options = {
+      scales: {
+        yAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: formatMessage(messages.yAxesLabel),
+              fontColor: '#f33334',
+            },
+          },
+        ],
+        xAxes: [
+          {
+            scaleLabel: {
+              display: true,
+              labelString: formatMessage(messages.xAxesLabel),
+              fontColor: '#f29b1d',
+            },
+          },
+        ],
+      },
+    };
 
     dataChart.labels = resultPsychologic.result.map((item, index) => index + 1);
 
@@ -149,11 +146,15 @@ class PsychologicResult extends React.Component {
           <FormattedMessage {...messages.resultTitle} />
         </h2>
 
+        <br />
+
         <Row type="flex" justify="center" style={{ margin: 20 }}>
           <Col md={16}>
-            <Line data={dataChart} />
+            <Line data={dataChart} options={options} />
           </Col>
         </Row>
+
+        <br />
 
         <Row type="flex" justify="center" style={{ margin: 20 }}>
           <Col md={16}>

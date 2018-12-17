@@ -104,7 +104,7 @@ router.post(
                     name: group.name,
                   };
 
-                  if (!resultScore[group._id] && group.childs.length === 0) {
+                  if (!resultScore[group._id]) {
                     resultItem.score = -1;
                   } else if (group.childs.length > 0) {
                     resultItem.score = group.childs.reduce(
@@ -120,28 +120,28 @@ router.post(
                     obj => obj.name === group.name,
                   );
 
-                  console.log(i, group.name);
+                  const lower = psychologicIndex[i].m + psychologicIndex[i].sd;
+                  const upper =
+                    psychologicIndex[i].m + 2 * psychologicIndex[i].sd;
 
                   if (resultItem.score < 0) {
-                    resultItem.description = 'Phiếu trống';
-                  } else if (
-                    resultItem.score <
-                    psychologicIndex[i].m + psychologicIndex[i].sd
-                  ) {
+                    resultItem.description = 'Bạn chưa trả lời';
+                  } else if (resultItem.score < lower) {
                     resultItem.description = 'Không gặp vấn đề';
-                  } else if (
-                    resultItem.score >
-                    psychologicIndex[i].m + 2 * psychologicIndex[i].sd
-                  ) {
+                  } else if (resultItem.score > upper) {
                     resultItem.description = 'Nguy cơ';
                   } else {
                     resultItem.description = 'Nên gặp chuyên gia';
                   }
 
-                  result.push(resultItem);
+                  result.push({
+                    ...resultItem,
+                    lower,
+                    upper,
+                    value: resultItem.score,
+                  });
                 });
 
-                console.log(result);
                 return res.json({ result: { name: 'psychologic', result } });
               });
 

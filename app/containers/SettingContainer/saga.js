@@ -21,11 +21,18 @@ function* doFetchProfile() {
   }
 }
 
-function* doUpdateProfile(newProfile) {
+function* doUpdateProfile(data) {
   try {
-    const res = yield call(axios.post, '/api/users/update', config, newProfile);
-    const updatedProfile = res.data;
-    yield put(updateSuccess(updatedProfile));
+    const test = data;
+    debugger;
+    // const res = yield call(
+    //   axios.put,
+    //   '/api/users/update',
+    //   config,
+    //   data.newProfile,
+    // );
+    // const updatedProfile = res.data;
+    // yield put(updateSuccess(updatedProfile));
   } catch (err) {
     // set error message
     yield put(updateFailed(err.response.data));

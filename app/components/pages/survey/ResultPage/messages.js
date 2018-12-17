@@ -65,4 +65,29 @@ export default defineMessages({
     id: `${scope}.psychologicLevelLabel`,
     defaultMessage: 'Mức độ khó khăn',
   },
+
+  yAxesLabel: {
+    id: `${scope}.yAxesLabel`,
+    defaultMessage: 'Điểm số',
+  },
+
+  xAxesLabel: {
+    id: `${scope}.xAxesLabel`,
+    defaultMessage: 'Số thứ tự',
+  },
+
+  upperLabel: {
+    id: `${scope}.upperLabel`,
+    defaultMessage: 'Cận trên',
+  },
+
+  lowerLabel: {
+    id: `${scope}.lowerLabel`,
+    defaultMessage: 'Cận dưới',
+  },
+
+  valueLabel: {
+    id: `${scope}.valueLabel`,
+    defaultMessage: 'Giá trị hiện tại',
+  },
 });

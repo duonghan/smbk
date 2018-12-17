@@ -59,7 +59,7 @@ class SettingForm extends React.Component {
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('newPassword')) {
-      callback('Two passwords that you enter is inconsistent!');
+      callback(this.props.intls.formatMessage(messages.validatePassword2));
     } else {
       callback();
     }
@@ -67,6 +67,7 @@ class SettingForm extends React.Component {
 
   validateToNextPassword = (rule, value, callback) => {
     const { form } = this.props;
+    console.log(value);
     if (value && this.state.confirmDirty) {
       form.validateFields(['confirmNewPassword'], { force: true });
     }
@@ -165,7 +166,7 @@ class SettingForm extends React.Component {
                   message: formatMessage(messages.requiredCurrentPassword),
                 },
                 {
-                  validate: errors && errors.get('password'),
+                  validate: errors.get('password'),
                   message: formatMessage(messages.incorrectCurrentPassword),
                 },
               ],
@@ -181,6 +182,10 @@ class SettingForm extends React.Component {
                 {
                   required: this.state.isChangePass,
                   message: formatMessage(messages.requiredNewPassword),
+                },
+                {
+                  min: 6,
+                  message: formatMessage(messages.validatePassword),
                 },
                 {
                   validator:
