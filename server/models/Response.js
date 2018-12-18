@@ -20,8 +20,14 @@ const ResponseSchema = new Schema({
 
   results: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'resultindicator',
+      item: String,
+      value: String,
+      gender: {
+        type: String,
+        default: 'male',
+        enum: ['male', 'female'],
+        lowercase: true,
+      },
     },
   ],
 

@@ -146,23 +146,71 @@ router.post(
                   });
                 });
 
-                return res.json({ result: { name: 'psychologic', result } });
+                // update response information
+                Response.findByIdAndUpdate(
+                  response._id,
+                  {
+                    $set: {
+                      results: result.map(item => ({
+                        item: item.name,
+                        value: item.description,
+                      })),
+                    },
+                  },
+                  { new: true },
+                ).then(() =>
+                  res.json({
+                    result: { name: 'psychologic', result },
+                  }),
+                );
               });
 
             break;
 
           // return res.json(resultPsychologic(req.body.answers, survey._id));
           case 'neo':
-            QuestionGroup.findOne({ survey: survey._id }).then(group =>
-              res.json({
-                result: resultNEO(req.body.answers[group._id]),
-              }),
-            );
+            QuestionGroup.findOne({ survey: survey._id }).then(group => {
+              const result = resultNEO(req.body.answers[group._id]);
+
+              Response.findByIdAndUpdate(
+                response._id,
+                {
+                  $set: {
+                    results: result.map(item => ({
+                      item: item.name,
+                      value: item.description,
+                    })),
+                  },
+                },
+                { new: true },
+              ).then(() =>
+                res.json({
+                  result,
+                }),
+              );
+            });
             break;
           case 'riasec':
-            QuestionGroup.findOne({ survey: survey._id }).then(group =>
-              res.json({ result: resultRIASEC(req.body.answers[group._id]) }),
-            );
+            QuestionGroup.findOne({ survey: survey._id }).then(group => {
+              const results = resultRIASEC(req.body.answers[group._id]);
+
+              Response.findByIdAndUpdate(
+                response._id,
+                {
+                  $set: {
+                    results: results.orderedKeys.map((item, index) => ({
+                      item: results.resultIndex[item].name,
+                      value: index + 1,
+                    })),
+                  },
+                },
+                { new: true },
+              ).then(() =>
+                res.json({
+                  result: resultRIASEC(req.body.answers[group._id]),
+                }),
+              );
+            });
             break;
           case 'moc':
           case 'moc2':
@@ -172,8 +220,7 @@ router.post(
                 $set: { answers: resultMOC(req.body.answers) },
               },
               { new: true },
-            ).then(newResponse => {
-            });
+            ).then(() => {});
             return res.json({ result: resultMOC(req.body.answers) });
           default:
             return res.json({ result: false });
