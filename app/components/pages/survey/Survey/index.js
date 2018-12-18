@@ -36,6 +36,7 @@ class Survey extends React.Component {
       groups: [],
       percent: 0,
       loading: true,
+      submitting: false,
       surveyTitle: '',
       surveyDescription: '',
       activeKey: '0',
@@ -58,13 +59,19 @@ class Survey extends React.Component {
     this.props.setCurrentProfile(this.props.location.state.profileId);
   }
 
+  // set percent of completed answers for progress bar
   componentWillReceiveProps(nextProps) {
+    // number of completed response
+    const numCompleted = nextProps.response
+      .get('answers')
+      .valueSeq()
+      .reduce((acc, cur) => acc + cur.size, 0);
+
+    // total questions
+    const total = this.props.response.get('total');
+
     this.setState({
-      percent: Math.round(
-        (nextProps.response.get('answers').size /
-          this.props.response.get('total')) *
-          100,
-      ),
+      percent: Math.round((numCompleted / total) * 100),
     });
   }
 
@@ -160,8 +167,12 @@ class Survey extends React.Component {
                 ))}
             <Button
               type="primary"
+              loading={this.state.submitting}
               style={{ marginTop: 20 }}
-              onClick={() => this.props.submitResponse(this.props.response)}
+              onClick={() => {
+                this.setState({ submitting: true });
+                this.props.submitResponse(this.props.response);
+              }}
             >
               <FormattedMessage {...messages.submitBtn} />
             </Button>

@@ -21,7 +21,6 @@ import PsychologicResult from './result/psychologic';
 class ResultPage extends React.Component {
   render() {
     const { result } = this.props.location.state;
-    console.log(result);
 
     switch (result.name) {
       case 'neo':

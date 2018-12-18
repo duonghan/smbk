@@ -106,12 +106,16 @@ router.post(
 
                   if (!resultScore[group._id]) {
                     resultItem.score = -1;
-                  } else if (group.childs.length > 0) {
+                  }
+
+                  if (group.childs.length > 0) {
                     resultItem.score = group.childs.reduce(
                       (acc, cur) => acc + resultScore[cur._id],
                       0,
                     );
-                  } else {
+                  }
+
+                  if (group.childs.length === 0 && resultScore[group._id]) {
                     resultItem.score = resultScore[group._id];
                   }
 
