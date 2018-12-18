@@ -14,8 +14,6 @@ import { Skeleton, Table, Icon } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 
-import EditableFormRow from '../../../../../../utils/EditableFormRow';
-import EditableCell from '../../../../../../utils/EditableCell';
 import columnOptions from './columnOptions';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -23,14 +21,10 @@ class NeoTable extends React.Component {
   state = {
     loading: false,
     data: [],
-    visible: false,
-    editingKey: '',
   };
 
   render() {
     const { formatMessage } = this.props.intl;
-
-    const components = { body: { row: EditableFormRow, cell: EditableCell } };
 
     const columns = columnOptions(
       formatMessage,
@@ -60,16 +54,12 @@ class NeoTable extends React.Component {
       <Skeleton loading={this.state.loading} active>
         <Table
           bordered
-          components={components}
           rowKey={record => record.id}
           dataSource={this.state.data}
           columns={columns}
           title={() => (
             <h3 style={{ color: '#FA541C' }}>
               <strong>{formatMessage(messages.header)}</strong>
-              <a onClick={this.showModal} style={{ float: 'right' }}>
-                <Icon type="plus" style={{ fontSize: 20, color: '#FA541C' }} />
-              </a>
             </h3>
           )}
           size="middle"

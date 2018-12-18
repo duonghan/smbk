@@ -13,13 +13,38 @@ export const scope = 'app.components.RiasecTable';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the RiasecTable component!',
+    defaultMessage: 'Danh sách phản hồi',
   },
 
   // Table
   nameLabel: {
     id: `${scope}.nameLabel`,
-    defaultMessage: 'Nội dung câu hỏi',
+    defaultMessage: 'Người trả lời',
+  },
+
+  realisticLabel: {
+    id: `${scope}.realisticLabel`,
+    defaultMessage: 'Hiện thực',
+  },
+
+  discoverLabel: {
+    id: `${scope}.discoverLabel`,
+    defaultMessage: 'Khám phá',
+  },
+
+  artLabel: {
+    id: `${scope}.artLabel`,
+    defaultMessage: 'Nghệ thuật',
+  },
+
+  convinceLabel: {
+    id: `${scope}.convinceLabel`,
+    defaultMessage: 'Thuyết phục',
+  },
+
+  societyLabel: {
+    id: `${scope}.societyLabel`,
+    defaultMessage: 'Xã hội',
   },
 
   rulesMsg: {

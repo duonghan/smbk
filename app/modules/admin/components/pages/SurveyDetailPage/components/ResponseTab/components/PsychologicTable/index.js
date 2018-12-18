@@ -73,7 +73,7 @@ class PsychologicTable extends React.Component {
           )}
           size="middle"
           rowClassName="editable-row"
-          scroll={{ x: 715 }}
+          scroll={{ x: 3000 }}
         />
       </Skeleton>
     );

@@ -172,31 +172,14 @@ router.post(
                 $set: { answers: resultMOC(req.body.answers) },
               },
               { new: true },
-            ).then(newResponse => {});
+            ).then(newResponse => {
+            });
             return res.json({ result: resultMOC(req.body.answers) });
           default:
             return res.json({ result: false });
         }
       });
     });
-
-    // res.send({ result });
-
-    // Response.findOne({ user: req.user.id }).then(response => {
-    //   if (response) {
-    //     // Update
-    //     Response.findOneAndUpdate(
-    //       { user: req.user.id },
-    //       { $set: responseFields },
-    //       { new: true },
-    //     ).then(newResponse => res.json(newResponse));
-    //   } else {
-    //     // Save profile
-    //     new Response(responseFields)
-    //       .handleUpdate()
-    //       .then(newReponse => res.json(newReponse));
-    //   }
-    // });
   },
 );
 
