@@ -56,6 +56,7 @@ class GroupTable extends React.Component {
         return;
       }
       const data = { ...values, surveyId: this.props.surveyId };
+
       if (this.state.parentId) data.parent = this.state.parentId;
 
       axios.post('/api/survey/question-groups', data, config).then(() => {

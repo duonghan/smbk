@@ -76,7 +76,7 @@ router.post(
 
       // initial property
       const GroupOpt = {
-        name: req.body.name.trim(),
+        name: req.body.name,
         survey: mongoose.Types.ObjectId(req.body.surveyId),
         childs: [],
         questions: [],
@@ -85,11 +85,7 @@ router.post(
       };
 
       // reduce answer options result
-      if (req.body.keys.length > 0) {
-        GroupOpt.optionAnswers = req.body.keys.map(
-          key => req.body.optionAnswers[key],
-        );
-      }
+      GroupOpt.optionAnswers = req.body.optionAnswers;
 
       // handle rate type answer optuion
       if (req.body.inputType === 'rate') {

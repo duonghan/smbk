@@ -60,43 +60,8 @@ class AddGroupForm extends React.Component {
 
   render() {
     const { visible, onCancel, onCreate, form } = this.props;
-    const { getFieldDecorator, getFieldValue } = form;
+    const { getFieldDecorator } = form;
     const { formatMessage } = this.props.intl;
-    getFieldDecorator('keys', { initialValue: [] });
-
-    const keys = getFieldValue('keys');
-
-    const formItems = keys.map((k, index) => (
-      <FormItem
-        label={index === 0 ? formatMessage(messages.answerLabel) : ''}
-        required={false}
-        key={k}
-      >
-        {getFieldDecorator(`optionAnswers[${k}]`, {
-          validateTrigger: ['onChange', 'onBlur'],
-          rules: [
-            {
-              required: true,
-              whitespace: true,
-              message: "Please input passenger's name or delete this field.",
-            },
-          ],
-        })(
-          <Input
-            placeholder="answer name"
-            style={{ width: '60%', marginRight: 8 }}
-          />,
-        )}
-        {keys.length > 1 ? (
-          <Icon
-            className="dynamic-delete-button"
-            type="minus-circle-o"
-            disabled={keys.length === 1}
-            onClick={() => this.remove(k)}
-          />
-        ) : null}
-      </FormItem>
-    ));
 
     return (
       <Modal
@@ -140,19 +105,11 @@ class AddGroupForm extends React.Component {
 
           {(this.state.current === 'radio' ||
             this.state.current === 'select') && (
-            <div>
-              {formItems}
-              <FormItem>
-                <Button
-                  type="dashed"
-                  onClick={this.add}
-                  style={{ width: '40%' }}
-                >
-                  <Icon type="plus" />{' '}
-                  <FormattedMessage {...messages.addAnswerBtn} />
-                </Button>
-              </FormItem>
-            </div>
+            <FormItem label={formatMessage(messages.answerLabel)}>
+              {getFieldDecorator('optionAnswers')(
+                <Select mode="tags" style={{ width: '100%' }} />,
+              )}
+            </FormItem>
           )}
 
           {this.state.current === 'rate' && (
