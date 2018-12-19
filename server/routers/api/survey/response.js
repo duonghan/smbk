@@ -54,8 +54,11 @@ router.get(
         });
     } else {
       Response.find(conditional)
-        .then(response => res.json(response))
-        .catch(err => res.status(404).send(err));
+        .populate('user')
+        .exec((err, story) => {
+          if (err) return res.status(404).end(err);
+          return res.json(story);
+        });
     }
   },
 );
