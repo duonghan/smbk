@@ -89,6 +89,9 @@ const options = {
         labels: {
           show: true,
         },
+        ticks: {
+          suggestedMin: 0,
+        },
         scaleLabel: {
           display: true,
           labelString: 'Số lượng phản hồi',
@@ -113,8 +116,21 @@ class ResponseChart extends React.Component {
     });
   };
 
+  fetchResponseMonth = () => {
+    axios.get('/api/chart/dashboard/response', config).then(res => {
+      if (res.data.length > 0) {
+        res.data[0].monthlyusage.map(item => {
+          data.datasets[0].data[item.month - 1] = item.count;
+        });
+
+        console.log(res.data);
+      }
+    });
+  };
+
   componentDidMount() {
     this.fetchUserPerMonth();
+    this.fetchResponseMonth();
   }
 
   render() {
