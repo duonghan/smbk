@@ -72,8 +72,6 @@ router.post(
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     try {
-      console.log(req.body);
-
       // initial property
       const GroupOpt = {
         name: req.body.name,
@@ -105,28 +103,47 @@ router.post(
         score: index,
       }));
 
-      const newGroup = new QuestionGroup(GroupOpt);
-
-      newGroup
-        .save()
-        .then(group => {
-          QuestionGroup.findByIdAndUpdate(
-            req.body.parent,
-            {
-              $push: {
-                childs: group._id,
-              },
+      // if groupId is exist, update group, otherwise, create new group
+      if (req.body.id) {
+        QuestionGroup.findByIdAndUpdate(
+          req.body.id,
+          {
+            $set: {
+              ...GroupOpt,
             },
-            {
-              new: true,
-            },
-          ).then(() =>
+          },
+          {
+            new: true,
+          },
+        )
+          .then(() =>
             res.json({
               success: true,
             }),
-          );
-        })
-        .catch(err => res.status(400).json(err));
+          )
+          .catch(err => res.status(400).json(err));
+      } else {
+        new QuestionGroup(GroupOpt)
+          .save()
+          .then(group => {
+            QuestionGroup.findByIdAndUpdate(
+              req.body.parent,
+              {
+                $push: {
+                  childs: group._id,
+                },
+              },
+              {
+                new: true,
+              },
+            ).then(() =>
+              res.json({
+                success: true,
+              }),
+            );
+          })
+          .catch(err => res.status(400).json(err));
+      }
     } catch (e) {
       console.log(e);
     }

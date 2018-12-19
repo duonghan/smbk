@@ -111,6 +111,11 @@ export default defineMessages({
     defaultMessage: 'Thêm',
   },
 
+  updateBtn: {
+    id: `${scope}.updateBtn`,
+    defaultMessage: 'Cập nhật',
+  },
+
   addAnswerBtn: {
     id: `${scope}.addAnswerBtn`,
     defaultMessage: 'Thêm câu trả lời',
@@ -136,7 +141,6 @@ export default defineMessages({
     id: `${scope}.successTitle`,
     defaultMessage: 'Thành công',
   },
-
 
   addSuccessContent: {
     id: `${scope}.addSuccessContent`,

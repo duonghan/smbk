@@ -15,8 +15,6 @@ import { Table, Skeleton, Icon, Modal } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
 import messages from './messages';
-import EditableFormRow from '../../../../../../utils/EditableFormRow';
-import EditableCell from '../../../../../../utils/EditableCell';
 import columnOptions from './columnOptions';
 import { setCurrentGroup } from '../../../../actions';
 import AddGroupForm from './AddGroupForm';
@@ -28,7 +26,7 @@ class GroupTable extends React.Component {
     loading: false,
     visible: false,
     data: [],
-    editingKey: '',
+    editingKey: {},
     parentId: '',
   };
 
@@ -37,11 +35,11 @@ class GroupTable extends React.Component {
   }
 
   createParentGr = () => {
-    this.setState({ visible: true });
+    this.setState({ visible: true, editingKey: {} });
   };
 
   createPChildGr = parentId => {
-    this.setState({ visible: true, parentId });
+    this.setState({ visible: true, parentId, editingKey: {} });
   };
 
   handleCancel = () => {
@@ -55,14 +53,21 @@ class GroupTable extends React.Component {
       if (err) {
         return;
       }
-      const data = { ...values, surveyId: this.props.surveyId };
+
+      const data = {
+        id: this.state.editingKey.id || '',
+        ...values,
+        surveyId: this.props.surveyId,
+      };
 
       if (this.state.parentId) data.parent = this.state.parentId;
 
       axios.post('/api/survey/question-groups', data, config).then(() => {
         Modal.success({
           title: this.props.intl.formatMessage(messages.successTitle),
-          content: this.props.intl.formatMessage(messages.addSuccessContent),
+          content: this.state.editingKey.id
+            ? this.props.intl.formatMessage(messages.updateSuccessContent)
+            : this.props.intl.formatMessage(messages.addSuccessContent),
         });
 
         this.fetchQuestionGroup();
@@ -92,11 +97,13 @@ class GroupTable extends React.Component {
             name: group.name,
             inputType: group.inputType,
             numofChild: group.childs.length,
+            optionAnswers: group.optionAnswers,
             children: group.childs.map(child => ({
               id: child._id,
               inputType: child.inputType,
               name: child.name,
               parent: child.parent,
+              optionAnswers: child.optionAnswers,
             })),
           })),
           loading: false,
@@ -104,35 +111,15 @@ class GroupTable extends React.Component {
       });
   };
 
-  isEditing = record => record.id === this.state.editingKey;
-
-  edit = id => {
-    this.setState({ editingKey: id });
-  };
-
-  cancel = () => {
-    this.setState({ editingKey: '' });
-  };
-
-  save = (form, id) => {
-    form.validateFields((error, row) => {
-      if (error) {
-        return;
-      }
-
-      axios
-        .put('/api/survey/question-groups', { ...row, id }, config)
-        .then(res => {
-          this.setState({ editingKey: '' });
-          this.fetchQuestionGroup();
-
-          Modal.success({
-            title: this.props.intl.formatMessage(messages.successTitle),
-            content: this.props.intl.formatMessage(
-              messages.updateSuccessContent,
-            ),
-          });
-        });
+  edit = record => {
+    this.setState({
+      editingKey: {
+        id: record.id,
+        name: record.name,
+        inputType: record.inputType,
+        optionAnswers: record.optionAnswers,
+      },
+      visible: true,
     });
   };
 
@@ -146,14 +133,15 @@ class GroupTable extends React.Component {
       })
       .then(res => {
         if (res.data.success) {
-          this.fetchQuestionGroup();
-          this.setCurrentGroup(null, null);
           Modal.success({
             title: this.props.intl.formatMessage(messages.successTitle),
             content: this.props.intl.formatMessage(
               messages.deleteSuccessContent,
             ),
           });
+
+          this.fetchQuestionGroup();
+          this.setCurrentGroup(null, null);
         }
       });
   };
@@ -165,39 +153,18 @@ class GroupTable extends React.Component {
   render() {
     const { formatMessage } = this.props.intl;
 
-    const components = { body: { row: EditableFormRow, cell: EditableCell } };
-
     const columns = columnOptions(
       formatMessage,
-      this.isEditing,
-      this.save,
-      this.cancel,
       this.edit,
       this.handleDelete,
       this.viewQuestion,
       this.createPChildGr,
-    ).map(col => {
-      if (!col.editable) {
-        return col;
-      }
-
-      return {
-        ...col,
-        onCell: record => ({
-          record,
-          inputType: 'text',
-          dataIndex: col.dataIndex,
-          title: col.title,
-          editing: this.isEditing(record),
-        }),
-      };
-    });
+    );
 
     return (
       <Skeleton loading={this.state.loading} active>
         <Table
           bordered
-          components={components}
           rowKey={record => record.id}
           dataSource={this.state.data}
           columns={columns}
@@ -219,6 +186,7 @@ class GroupTable extends React.Component {
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleCreateGroup}
+          group={this.state.editingKey}
         />
       </Skeleton>
     );

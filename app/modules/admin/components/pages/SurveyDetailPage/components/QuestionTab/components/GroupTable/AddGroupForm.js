@@ -31,6 +31,12 @@ class AddGroupForm extends React.Component {
     console.log(`selected ${value}`, this.state.isTextArea);
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.group.inputType) {
+      this.setState({ current: nextProps.group.inputType });
+    }
+  }
+
   remove = k => {
     const { form } = this.props;
     // can use data-binding to get
@@ -62,12 +68,19 @@ class AddGroupForm extends React.Component {
     const { visible, onCancel, onCreate, form } = this.props;
     const { getFieldDecorator } = form;
     const { formatMessage } = this.props.intl;
+    const answers = this.props.group.optionAnswers
+      ? this.props.group.optionAnswers.map(item => item.text)
+      : [];
 
     return (
       <Modal
         visible={visible}
         title={formatMessage(messages.addQuestion)}
-        okText={formatMessage(messages.addBtn)}
+        okText={
+          this.props.group.id
+            ? formatMessage(messages.updateBtn)
+            : formatMessage(messages.addBtn)
+        }
         cancelText={formatMessage(messages.cancelBtn)}
         onCancel={onCancel}
         onOk={onCreate}
@@ -81,6 +94,7 @@ class AddGroupForm extends React.Component {
                   message: formatMessage(messages.nameRequiredMsg),
                 },
               ],
+              initialValue: this.props.group.name,
             })(<Input placeholder={formatMessage(messages.namePlaceholder)} />)}
           </FormItem>
 
@@ -92,7 +106,7 @@ class AddGroupForm extends React.Component {
                   message: formatMessage(messages.inputTypeRequiredMsg),
                 },
               ],
-              initialValue: 'radio',
+              initialValue: this.state.current,
             })(
               <Select onChange={this.handleChange}>
                 <Option value="radio">Radio</Option>
@@ -106,9 +120,9 @@ class AddGroupForm extends React.Component {
           {(this.state.current === 'radio' ||
             this.state.current === 'select') && (
             <FormItem label={formatMessage(messages.answerLabel)}>
-              {getFieldDecorator('optionAnswers')(
-                <Select mode="tags" style={{ width: '100%' }} />,
-              )}
+              {getFieldDecorator('optionAnswers', {
+                initialValue: answers,
+              })(<Select mode="tags" style={{ width: '100%' }} />)}
             </FormItem>
           )}
 
@@ -122,6 +136,7 @@ class AddGroupForm extends React.Component {
                       message: formatMessage(messages.lowerLabel),
                     },
                   ],
+                  initialValue: answers.shift(),
                 })(<Input />)}
               </FormItem>
 
@@ -133,6 +148,7 @@ class AddGroupForm extends React.Component {
                       message: formatMessage(messages.upperLabel),
                     },
                   ],
+                  initialValue: answers.pop(),
                 })(<Input />)}
               </FormItem>
 
@@ -144,6 +160,7 @@ class AddGroupForm extends React.Component {
                       message: formatMessage(messages.nameRequiredMsg),
                     },
                   ],
+                  initialValue: answers.length,
                 })(<InputNumber min={0} />)}
               </FormItem>
             </div>
@@ -160,6 +177,7 @@ AddGroupForm.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onCreate: PropTypes.func.isRequired,
   form: PropTypes.object.isRequired,
+  group: PropTypes.object.isRequired,
 };
 
 export default Form.create()(injectIntl(AddGroupForm));
