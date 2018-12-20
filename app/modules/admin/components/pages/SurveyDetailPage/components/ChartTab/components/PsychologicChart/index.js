@@ -10,6 +10,8 @@ import React from 'react';
 // import styled from 'styled-components';
 
 import { Bar } from 'react-chartjs-2';
+import axios from 'axios';
+import config from 'utils/validation/config';
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
@@ -40,6 +42,21 @@ const data = {
 
 /* eslint-disable react/prefer-stateless-function */
 class PsychologicChart extends React.Component {
+  componentWillMount() {
+    this.fetchPsychologicalChart();
+  }
+
+  fetchPsychologicalChart = () => {
+    axios.get('/api/chart/psychological', config).then(res => {
+      data.labels = res.data[0][1].map(item => item[0]);
+
+      res.data.map((item, index) => {
+        data.datasets[index].label = item[0];
+        data.datasets[index].data = item[1].map(_ => _[1]);
+      });
+    });
+  };
+
   render() {
     return (
       <div>

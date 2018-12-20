@@ -18,7 +18,9 @@ const MOCProfile = require('../../../models/MOCProfile');
 // Load result calculator method
 const resultNEO = require('../../../utils/calculate/response/neo');
 const resultRIASEC = require('../../../utils/calculate/response/riasec');
-const resultPsychologic = require('../../../utils/calculate/response/psychologic');
+const {
+  resultPsychologic,
+} = require('../../../utils/calculate/response/psychological');
 const {
   resultMOC,
   generateData,
@@ -33,33 +35,37 @@ router.get(
   (req, res) => {
     if (req.user.role !== 'ADMIN') return res.status(403).end();
 
-    const conditional = {};
-
-    if (req.query.survey) conditional.survey = req.query.survey;
-
-    if (req.query.id) conditional._id = req.query.id;
-
-    if (req.query.type === 'moc') {
-      Response.find(conditional)
-        .populate('profile')
-        .exec((err, story) => {
-          if (err) return res.status(404).end(err);
-          return res.json(
-            story.map(item => ({
-              name: item.profile.name,
-              profile: item.profile,
-              answers: item.answers,
-            })),
-          );
-        });
-    } else {
-      Response.find(conditional)
-        .populate('user')
-        .exec((err, story) => {
-          if (err) return res.status(404).end(err);
-          return res.json(story);
-        });
-    }
+    Survey.findById(req.query.survey).then(survey => {
+      if (survey.name === 'moc' || survey.name === 'moc2') {
+        Response.find({ survey: survey._id })
+          .populate('profile')
+          .exec((err, story) => {
+            if (err) return res.status(404).end(err);
+            return res.json(
+              story.map(item => ({
+                name: item.profile.name,
+                profile: item.profile,
+                answers: item.answers,
+              })),
+            );
+          });
+      } else {
+        Response.find({ survey: survey._id })
+          .populate('user')
+          .exec((err, story) => {
+            if (err) return res.status(404).end(err);
+            return res.json(
+              story.map(item => ({
+                responseId: item._id,
+                userId: item.user._id,
+                userName: item.user.name,
+                results: item.results,
+                date: item.date,
+              })),
+            );
+          });
+      }
+    });
   },
 );
 

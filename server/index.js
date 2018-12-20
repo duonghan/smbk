@@ -30,6 +30,9 @@ const auth = require('./routers/auth');
 // chart
 const mocChart = require('./routers/api/chart/moc');
 const dashboardChart = require('./routers/api/chart/dashboard');
+const psychologicalChart = require('./routers/api/chart/psychological');
+const neoChart = require('./routers/api/chart/neo');
+const riasecChart = require('./routers/api/chart/riasec');
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -65,6 +68,9 @@ app.use('/auth', auth);
 
 app.use('/api/chart/moc', mocChart);
 app.use('/api/chart/dashboard', dashboardChart);
+app.use('/api/chart/psychological', psychologicalChart);
+// app.use('/api/chart/neo', neoChart);
+// app.use('/api/chart/riasec', riasecChart);
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
