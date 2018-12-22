@@ -34,8 +34,10 @@ import Survey from 'containers/ResponseContainer/Loadable';
 import ForgotPassword from 'components/auth/ForgotPassword/Loadable';
 import ResetPassword from 'components/auth/ResetPassword/Loadable';
 import Setting from 'components/pages/Setting/Loadable';
+import HistoryPage from 'components/pages/UserResponseHistory/Loadable';
 import HomePage from 'containers/HomePageContainer/Loadable';
 import LoginPage from 'containers/Authentication/Loadable';
+
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import saga from 'containers/Authentication/saga';
@@ -107,6 +109,15 @@ class App extends React.Component {
                   component={Survey}
                 />
                 <PrivateRouter exact path="/setting" component={Setting} />
+
+                {!this.isAdmin() && (
+                  <PrivateRouter
+                    exact
+                    path="/show-history"
+                    component={HistoryPage}
+                  />
+                )}
+
                 <PrivateRouter
                   exact
                   path="/survey-result"

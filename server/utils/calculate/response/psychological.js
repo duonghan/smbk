@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return,no-shadow */
 const _ = require('lodash');
-const indexScore = require('../index/psychologic');
+const indexScore = require('../index/psychological');
 
 const resultPsychologic = answers => {
   const result = {};

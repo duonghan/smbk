@@ -20,7 +20,7 @@ import MocChart from './components/MocChart/Loadable';
 
 const renderResponse = surveyName => {
   switch (surveyName) {
-    case 'psychologic_test':
+    case 'psychological':
       return <PsychologicChart />;
     case 'neo':
       return <NeoChart />;

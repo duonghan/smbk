@@ -27,17 +27,32 @@ const {
   exportExcel,
 } = require('../../../utils/calculate/response/moc');
 
-const psychologicIndex = require('../../../utils/calculate/index/psychologic');
+const psychologicIndex = require('../../../utils/calculate/index/psychological');
 
 router.get(
   '/',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    if (req.user.role !== 'ADMIN') return res.status(403).end();
+    if (req.user.role !== 'ADMIN' && !req.query.user)
+      return res.status(403).end();
 
-    Survey.findById(req.query.survey).then(survey => {
+    const condition = {};
+
+    if (req.query.name) {
+      condition.name = req.query.name;
+    } else {
+      condition._id = req.query.survey;
+    }
+
+    Survey.findOne(condition).then(survey => {
+      const resCondition = { survey: survey._id };
+
+      if (req.query.user) {
+        resCondition.user = mongoose.Types.ObjectId(req.query.user);
+      }
+
       if (survey.name === 'moc' || survey.name === 'moc2') {
-        Response.find({ survey: survey._id })
+        Response.find(resCondition)
           .populate('profile')
           .exec((err, story) => {
             if (err) return res.status(404).end(err);
@@ -50,10 +65,11 @@ router.get(
             );
           });
       } else {
-        Response.find({ survey: survey._id })
+        Response.find(resCondition)
           .populate('user')
           .exec((err, story) => {
             if (err) return res.status(404).end(err);
+            console.log(story);
             return res.json(
               story.map(item => ({
                 responseId: item._id,
@@ -101,7 +117,7 @@ router.post(
     Response.findById(req.body.id).then(response => {
       Survey.findById(response.survey).then(survey => {
         switch (survey.name) {
-          case 'psychologic_test':
+          case 'psychological':
             const resultScore = resultPsychologic(req.body.answers);
             QuestionGroup.find({ survey: survey._id, parent: null })
               .select('childs name')
@@ -169,7 +185,7 @@ router.post(
                   { new: true },
                 ).then(() =>
                   res.json({
-                    result: { name: 'psychologic', result },
+                    result: { name: 'psychological', result },
                   }),
                 );
               });

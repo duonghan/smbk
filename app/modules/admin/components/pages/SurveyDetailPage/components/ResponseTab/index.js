@@ -22,7 +22,7 @@ import MocTable from './components/MocTable/Loadable';
 
 const renderResponse = surveyName => {
   switch (surveyName) {
-    case 'psychologic_test':
+    case 'psychological':
       return <PsychologicTable />;
     case 'neo':
       return <NeoTable />;

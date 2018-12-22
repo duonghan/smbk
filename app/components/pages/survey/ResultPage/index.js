@@ -15,7 +15,7 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 import NeoResult from './result/neo';
 import RiasecResult from './result/riasec';
-import PsychologicResult from './result/psychologic';
+import PsychologicResult from './result/psychological';
 
 /* eslint-disable react/prefer-stateless-function */
 class ResultPage extends React.Component {
@@ -27,7 +27,7 @@ class ResultPage extends React.Component {
         return <NeoResult result={result} />;
       case 'riasec':
         return <RiasecResult result={result} />;
-      case 'psychologic':
+      case 'psychological':
         return <PsychologicResult result={result} />;
       default:
         return <div>{JSON.stringify(result)}</div>;

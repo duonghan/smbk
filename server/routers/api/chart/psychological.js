@@ -16,7 +16,7 @@ router.get(
   (req, res) => {
     if (req.user.role !== 'ADMIN') return res.status(403).end();
 
-    Survey.findOne({ name: 'psychologic_test' }).then(survey => {
+    Survey.findOne({ name: 'psychological' }).then(survey => {
       Response.find({ survey: survey._id }).then(responses => {
         // return res.json(responses);
 

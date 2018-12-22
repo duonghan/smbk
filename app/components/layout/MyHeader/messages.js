@@ -25,6 +25,10 @@ export default defineMessages({
     id: `${scope}.main.header.account.setting`,
     defaultMessage: 'Thiết lập',
   },
+  showHistory: {
+    id: `${scope}.main.header.account.showHistory`,
+    defaultMessage: 'Xem lịch sử',
+  },
   changePass: {
     id: `${scope}.main.header.account.changePass`,
     defaultMessage: 'Đổi mật khẩu',

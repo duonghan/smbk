@@ -10,13 +10,12 @@ import { signoutRequest } from 'containers/Authentication/actions';
 import MediaQuery from 'react-responsive';
 import messages from './messages';
 import { styles } from './styles';
-import { PROFILE, LOGOUT, UPDATE_INFO } from './constants';
+import { PROFILE, LOGOUT, UPDATE_INFO, SHOW_HISTORY } from './constants';
 const { Header } = Layout;
 const { SubMenu } = Menu;
 
 class MainHeader extends React.Component {
   handleSelect = ({ item, key }) => key === 'LOGOUT' && this.props.doSignOut();
-  debugger;
 
   render() {
     const menu = (
@@ -113,6 +112,14 @@ class MainHeader extends React.Component {
                     <Menu.Item key={UPDATE_INFO}>
                       <Link to="/setting">
                         <FormattedMessage {...messages.setting} />
+                      </Link>
+                    </Menu.Item>
+                  )}
+
+                  {this.props.auth.getIn(['user', 'role']) === 'DEFAULT' && (
+                    <Menu.Item key={SHOW_HISTORY}>
+                      <Link to="/show-history">
+                        <FormattedMessage {...messages.showHistory} />
                       </Link>
                     </Menu.Item>
                   )}
