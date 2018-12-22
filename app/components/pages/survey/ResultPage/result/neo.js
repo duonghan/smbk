@@ -22,8 +22,6 @@ class NeoResult extends React.Component {
   };
 
   render() {
-    console.log(this.props.result[this.state.gender]);
-
     return (
       <Row
         style={{

@@ -179,22 +179,31 @@ router.post(
           // return res.json(resultPsychologic(req.body.answers, survey._id));
           case 'neo':
             QuestionGroup.findOne({ survey: survey._id }).then(group => {
-              const result = resultNEO(req.body.answers[group._id]);
+              const calculatedResult = resultNEO(req.body.answers[group._id]);
+              const results = [
+                ...calculatedResult.male.map(item => ({
+                  item: item.name,
+                  value: item.level.text,
+                  gender: 'male',
+                })),
+                ...calculatedResult.female.map(item => ({
+                  item: item.name,
+                  value: item.level.text,
+                  gender: 'female',
+                })),
+              ];
 
               Response.findByIdAndUpdate(
                 response._id,
                 {
                   $set: {
-                    results: result.map(item => ({
-                      item: item.name,
-                      value: item.description,
-                    })),
+                    results,
                   },
                 },
                 { new: true },
               ).then(() =>
                 res.json({
-                  result,
+                  result: calculatedResult,
                 }),
               );
             });
