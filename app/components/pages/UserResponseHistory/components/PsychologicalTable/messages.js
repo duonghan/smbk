@@ -8,12 +8,13 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.components.PsychologicTable';
+export const scope =
+  'app.components.pages.UserResponseHistory.PsychologicalTable';
 
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'Danh sách phản hồi',
+    defaultMessage: 'Khảo sát trắc nghiệm tâm lý',
   },
 
   // Table

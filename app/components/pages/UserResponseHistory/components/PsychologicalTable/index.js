@@ -8,12 +8,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { connect } from 'react-redux';
-import { Skeleton, Table } from 'antd';
+import { Table } from 'antd';
 import axios from 'axios';
 import config from 'utils/validation/config';
 
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 import columnOptions from './columnOptions';
 
@@ -99,21 +98,20 @@ class PsychologicTable extends React.Component {
     const columns = columnOptions(formatMessage);
 
     return (
-      <Skeleton loading={this.state.loading} active>
-        <Table
-          bordered
-          rowKey={record => record.key}
-          dataSource={this.state.data}
-          columns={columns}
-          title={() => (
-            <h3 style={{ color: '#FA541C' }}>
-              <strong>{formatMessage(messages.header)}</strong>
-            </h3>
-          )}
-          size="middle"
-          scroll={{ x: 3000 }}
-        />
-      </Skeleton>
+      <Table
+        bordered
+        rowKey={record => record.key}
+        dataSource={this.state.data}
+        loading={this.state.loading}
+        columns={columns}
+        title={() => (
+          <h3 style={{ color: '#FA541C' }}>
+            <strong>{formatMessage(messages.header)}</strong>
+          </h3>
+        )}
+        size="middle"
+        scroll={{ x: 3000 }}
+      />
     );
   }
 }

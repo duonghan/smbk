@@ -296,6 +296,14 @@ router.post(
             initialResponse.profile = mongoose.Types.ObjectId(req.body.profile);
           }
 
+          // if response exist
+          if (response) {
+            return res.json({
+              id: response._id.toString(),
+              total: numofQuestion,
+            });
+          }
+
           new Response(initialResponse).save().then(newResponse =>
             res.json({
               id: newResponse._id.toString(),

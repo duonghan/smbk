@@ -12,9 +12,9 @@ import { connect } from 'react-redux';
 
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-import PsychologicalTable from './components/PsychologicTable';
-import NeoTable from './components/NeoTable';
-import RiasecTable from './components/RiasecTable';
+import PsychologicalTable from './components/PsychologicalTable/Loadable';
+import NeoTable from './components/NeoTable/Loadable';
+import RiasecTable from './components/RiasecTable/Loadable';
 
 const Container = styled.div`
   margin: 20px;

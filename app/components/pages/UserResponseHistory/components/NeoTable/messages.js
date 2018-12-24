@@ -8,12 +8,12 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.components.NeoTable';
+export const scope = 'app.components.pages.UserResponseHistory.NeoTable';
 
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'Danh sách phản hồi',
+    defaultMessage: 'Trắc nghiệm dự đoán nhân cách',
   },
 
   // Table
@@ -72,28 +72,13 @@ export default defineMessages({
     defaultMessage: 'Hủy',
   },
 
-  actionTitle: {
-    id: `${scope}.actionTitle`,
-    defaultMessage: 'Hành động',
+  male: {
+    id: `${scope}.male`,
+    defaultMessage: 'Nam',
   },
 
-  save: {
-    id: `${scope}.save`,
-    defaultMessage: 'Lưu',
-  },
-
-  cancelPromtMsg: {
-    id: `${scope}.cancelPromtMsg`,
-    defaultMessage: 'Bạn chắc chắn muốn hủy?',
-  },
-
-  deletePromtMsg: {
-    id: `${scope}.deletePromtMsg`,
-    defaultMessage: 'Bạn chắc chắn muốn xóa?',
-  },
-
-  addQuestion: {
-    id: `${scope}.addQuestion`,
-    defaultMessage: 'Thêm câu hỏi',
+  female: {
+    id: `${scope}.female`,
+    defaultMessage: 'Nữ',
   },
 });
