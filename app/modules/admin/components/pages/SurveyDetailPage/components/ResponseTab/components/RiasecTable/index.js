@@ -8,75 +8,88 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
+import config from 'utils/validation/config';
 
-import { Skeleton, Table, Icon } from 'antd';
+import { Table } from 'antd';
 
+import axios from 'axios';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import messages from './messages';
 
-import EditableFormRow from '../../../../../../utils/EditableFormRow';
-import EditableCell from '../../../../../../utils/EditableCell';
+import messages from './messages';
 import columnOptions from './columnOptions';
 
 /* eslint-disable react/prefer-stateless-function */
 class RiasecTable extends React.Component {
   state = {
-    loading: false,
+    loading: true,
     data: [],
-    visible: false,
-    editingKey: '',
+  };
+
+  componentDidMount() {
+    this.fetchResponse();
+  }
+
+  fetchResponse = () => {
+    axios.get(`/api/survey/responses?name=riasec`, config).then(res => {
+      const data = res.data.map((i, key) => {
+        const eachRow = {
+          name: i.userName,
+          key,
+          date: i.date,
+        };
+
+        i.results.map(it => {
+          switch (it.item) {
+            case 'Thuyết phục':
+              eachRow.convince = it.value;
+              break;
+            case 'Quy tắc':
+              eachRow.rule = it.value;
+              break;
+            case 'Khám phá':
+              eachRow.discover = it.value;
+              break;
+            case 'Nghệ thuật':
+              eachRow.art = it.value;
+              break;
+            case 'Hiện thực':
+              eachRow.realistic = it.value;
+              break;
+            case 'Xã hội':
+              eachRow.society = it.value;
+              break;
+            default:
+              break;
+          }
+        });
+
+        return eachRow;
+      });
+
+      this.setState({ data, loading: false });
+    });
   };
 
   render() {
     const { formatMessage } = this.props.intl;
 
-    const components = { body: { row: EditableFormRow, cell: EditableCell } };
-
-    const columns = columnOptions(
-      formatMessage,
-      this.isEditing,
-      this.handleUpdate,
-      this.cancel,
-      this.edit,
-      this.handleDelete,
-    ).map(col => {
-      if (!col.editable) {
-        return col;
-      }
-
-      return {
-        ...col,
-        onCell: record => ({
-          record,
-          inputType: 'text',
-          dataIndex: col.dataIndex,
-          title: col.title,
-          editing: this.isEditing(record),
-        }),
-      };
-    });
+    const columns = columnOptions(formatMessage);
 
     return (
-      <Skeleton loading={this.state.loading} active>
-        <Table
-          bordered
-          components={components}
-          rowKey={record => record.id}
-          dataSource={this.state.data}
-          columns={columns}
-          title={() => (
-            <h3 style={{ color: '#FA541C' }}>
-              <strong>{formatMessage(messages.header)}</strong>
-              <a onClick={this.showModal} style={{ float: 'right' }}>
-                <Icon type="plus" style={{ fontSize: 20, color: '#FA541C' }} />
-              </a>
-            </h3>
-          )}
-          size="middle"
-          rowClassName="editable-row"
-          scroll={{ x: 715 }}
-        />
-      </Skeleton>
+      <Table
+        bordered
+        rowKey={record => record.key}
+        dataSource={this.state.data}
+        loading={this.state.loading}
+        columns={columns}
+        title={() => (
+          <h3 style={{ color: '#FA541C' }}>
+            <strong>{formatMessage(messages.header)}</strong>
+          </h3>
+        )}
+        size="middle"
+        scroll={{ x: 715 }}
+      />
     );
   }
 }

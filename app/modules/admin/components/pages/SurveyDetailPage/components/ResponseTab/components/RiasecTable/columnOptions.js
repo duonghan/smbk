@@ -1,51 +1,75 @@
 import React from 'react';
-import { Divider, Icon, Popconfirm, Tooltip } from 'antd';
-import { FormattedMessage } from 'react-intl';
-import { EditableContext } from '../../../../../../utils/EditableCell';
+import { Rate } from 'antd';
 import messages from './messages';
-import { styles } from '../../../../../../utils/styles';
 
-export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
+const filters = [1, 2, 3, 4, 5].map(range => ({
+  text: <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />,
+  value: range,
+}));
+
+export default formatMessage => [
   {
     title: '#',
-    dataIndex: 'orderNumber',
-    key: 'orderNumber',
+    dataIndex: 'key',
+    render: key => key + 1,
     align: 'center',
-    sorter: (a, b) => a.orderNumber < b.orderNumber,
+    sorter: (a, b) => a.key.localeCompare(b.key),
   },
   {
     title: formatMessage(messages.nameLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'name',
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    filters,
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
   },
   {
     title: formatMessage(messages.realisticLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'realistic',
+    render: range => (
+      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+    ),
+    sorter: (a, b) => a.realistic.localeCompare(b.realistic),
+    filters,
+    onFilter: (value, record) => record.realistic.indexOf(value) === 0,
   },
   {
     title: formatMessage(messages.discoverLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'discover',
+    render: range => (
+      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+    ),
+    sorter: (a, b) => a.discover.localeCompare(b.discover),
+    filters,
+    onFilter: (value, record) => record.discover.indexOf(value) === 0,
   },
   {
     title: formatMessage(messages.artLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'art',
+    render: range => (
+      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+    ),
+    sorter: (a, b) => a.art.localeCompare(b.art),
+    filters,
+    onFilter: (value, record) => record.art.indexOf(value) === 0,
+  },
+  {
+    title: formatMessage(messages.ruleLabel),
+    dataIndex: 'rule',
+    render: range => (
+      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+    ),
+    sorter: (a, b) => a.rule.localeCompare(b.rule),
+    filters,
+    onFilter: (value, record) => record.rule.indexOf(value) === 0,
   },
   {
     title: formatMessage(messages.convinceLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'convince',
+    render: range => (
+      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+    ),
+    sorter: (a, b) => a.convince.localeCompare(b.convince),
+    filters,
+    onFilter: (value, record) => record.convince.indexOf(value) === 0,
   },
 ];
