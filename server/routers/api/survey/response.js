@@ -71,7 +71,7 @@ router.get(
             if (err) return res.status(404).end(err);
             console.log(story);
             return res.json(
-              story.map(item => ({
+              story.filter(item => item.user.role === 'DEFAULT').map(item => ({
                 responseId: item._id,
                 userId: item.user._id,
                 userName: item.user.name,

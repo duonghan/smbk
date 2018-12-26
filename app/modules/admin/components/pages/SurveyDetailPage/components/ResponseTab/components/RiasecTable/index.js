@@ -15,8 +15,8 @@ import { Table } from 'antd';
 import axios from 'axios';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
-import messages from './messages';
 import columnOptions from './columnOptions';
+import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
 class RiasecTable extends React.Component {
@@ -30,44 +30,46 @@ class RiasecTable extends React.Component {
   }
 
   fetchResponse = () => {
-    axios.get(`/api/survey/responses?name=riasec`, config).then(res => {
-      const data = res.data.map((i, key) => {
-        const eachRow = {
-          name: i.userName,
-          key,
-          date: i.date,
-        };
+    axios
+      .get(`/api/survey/responses?name=riasec&type=report`, config)
+      .then(res => {
+        const data = res.data.map((i, key) => {
+          const eachRow = {
+            name: i.userName,
+            key,
+            date: i.date,
+          };
 
-        i.results.map(it => {
-          switch (it.item) {
-            case 'Thuyết phục':
-              eachRow.convince = it.value;
-              break;
-            case 'Quy tắc':
-              eachRow.rule = it.value;
-              break;
-            case 'Khám phá':
-              eachRow.discover = it.value;
-              break;
-            case 'Nghệ thuật':
-              eachRow.art = it.value;
-              break;
-            case 'Hiện thực':
-              eachRow.realistic = it.value;
-              break;
-            case 'Xã hội':
-              eachRow.society = it.value;
-              break;
-            default:
-              break;
-          }
+          i.results.map(it => {
+            switch (it.item) {
+              case 'Thuyết phục':
+                eachRow.convince = it.value;
+                break;
+              case 'Quy tắc':
+                eachRow.rule = it.value;
+                break;
+              case 'Khám phá':
+                eachRow.discover = it.value;
+                break;
+              case 'Nghệ thuật':
+                eachRow.art = it.value;
+                break;
+              case 'Hiện thực':
+                eachRow.realistic = it.value;
+                break;
+              case 'Xã hội':
+                eachRow.society = it.value;
+                break;
+              default:
+                break;
+            }
+          });
+
+          return eachRow;
         });
 
-        return eachRow;
+        this.setState({ data, loading: false });
       });
-
-      this.setState({ data, loading: false });
-    });
   };
 
   render() {

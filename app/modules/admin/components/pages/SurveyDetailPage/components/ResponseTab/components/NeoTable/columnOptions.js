@@ -1,58 +1,79 @@
 import React from 'react';
-import { Divider, Icon, Popconfirm, Tooltip } from 'antd';
-import { FormattedMessage } from 'react-intl';
-import { EditableContext } from '../../../../../../utils/EditableCell';
+import { Tag } from 'antd';
 import messages from './messages';
-import { styles } from '../../../../../../utils/styles';
 
-export default (formatMessage, isEditing, save, cancel, edit, handleDelete) => [
+const filters = [
+  {
+    text: 'Cao',
+    value: 'Cao',
+  },
+  {
+    text: 'Thấp',
+    value: 'Thấp',
+  },
+  {
+    text: 'Trung bình',
+    value: 'Trung bình',
+  },
+];
+
+const tagColor = new Map([
+  ['Cao', 'red'],
+  ['Thấp', 'geekblue'],
+  ['Trung bình', 'green'],
+]);
+
+export default formatMessage => [
   {
     title: '#',
-    dataIndex: 'orderNumber',
-    key: 'orderNumber',
+    dataIndex: 'key',
     align: 'center',
+    render: key => key + 1,
     sorter: (a, b) => a.orderNumber < b.orderNumber,
   },
   {
     title: formatMessage(messages.nameLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'name',
+    sorter: (a, b) => a.content.localeCompare(b.name),
   },
   {
     title: formatMessage(messages.noiseLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'noise',
+    render: text => <Tag color={tagColor.get(text)}>{text}</Tag>,
+    sorter: (a, b) => a.noise.localeCompare(b.noise),
+    filters,
+    onFilter: (value, record) => record.noise.indexOf(value) === 0,
   },
   {
     title: formatMessage(messages.outwardLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'outward',
+    render: text => <Tag color={tagColor.get(text)}>{text}</Tag>,
+    sorter: (a, b) => a.outward.localeCompare(b.outward),
+    filters,
+    onFilter: (value, record) => record.outward.indexOf(value) === 0,
   },
   {
     title: formatMessage(messages.openMindedLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'openMinded',
+    render: text => <Tag color={tagColor.get(text)}>{text}</Tag>,
+    sorter: (a, b) => a.openMinded.localeCompare(b.openMinded),
+    filters,
+    onFilter: (value, record) => record.openMinded.indexOf(value) === 0,
   },
   {
     title: formatMessage(messages.ezAcceptLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'ezAccept',
+    render: text => <Tag color={tagColor.get(text)}>{text}</Tag>,
+    sorter: (a, b) => a.ezAccept.localeCompare(b.ezAccept),
+    filters,
+    onFilter: (value, record) => record.ezAccept.indexOf(value) === 0,
   },
   {
     title: formatMessage(messages.conscientiousLabel),
-    dataIndex: 'content',
-    key: 'content',
-    editable: true,
-    sorter: (a, b) => a.content.localeCompare(b.content),
+    dataIndex: 'conscientious',
+    render: text => <Tag color={tagColor.get(text)}>{text}</Tag>,
+    sorter: (a, b) => a.conscientious.localeCompare(b.conscientious),
+    filters,
+    onFilter: (value, record) => record.conscientious.indexOf(value) === 0,
   },
 ];

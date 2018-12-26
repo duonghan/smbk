@@ -47,53 +47,13 @@ export default defineMessages({
     defaultMessage: 'Tận tâm',
   },
 
-  rulesMsg: {
-    id: `${scope}.rulesMsg`,
-    defaultMessage: 'Vui lòng nhập',
+  male: {
+    id: `${scope}.male`,
+    defaultMessage: 'Nam',
   },
 
-  editToolTip: {
-    id: `${scope}.editToolTip`,
-    defaultMessage: 'Sửa',
-  },
-
-  deleteToolTip: {
-    id: `${scope}.deleteToolTip`,
-    defaultMessage: 'Xóa',
-  },
-
-  detailToolTip: {
-    id: `${scope}.detailToolTip`,
-    defaultMessage: 'Chi tiết',
-  },
-
-  cancel: {
-    id: `${scope}.cancel`,
-    defaultMessage: 'Hủy',
-  },
-
-  actionTitle: {
-    id: `${scope}.actionTitle`,
-    defaultMessage: 'Hành động',
-  },
-
-  save: {
-    id: `${scope}.save`,
-    defaultMessage: 'Lưu',
-  },
-
-  cancelPromtMsg: {
-    id: `${scope}.cancelPromtMsg`,
-    defaultMessage: 'Bạn chắc chắn muốn hủy?',
-  },
-
-  deletePromtMsg: {
-    id: `${scope}.deletePromtMsg`,
-    defaultMessage: 'Bạn chắc chắn muốn xóa?',
-  },
-
-  addQuestion: {
-    id: `${scope}.addQuestion`,
-    defaultMessage: 'Thêm câu hỏi',
+  female: {
+    id: `${scope}.female`,
+    defaultMessage: 'Nữ',
   },
 });

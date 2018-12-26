@@ -14,8 +14,8 @@ import axios from 'axios';
 import config from 'utils/validation/config';
 
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import messages from './messages';
 import columnOptions from './columnOptions';
+import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
 class PsychologicTable extends React.Component {

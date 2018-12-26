@@ -22,7 +22,6 @@ const mocprofiles = require('./routers/api/mocprofiles');
 const survey = require('./routers/api/survey/survey');
 const questions = require('./routers/api/survey/question');
 const responses = require('./routers/api/survey/response');
-const resultIndicator = require('./routers/api/survey/resultIndicator');
 const questionGroup = require('./routers/api/survey/questionGroup');
 
 const auth = require('./routers/auth');
@@ -62,7 +61,6 @@ app.use('/api/mocprofiles', mocprofiles);
 app.use('/api/survey', survey);
 app.use('/api/survey/question-groups', questionGroup);
 app.use('/api/survey/questions', questions);
-app.use('/api/survey/result-indicator', resultIndicator);
 app.use('/api/survey/responses', responses);
 app.use('/auth', auth);
 

@@ -27,6 +27,11 @@ export default defineMessages({
     defaultMessage: 'Hiện thực',
   },
 
+  ruleLabel: {
+    id: `${scope}.ruleLabel`,
+    defaultMessage: 'Quy tắc',
+  },
+
   discoverLabel: {
     id: `${scope}.discoverLabel`,
     defaultMessage: 'Khám phá',

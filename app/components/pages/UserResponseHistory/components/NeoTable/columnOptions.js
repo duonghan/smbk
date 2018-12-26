@@ -28,6 +28,7 @@ export default formatMessage => [
     title: '#',
     dataIndex: 'key',
     align: 'center',
+    render: key => key + 1,
     sorter: (a, b) => a.orderNumber < b.orderNumber,
   },
   {

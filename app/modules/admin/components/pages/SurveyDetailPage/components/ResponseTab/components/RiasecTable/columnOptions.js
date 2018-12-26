@@ -26,7 +26,11 @@ export default formatMessage => [
     title: formatMessage(messages.realisticLabel),
     dataIndex: 'realistic',
     render: range => (
-      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={6 - range}
+        style={{ color: '#2196f3', fontSize: 14 }}
+      />
     ),
     sorter: (a, b) => a.realistic.localeCompare(b.realistic),
     filters,
@@ -36,7 +40,11 @@ export default formatMessage => [
     title: formatMessage(messages.discoverLabel),
     dataIndex: 'discover',
     render: range => (
-      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={6 - range}
+        style={{ color: '#2196f3', fontSize: 14 }}
+      />
     ),
     sorter: (a, b) => a.discover.localeCompare(b.discover),
     filters,
@@ -46,7 +54,11 @@ export default formatMessage => [
     title: formatMessage(messages.artLabel),
     dataIndex: 'art',
     render: range => (
-      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={6 - range}
+        style={{ color: '#2196f3', fontSize: 14 }}
+      />
     ),
     sorter: (a, b) => a.art.localeCompare(b.art),
     filters,
@@ -56,7 +68,11 @@ export default formatMessage => [
     title: formatMessage(messages.ruleLabel),
     dataIndex: 'rule',
     render: range => (
-      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={6 - range}
+        style={{ color: '#2196f3', fontSize: 14 }}
+      />
     ),
     sorter: (a, b) => a.rule.localeCompare(b.rule),
     filters,
@@ -66,7 +82,11 @@ export default formatMessage => [
     title: formatMessage(messages.convinceLabel),
     dataIndex: 'convince',
     render: range => (
-      <Rate disabled defaultValue={6 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={6 - range}
+        style={{ color: '#2196f3', fontSize: 14 }}
+      />
     ),
     sorter: (a, b) => a.convince.localeCompare(b.convince),
     filters,

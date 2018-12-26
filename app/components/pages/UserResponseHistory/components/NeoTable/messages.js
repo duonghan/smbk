@@ -47,31 +47,6 @@ export default defineMessages({
     defaultMessage: 'Tận tâm',
   },
 
-  rulesMsg: {
-    id: `${scope}.rulesMsg`,
-    defaultMessage: 'Vui lòng nhập',
-  },
-
-  editToolTip: {
-    id: `${scope}.editToolTip`,
-    defaultMessage: 'Sửa',
-  },
-
-  deleteToolTip: {
-    id: `${scope}.deleteToolTip`,
-    defaultMessage: 'Xóa',
-  },
-
-  detailToolTip: {
-    id: `${scope}.detailToolTip`,
-    defaultMessage: 'Chi tiết',
-  },
-
-  cancel: {
-    id: `${scope}.cancel`,
-    defaultMessage: 'Hủy',
-  },
-
   male: {
     id: `${scope}.male`,
     defaultMessage: 'Nam',
