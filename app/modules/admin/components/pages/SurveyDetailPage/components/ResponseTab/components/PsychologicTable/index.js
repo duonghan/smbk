@@ -9,7 +9,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Skeleton, Table } from 'antd';
+import { Icon, Skeleton, Table } from 'antd';
 import axios from 'axios';
 import config from 'utils/validation/config';
 
@@ -105,6 +105,13 @@ class PsychologicTable extends React.Component {
           title={() => (
             <h3 style={{ color: '#FA541C' }}>
               <strong>{formatMessage(messages.header)}</strong>
+
+              <a onClick={this.downloadExcelFile} style={{ float: 'right' }}>
+                <Icon
+                  type="download"
+                  style={{ fontSize: 20, color: '#FA541C' }}
+                />
+              </a>
             </h3>
           )}
           size="middle"

@@ -13,15 +13,18 @@ import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 
-import PsychologicChart from './components/PsychologicChart/Loadable';
+import axios from 'axios';
+import config from 'utils/validation/config';
+
+import PsychologicalChart from './components/PsychologicalChart/Loadable';
 import NeoChart from './components/NeoChart/Loadable';
 import RiasecChart from './components/RiasecChart/Loadable';
 import MocChart from './components/MocChart/Loadable';
 
-const renderResponse = surveyName => {
+const renderResponse = (surveyName, fetchedData) => {
   switch (surveyName) {
     case 'psychological':
-      return <PsychologicChart />;
+      return <PsychologicalChart fetchedData={fetchedData} />;
     case 'neo':
       return <NeoChart />;
     case 'riasec':
@@ -35,8 +38,40 @@ const renderResponse = surveyName => {
 
 /* eslint-disable react/prefer-stateless-function */
 class ChartTab extends React.Component {
+  state = {
+    fetchedData: [],
+  };
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = () => {
+    axios.get('/api/chart/psychological', config).then(res => {
+      const fetchedData = {
+        labels: [],
+        datasets: [],
+      };
+      fetchedData.labels = res.data[0][1].map(item => item[0]);
+
+      res.data.map((item, index) => {
+        fetchedData.datasets[index] = {
+          label: '',
+          data: [],
+        };
+
+        fetchedData.datasets[index].label = item[0];
+        fetchedData.datasets[index].data = item[1].map(_ => _[1]);
+      });
+
+      this.setState({
+        fetchedData,
+      });
+    });
+  };
+
   render() {
-    return <div>{renderResponse(this.props.surveyName)}</div>;
+    return <div>{renderResponse(this.props.surveyName, this.state.fetchedData)}</div>;
   }
 }
 

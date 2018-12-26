@@ -69,9 +69,8 @@ router.get(
           .populate('user')
           .exec((err, story) => {
             if (err) return res.status(404).end(err);
-            console.log(story);
             return res.json(
-              story.filter(item => item.user.role === 'DEFAULT').map(item => ({
+              story.filter(item => item.user.role !== 'ADMIN').map(item => ({
                 responseId: item._id,
                 userId: item.user._id,
                 userName: item.user.name,

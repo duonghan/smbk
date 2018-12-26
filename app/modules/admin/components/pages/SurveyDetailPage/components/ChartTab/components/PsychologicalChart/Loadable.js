@@ -1,7 +1,7 @@
 /**
  * Author: Duong Han
  * HUST
- * Asynchronously loads the component for PsychologicChart
+ * Asynchronously loads the component for PsychologicalChart
  *
  */
 

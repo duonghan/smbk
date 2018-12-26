@@ -2,9 +2,9 @@
 // import { mount } from 'enzyme';
 // import { enzymeFind } from 'styled-components/test-utils';
 
-// import PsychologicChart from '../index';
+// import PsychologicalChart from '../index';
 
-describe('<PsychologicChart />', () => {
+describe('<PsychologicalChart />', () => {
   it('Expect to have unit tests specified', () => {
     expect(true).toEqual(false);
   });
