@@ -73,8 +73,6 @@ class PsychologicChart extends React.Component {
   };
 
   render() {
-    console.log('fetched data is ', this.props.fetchedData);
-
     return (
       <div>
         <h2 style={{ textAlign: 'center' }}>

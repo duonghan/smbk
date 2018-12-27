@@ -71,7 +71,7 @@ app.use('/api/chart/moc', mocChart);
 app.use('/api/chart/dashboard', dashboardChart);
 app.use('/api/chart/psychological', psychologicalChart);
 // app.use('/api/chart/neo', neoChart);
-// app.use('/api/chart/riasec', riasecChart);
+app.use('/api/chart/riasec', riasecChart);
 
 app.use('/api/excel', excel);
 

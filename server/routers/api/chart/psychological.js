@@ -35,7 +35,24 @@ router.get(
           data2Array.push([key, [...value]]);
         });
 
-        return res.json(data2Array);
+        const fetchedData = {
+          labels: [],
+          datasets: [],
+        };
+
+        fetchedData.labels = data2Array[0][1].map(item => item[0]);
+
+        data2Array.map((item, index) => {
+          fetchedData.datasets[index] = {
+            label: '',
+            data: [],
+          };
+
+          fetchedData.datasets[index].label = item[0];
+          fetchedData.datasets[index].data = item[1].map(_ => _[1]);
+        });
+
+        return res.json(fetchedData);
       });
     });
   },

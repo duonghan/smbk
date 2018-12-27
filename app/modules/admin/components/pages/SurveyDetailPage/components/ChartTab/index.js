@@ -28,7 +28,7 @@ const renderResponse = (surveyName, fetchedData) => {
     case 'neo':
       return <NeoChart />;
     case 'riasec':
-      return <RiasecChart />;
+      return <RiasecChart fetchedData={fetchedData} />;
     case 'moc':
       return <MocChart />;
     default:
@@ -43,35 +43,20 @@ class ChartTab extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData(this.props.surveyName);
   }
 
-  fetchData = () => {
-    axios.get('/api/chart/psychological', config).then(res => {
-      const fetchedData = {
-        labels: [],
-        datasets: [],
-      };
-      fetchedData.labels = res.data[0][1].map(item => item[0]);
-
-      res.data.map((item, index) => {
-        fetchedData.datasets[index] = {
-          label: '',
-          data: [],
-        };
-
-        fetchedData.datasets[index].label = item[0];
-        fetchedData.datasets[index].data = item[1].map(_ => _[1]);
-      });
-
-      this.setState({
-        fetchedData,
-      });
+  fetchData = surveyName => {
+    axios.get(`/api/chart/${surveyName}`, config).then(res => {
+      console.log(`${surveyName} has fetched data is ${res.data}`);
+      this.setState({ fetchedData: res.data });
     });
   };
 
   render() {
-    return <div>{renderResponse(this.props.surveyName, this.state.fetchedData)}</div>;
+    return (
+      <div>{renderResponse(this.props.surveyName, this.state.fetchedData)}</div>
+    );
   }
 }
 

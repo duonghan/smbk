@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const resultIndex = require('../index/riasec');
+const indexScore = require('../index/riasec');
 
 const resultRIASEC = answers => {
   const result = { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0 };
@@ -13,4 +14,21 @@ const resultRIASEC = answers => {
   return { name: 'riasec', result, orderedKeys, resultIndex };
 };
 
-module.exports = resultRIASEC;
+const initialChartValues = () => {
+  const initialData = new Map();
+
+  const itemPsychological = _.toPairs(indexScore).map(item => item[1].name);
+  const value = ['1', '2'];
+
+  value.map(itemValue => {
+    initialData.set(itemValue, new Map());
+
+    itemPsychological.map(item => {
+      initialData.get(itemValue).set(item, 0);
+    });
+  });
+
+  return initialData;
+};
+
+module.exports = { resultRIASEC, initialChartValues };

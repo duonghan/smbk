@@ -17,7 +17,7 @@ const MOCProfile = require('../../../models/MOCProfile');
 
 // Load result calculator method
 const resultNEO = require('../../../utils/calculate/response/neo');
-const resultRIASEC = require('../../../utils/calculate/response/riasec');
+const { resultRIASEC } = require('../../../utils/calculate/response/riasec');
 const {
   resultPsychologic,
 } = require('../../../utils/calculate/response/psychological');
