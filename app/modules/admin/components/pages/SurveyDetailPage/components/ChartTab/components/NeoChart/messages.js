@@ -13,6 +13,6 @@ export const scope = 'app.components.NeoChart';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the NeoChart component!',
+    defaultMessage: 'Biểu đồ thống kê trắc nghiệm dự đoán nhân cách',
   },
 });

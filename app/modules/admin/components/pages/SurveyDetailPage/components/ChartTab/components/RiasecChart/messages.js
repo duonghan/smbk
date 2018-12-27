@@ -13,6 +13,6 @@ export const scope = 'app.components.RiasecChart';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the RiasecChart component!',
+    defaultMessage: 'Biểu đồ thống kê trắc nghiệm dự đoán nghề nghiệp',
   },
 });

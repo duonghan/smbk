@@ -20,9 +20,11 @@ import {
   Button,
   Progress,
   Affix,
+  Modal,
+  message,
 } from 'antd';
 import config from 'utils/validation/config';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
 
@@ -100,6 +102,30 @@ class Survey extends React.Component {
     this.setState({ activeKey: key });
   };
 
+  handleSubmit = () => {
+    this.setState({
+      submitting: true,
+    });
+
+    // number of completed response
+    const numCompleted = this.props.response
+      .get('answers')
+      .valueSeq()
+      .reduce((acc, cur) => acc + cur.size, 0);
+
+    // total questions
+    const total = this.props.response.get('total');
+
+    if (numCompleted < total) {
+      message.error(this.props.intl.formatMessage(messages.errMessage));
+      this.setState({
+        submitting: false,
+      });
+    } else {
+      this.props.submitResponse(this.props.response);
+    }
+  };
+
   render() {
     return (
       <Row>
@@ -169,10 +195,7 @@ class Survey extends React.Component {
               type="primary"
               loading={this.state.submitting}
               style={{ marginTop: 20 }}
-              onClick={() => {
-                this.setState({ submitting: true });
-                this.props.submitResponse(this.props.response);
-              }}
+              onClick={this.handleSubmit}
             >
               <FormattedMessage {...messages.submitBtn} />
             </Button>
@@ -194,4 +217,4 @@ Survey.propTypes = {
   location: PropTypes.object.isRequired,
 };
 
-export default Survey;
+export default injectIntl(Survey);

@@ -1,4 +1,6 @@
 const _ = require('lodash');
+const indexName = require('../index/neo');
+
 const reverseIndex = [
   2,
   3,
@@ -142,4 +144,21 @@ const compareWithIndex = (response, gender) => {
   }));
 };
 
-module.exports = resultNEO;
+const initialChartValues = () => {
+  const initialData = new Map();
+
+  const itemPsychological = _.toPairs(indexName).map(item => item[1].name);
+  const value = ['Thấp', 'Trung bình', 'Cao'];
+
+  value.map(itemValue => {
+    initialData.set(itemValue, new Map());
+
+    itemPsychological.map(item => {
+      initialData.get(itemValue).set(item, 0);
+    });
+  });
+
+  return initialData;
+};
+
+module.exports = { resultNEO, initialChartValues };

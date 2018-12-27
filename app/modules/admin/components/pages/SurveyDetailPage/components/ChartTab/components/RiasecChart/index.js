@@ -6,11 +6,11 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
+import { Icon } from 'antd';
 import { HorizontalBar } from 'react-chartjs-2';
-import { Rate } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
@@ -34,12 +34,23 @@ class RiasecChart extends React.Component {
   render() {
     return (
       <div>
+        <h2 style={{ textAlign: 'center' }}>
+          <FormattedMessage {...messages.header} />
+
+          <a onClick={this.downloadExcelFile} style={{ float: 'right' }}>
+            <Icon type="download" style={{ fontSize: 20, color: '#FA541C' }} />
+          </a>
+        </h2>
+
+        <br />
         <HorizontalBar data={{ ...data, ...this.props.fetchedData }} />
       </div>
     );
   }
 }
 
-RiasecChart.propTypes = {};
+RiasecChart.propTypes = {
+  fetchedData: PropTypes.object.isRequired,
+};
 
 export default RiasecChart;

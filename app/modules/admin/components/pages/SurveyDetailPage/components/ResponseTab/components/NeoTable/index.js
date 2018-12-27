@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios';
 import config from 'utils/validation/config';
-import { Table, Radio } from 'antd';
+import { Icon, Table, Radio } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import columnOptions from './columnOptions';
 import messages from './messages';
@@ -96,18 +96,27 @@ class NeoTable extends React.Component {
         title={() => (
           <h3 style={{ color: '#FA541C' }}>
             <strong>{formatMessage(messages.header)}</strong>
-            <RadioGroup
-              onChange={this.onChange}
-              value={this.state.gender}
-              style={{ float: 'right' }}
-            >
-              <Radio value="male">
-                <FormattedMessage {...messages.male} />
-              </Radio>
-              <Radio value="female">
-                <FormattedMessage {...messages.female} />
-              </Radio>
-            </RadioGroup>
+
+            <div style={{ float: 'right' }}>
+              {/* <RadioGroup onChange={this.onChange} value={this.state.gender}>
+                <Radio value="male">
+                  <FormattedMessage {...messages.male} />
+                </Radio>
+                <Radio value="female">
+                  <FormattedMessage {...messages.female} />
+                </Radio>
+              </RadioGroup> */}
+
+              <a
+                onClick={() => this.downloadExcelFile(formatMessage)}
+                style={{ float: 'right' }}
+              >
+                <Icon
+                  type="download"
+                  style={{ fontSize: 20, color: '#FA541C' }}
+                />
+              </a>
+            </div>
           </h3>
         )}
         size="middle"

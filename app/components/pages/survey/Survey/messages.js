@@ -25,4 +25,9 @@ export default defineMessages({
     id: `${scope}.submitBtn`,
     defaultMessage: 'Gửi',
   },
+
+  errMessage: {
+    id: `${scope}.errMessage`,
+    defaultMessage: 'Bạn vui lòng hoàn thành toàn bộ câu hỏi',
+  },
 });

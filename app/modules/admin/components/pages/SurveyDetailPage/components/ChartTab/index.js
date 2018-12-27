@@ -26,7 +26,7 @@ const renderResponse = (surveyName, fetchedData) => {
     case 'psychological':
       return <PsychologicalChart fetchedData={fetchedData} />;
     case 'neo':
-      return <NeoChart />;
+      return <NeoChart fetchedData={fetchedData} />;
     case 'riasec':
       return <RiasecChart fetchedData={fetchedData} />;
     case 'moc':
@@ -48,7 +48,9 @@ class ChartTab extends React.Component {
 
   fetchData = surveyName => {
     axios.get(`/api/chart/${surveyName}`, config).then(res => {
-      console.log(`${surveyName} has fetched data is ${res.data}`);
+      console.log(
+        `${surveyName} has fetched data is ${res.data.datasets[1].data}`,
+      );
       this.setState({ fetchedData: res.data });
     });
   };

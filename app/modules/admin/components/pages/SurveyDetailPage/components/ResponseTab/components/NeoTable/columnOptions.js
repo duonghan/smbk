@@ -34,7 +34,7 @@ export default formatMessage => [
   {
     title: formatMessage(messages.nameLabel),
     dataIndex: 'name',
-    sorter: (a, b) => a.content.localeCompare(b.name),
+    sorter: (a, b) => a.name.localeCompare(b.name),
   },
   {
     title: formatMessage(messages.noiseLabel),

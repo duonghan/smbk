@@ -1,6 +1,6 @@
 module.exports = {
   N: {
-    name: 'NHIỄU TÂM',
+    name: 'Nhiễu tâm',
     low: `Người có điểm của mặt Nhiễu tâm thấp thì cảm xúc của họ tương đối ổn định. 
       Họ thường bình tĩnh, điềm đạm, và thoải mái, và họ có thể phải đối mặt với tình huống căng thẳng mà không trở lên khó chịu hoặc lo lắng.`,
     mid: `Người có điểm mặt nhiễu tâm ở mức trung bình cho thấy sự ổn định cảm xúc của họ. 
@@ -18,7 +18,7 @@ module.exports = {
   },
 
   E: {
-    name: 'HƯỚNG NGOẠI',
+    name: 'Hướng ngoại',
     low: `Người có điểm hướng ngoại thấp có xu hướng hướng nội, hướng nội không phải không thân thiện, 
     họ độc lập chứ không phải là chậm chạp. Người hướng nội trông có thể nhút nhát nhưng không có nghĩa là họ thích ở một mình: 
     họ không nhất thiết bị ám sợ xã hội. Mặc dù họ không có tính cởi mở của sự hướng ngoại, 
@@ -39,7 +39,7 @@ module.exports = {
   },
 
   O: {
-    name: 'CỞI MỞ, HAM HỌC HỎI',
+    name: 'Cởi mở, ham học hỏi',
     low: `Người có điểm thấp ở mặt O có xu hướng giữ nguyên hành vi ứng xử và bảo thủ trong quan điểm. 
     Họ thích những gì quen thuộc hơn là những thứ mới mẻ, và không thích những trải nghiệm về mặt cảm xúc.`,
     mid: `Những người có điểm số mặt O ở mức trung bình thường khá tò mò về cả những điều bên trong họ và những gì bên ngoài thế giới, 
@@ -56,7 +56,7 @@ module.exports = {
   },
 
   A: {
-    name: 'DỄ CHẤP NHẬN',
+    name: 'Dễ chấp nhận',
     low: `Những người có điểm thấp ở mặt này tương đối ít quan tâm đến người khác. 
     Họ thường có thể vô tâm hoặc không suy nghĩ trong tương tác của họ. 
     Họ có xu hướng xem những người khác và ý tưởng từ quan điểm phê bình. 
@@ -73,7 +73,7 @@ module.exports = {
   },
 
   C: {
-    name: 'TẬN TÂM',
+    name: 'Tận tâm',
     low: `Người có điểm mặt C thấp không nhất thiết là người thiếu nguyên tắc đạo đức, 
     nhưng họ không có nhiều đòi hỏi trong việc áp dụng chúng, cũng như họ không có nhiều động lực 
     trong việc hướng tới mục tiêu của mình. Có một số bằng chứng cho thấy họ thích hưởng thụ và quan tâm đến tình dục.`,
