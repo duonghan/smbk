@@ -33,6 +33,9 @@ const psychologicalChart = require('./routers/api/chart/psychological');
 const neoChart = require('./routers/api/chart/neo');
 const riasecChart = require('./routers/api/chart/riasec');
 
+// excel
+const excel = require('./routers/api/excel');
+
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -69,6 +72,8 @@ app.use('/api/chart/dashboard', dashboardChart);
 app.use('/api/chart/psychological', psychologicalChart);
 // app.use('/api/chart/neo', neoChart);
 // app.use('/api/chart/riasec', riasecChart);
+
+app.use('/api/excel', excel);
 
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {

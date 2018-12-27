@@ -13,6 +13,6 @@ export const scope = 'app.components.PsychologicalChart';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the PsychologicalChart component!',
+    defaultMessage: 'Biểu đồ khảo sát trắc nghiệm tâm lý học sinh trung học',
   },
 });

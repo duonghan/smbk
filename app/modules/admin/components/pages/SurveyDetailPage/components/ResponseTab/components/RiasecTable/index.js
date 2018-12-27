@@ -10,7 +10,7 @@ import React from 'react';
 // import styled from 'styled-components';
 import config from 'utils/validation/config';
 
-import { Table } from 'antd';
+import { Icon, Table } from 'antd';
 
 import axios from 'axios';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
@@ -87,6 +87,16 @@ class RiasecTable extends React.Component {
         title={() => (
           <h3 style={{ color: '#FA541C' }}>
             <strong>{formatMessage(messages.header)}</strong>
+
+            <a
+              onClick={() => this.downloadExcelFile(formatMessage)}
+              style={{ float: 'right' }}
+            >
+              <Icon
+                type="download"
+                style={{ fontSize: 20, color: '#FA541C' }}
+              />
+            </a>
           </h3>
         )}
         size="middle"

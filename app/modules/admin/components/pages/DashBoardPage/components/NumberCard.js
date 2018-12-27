@@ -4,7 +4,7 @@ import { Card } from 'antd';
 import CountUp from 'react-countup';
 import './numberCard.css';
 
-const NumberCard = ({ icon, color, title, number, countUp }) => (
+const NumberCard = ({ color, title, number, countUp }) => (
   <Card className="numberCard" bordered style={{ backgroundColor: color }}>
     <div>
       <h3 className="title">{title || 'No Title'}</h3>

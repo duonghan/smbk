@@ -26,7 +26,12 @@ const cardColor = {
 /* eslint-disable react/prefer-stateless-function */
 class DashBoardPage extends React.Component {
   state = {
-    status: {},
+    status: {
+      question: 0,
+      response: 0,
+      survey: 0,
+      user: 0,
+    },
     loading: true,
   };
 
@@ -36,7 +41,7 @@ class DashBoardPage extends React.Component {
 
   fetchStatusList = () => {
     axios.get('/api/survey/responses/statusList', config).then(res => {
-      this.setState({ status: res.data, loading: false });
+      this.setState({ status: res.data });
     });
   };
 
@@ -46,17 +51,16 @@ class DashBoardPage extends React.Component {
     return (
       <Row gutter={24}>
         <Helmet title={formatMessage(messages.header)} />
-        <Skeleton loading={this.state.loading}>
-          {Object.entries(this.state.status).map((item, index) => (
-            <Col key={index} lg={6} md={12} sm={12}>
-              <NumberCard
-                title={formatMessage(messages[`${item[0]}StatTitle`])}
-                number={item[1]}
-                color={cardColor[index]}
-              />
-            </Col>
-          ))}
-        </Skeleton>
+
+        {Object.entries(this.state.status).map((item, index) => (
+          <Col key={index} lg={6} md={12} sm={12}>
+            <NumberCard
+              title={formatMessage(messages[`${item[0]}StatTitle`])}
+              number={item[1]}
+              color={cardColor[index]}
+            />
+          </Col>
+        ))}
 
         <br />
 

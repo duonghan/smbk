@@ -131,6 +131,7 @@ module.exports = options => ({
   },
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window
-  // vendor: ['xlsx', 'file-saver'],
+  // node: { fs: 'empty' },
+  // externals: [{ './cptable': 'var cptable' }, { './jszip': 'jszip' }],
   performance: options.performance || {},
 });
