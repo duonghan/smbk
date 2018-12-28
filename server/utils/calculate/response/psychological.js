@@ -34,7 +34,7 @@ const initialChartValues = () => {
   return initialData;
 };
 
-const exportExcel = data => {
+const exportPsychologicalExcel = data => {
   const wb = new xl.Workbook(workbookConfig);
 
   const ws = wb.addWorksheet('Thống kê phản hồi');
@@ -67,5 +67,5 @@ const exportExcel = data => {
 module.exports = {
   resultPsychologic,
   initialChartValues,
-  exportExcel,
+  exportPsychologicalExcel,
 };

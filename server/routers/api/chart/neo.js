@@ -16,19 +16,21 @@ router.get(
 
     Survey.findOne({ name: 'neo' }).then(survey => {
       Response.find({ survey: survey._id }).then(responses => {
-        // return res.json(responses);
-
         const data = initialChartValues();
+
+        console.log(data);
 
         responses.map(response => {
           response.results.map(result => {
-            const tempItem = result.item
-              .toLowerCase()
-              .replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
+            console.log(result);
 
-            if (data.get(result.value) && result.gender === 'male') {
-              const currentValue = data.get(result.value).get(tempItem);
-              data.get(result.value).set(tempItem, currentValue + 1);
+            // const tempItem = result.item
+            //   .toLowerCase()
+            //   .replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
+
+            if (data.get(result.value)) {
+              const currentValue = data.get(result.value).get(result.item);
+              data.get(result.value).set(result.item, currentValue + 1);
             }
           });
         });

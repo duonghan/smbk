@@ -62,8 +62,6 @@ class NeoTable extends React.Component {
             }
           });
 
-          console.log(eachRow);
-
           return eachRow;
         });
         this.setState({ data, loading: false });
@@ -72,7 +70,6 @@ class NeoTable extends React.Component {
 
   render() {
     const { formatMessage } = this.props.intl;
-
     const columns = columnOptions(formatMessage);
 
     return (

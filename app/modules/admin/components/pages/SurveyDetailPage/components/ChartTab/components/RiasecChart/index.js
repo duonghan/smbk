@@ -12,6 +12,11 @@ import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import { HorizontalBar } from 'react-chartjs-2';
 import { FormattedMessage } from 'react-intl';
+
+import download from 'downloadjs';
+import axios from 'axios';
+import config from 'utils/validation/config';
+
 import messages from './messages';
 
 const data = {
@@ -31,6 +36,16 @@ const data = {
 
 /* eslint-disable react/prefer-stateless-function */
 class RiasecChart extends React.Component {
+  downloadExcelFile = () => {
+    axios
+      .post(
+        '/api/excel/riasec/chart',
+        { data: this.props.fetchedData },
+        { ...config, responseType: 'blob' },
+      )
+      .then(res => download(res.data, `psychological_chart.xlsx`));
+  };
+
   render() {
     return (
       <div>

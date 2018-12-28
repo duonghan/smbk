@@ -11,20 +11,16 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios';
 import config from 'utils/validation/config';
-import { Icon, Table, Radio } from 'antd';
+import { Icon, Table } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import columnOptions from './columnOptions';
 import messages from './messages';
-
-const RadioGroup = Radio.Group;
 
 /* eslint-disable react/prefer-stateless-function */
 class NeoTable extends React.Component {
   state = {
     loading: true,
     data: [],
-    gender: 'male',
-    rawData: [],
   };
 
   componentDidMount() {
@@ -49,21 +45,21 @@ class NeoTable extends React.Component {
         date: i.date,
       };
 
-      i.results.filter(item => item.gender === gender).map(it => {
-        switch (it.item.toUpperCase()) {
-          case 'DỄ CHẤP NHẬN':
+      i.results.map(it => {
+        switch (it.item) {
+          case 'Dễ chấp nhận':
             eachRow.ezAccept = it.value;
             break;
-          case 'TẬN TÂM':
+          case 'Tận tâm':
             eachRow.conscientious = it.value;
             break;
-          case 'CỞI MỞ, HAM HỌC HỎI':
+          case 'Cởi mở, ham học hỏi':
             eachRow.openMinded = it.value;
             break;
-          case 'NHIỄU TÂM':
+          case 'Nhiễu tâm':
             eachRow.noise = it.value;
             break;
-          case 'HƯỚNG NGOẠI':
+          case 'Hướng ngoại':
             eachRow.outward = it.value;
             break;
           default:
@@ -73,13 +69,6 @@ class NeoTable extends React.Component {
 
       return eachRow;
     });
-  };
-
-  onChange = e => {
-    this.setState(prevState => ({
-      gender: e.target.value,
-      data: this.refineData(e.target.value, prevState.rawData),
-    }));
   };
 
   render() {
@@ -97,26 +86,15 @@ class NeoTable extends React.Component {
           <h3 style={{ color: '#FA541C' }}>
             <strong>{formatMessage(messages.header)}</strong>
 
-            <div style={{ float: 'right' }}>
-              {/* <RadioGroup onChange={this.onChange} value={this.state.gender}>
-                <Radio value="male">
-                  <FormattedMessage {...messages.male} />
-                </Radio>
-                <Radio value="female">
-                  <FormattedMessage {...messages.female} />
-                </Radio>
-              </RadioGroup> */}
-
-              <a
-                onClick={() => this.downloadExcelFile(formatMessage)}
-                style={{ float: 'right' }}
-              >
-                <Icon
-                  type="download"
-                  style={{ fontSize: 20, color: '#FA541C' }}
-                />
-              </a>
-            </div>
+            <a
+              onClick={() => this.downloadExcelFile(formatMessage)}
+              style={{ float: 'right' }}
+            >
+              <Icon
+                type="download"
+                style={{ fontSize: 20, color: '#FA541C' }}
+              />
+            </a>
           </h3>
         )}
         size="middle"
@@ -128,7 +106,6 @@ class NeoTable extends React.Component {
 
 NeoTable.propTypes = {
   intl: intlShape.isRequired,
-  user: PropTypes.string.isRequired,
 };
 
 export default injectIntl(NeoTable);

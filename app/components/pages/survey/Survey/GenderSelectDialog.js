@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Form, Input, Radio, message } from 'antd';
+import { Modal, Form, Radio } from 'antd';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import messages from './messages';
 

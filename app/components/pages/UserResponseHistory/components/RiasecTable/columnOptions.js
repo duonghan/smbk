@@ -2,8 +2,15 @@ import React from 'react';
 import { Rate } from 'antd';
 import messages from './messages';
 
-const filters = [1, 2, 3, 4, 5].map(range => ({
-  text: <Rate disabled defaultValue={7 - range} style={{ color: '#2196f3' }} />,
+const filters = [1, 2, 3, 4, 5, 6].map(range => ({
+  text: (
+    <Rate
+      disabled
+      defaultValue={7 - range}
+      count={6}
+      style={{ color: '#2196f3' }}
+    />
+  ),
   value: range,
 }));
 
@@ -13,13 +20,20 @@ export default formatMessage => [
     dataIndex: 'key',
     render: key => key + 1,
     align: 'center',
-    sorter: (a, b) => a.key.localeCompare(b.key),
+    width: 50,
+    fixed: 'left',
+    sorter: (a, b) => a > b,
   },
   {
     title: formatMessage(messages.realisticLabel),
     dataIndex: 'realistic',
     render: range => (
-      <Rate disabled defaultValue={7 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={7 - range}
+        count={6}
+        style={{ color: '#2196f3' }}
+      />
     ),
     sorter: (a, b) => a.realistic.localeCompare(b.realistic),
     filters,
@@ -29,7 +43,12 @@ export default formatMessage => [
     title: formatMessage(messages.discoverLabel),
     dataIndex: 'discover',
     render: range => (
-      <Rate disabled defaultValue={7 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={7 - range}
+        count={6}
+        style={{ color: '#2196f3' }}
+      />
     ),
     sorter: (a, b) => a.discover.localeCompare(b.discover),
     filters,
@@ -39,7 +58,12 @@ export default formatMessage => [
     title: formatMessage(messages.artLabel),
     dataIndex: 'art',
     render: range => (
-      <Rate disabled defaultValue={7 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={7 - range}
+        count={6}
+        style={{ color: '#2196f3' }}
+      />
     ),
     sorter: (a, b) => a.art.localeCompare(b.art),
     filters,
@@ -49,7 +73,12 @@ export default formatMessage => [
     title: formatMessage(messages.societyLabel),
     dataIndex: 'society',
     render: range => (
-      <Rate disabled defaultValue={7 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={7 - range}
+        count={6}
+        style={{ color: '#2196f3' }}
+      />
     ),
     sorter: (a, b) => a.society.localeCompare(b.society),
     filters,
@@ -59,7 +88,12 @@ export default formatMessage => [
     title: formatMessage(messages.ruleLabel),
     dataIndex: 'rule',
     render: range => (
-      <Rate disabled defaultValue={7 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={7 - range}
+        count={6}
+        style={{ color: '#2196f3' }}
+      />
     ),
     sorter: (a, b) => a.rule.localeCompare(b.rule),
     filters,
@@ -69,7 +103,12 @@ export default formatMessage => [
     title: formatMessage(messages.convinceLabel),
     dataIndex: 'convince',
     render: range => (
-      <Rate disabled defaultValue={7 - range} style={{ color: '#2196f3' }} />
+      <Rate
+        disabled
+        defaultValue={7 - range}
+        count={6}
+        style={{ color: '#2196f3' }}
+      />
     ),
     sorter: (a, b) => a.convince.localeCompare(b.convince),
     filters,

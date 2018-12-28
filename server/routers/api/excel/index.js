@@ -3,11 +3,14 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-var XLSXChart = require('xlsx-chart');
+const XLSXChart = require('xlsx-chart');
 
 const {
-  exportExcel,
-  exportChart,
+  exportPsychologicalExcel,
+} = require('../../../utils/calculate/response/psychological');
+
+const {
+  exportRiasecExcel,
 } = require('../../../utils/calculate/response/psychological');
 
 router.post(
@@ -16,9 +19,22 @@ router.post(
   (req, res) => {
     if (req.user.role !== 'ADMIN') return res.status(403).end();
 
-    const wb = exportExcel(req.body.data);
+    const wb = exportPsychologicalExcel(req.body.data);
 
     return wb.write('ExcelFile.xlsx', res);
+  },
+);
+
+router.post(
+  '/riasec/response',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.user.role !== 'ADMIN') return res.status(403).end();
+
+    console.log(req.body.data);
+    // const wb = exportRiasecExcel(req.body.data);
+
+    // return wb.write('ExcelFile.xlsx', res);
   },
 );
 

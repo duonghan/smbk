@@ -9,10 +9,11 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import config from 'utils/validation/config';
+import download from 'downloadjs';
+import axios from 'axios';
 
 import { Icon, Table } from 'antd';
 
-import axios from 'axios';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import columnOptions from './columnOptions';
@@ -64,12 +65,29 @@ class RiasecTable extends React.Component {
                 break;
             }
           });
+          console.log(eachRow);
 
           return eachRow;
         });
 
         this.setState({ data, loading: false });
       });
+  };
+
+  downloadExcelFile = formatMessage => {
+    // const data = {
+    //   ...excelData,
+    //   labels: excelData.labels.map(label => formatMessage(messages[label])),
+    // };
+    // axios
+    //   .post(
+    //     '/api/excel/psychological/response',
+    //     { data },
+    //     { ...config, responseType: 'blob' },
+    //   )
+    //   .then(res =>
+    //     download(res.data, `${this.props.surveyName}_response_table.xlsx`),
+    //   );
   };
 
   render() {
@@ -100,7 +118,7 @@ class RiasecTable extends React.Component {
           </h3>
         )}
         size="middle"
-        scroll={{ x: 715 }}
+        scroll={{ x: 800 }}
       />
     );
   }
