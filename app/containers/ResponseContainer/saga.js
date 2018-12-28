@@ -26,7 +26,12 @@ function* submitResponse(data) {
     const res = yield call(
       axios.post,
       '/api/survey/responses/submit',
-      data.response,
+      {
+        response: data.response,
+        gender: data.gender,
+        surveyId: data.surveyId,
+        userId: data.userId,
+      },
       config,
     );
 
@@ -35,18 +40,6 @@ function* submitResponse(data) {
         result: res.data.result,
       }),
     );
-
-    // if (data.response.get('answers').size < data.response.get('total')) {
-    //   yield put(submitFailed({ message: 'ResponseNotCompleted' }));
-    // } else {
-    //   debugger;
-    //   const res = yield call(
-    //     axios.post,
-    //     '/api/survey/responses/',
-    //     data.response,
-    //     config,
-    //   );
-    // }
   } catch (err) {
     console.log(err);
     // yield put(initFailed(err));

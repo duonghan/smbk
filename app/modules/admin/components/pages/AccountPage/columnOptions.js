@@ -5,10 +5,14 @@ import { EditableContext } from './EditableCell';
 import messages from './messages';
 import { styles } from './styles';
 
-const colorTag = role => {
-  switch (role) {
+const colorTag = text => {
+  switch (text) {
     case 'ADMIN':
       return 'volcano';
+    case 'male':
+      return 'red';
+    case 'female':
+      return 'green';
     default:
       return 'blue';
   }
@@ -27,8 +31,8 @@ export default (
   {
     title: '#',
     dataIndex: 'key',
-    key: 'key',
     width: 50,
+    render: key => key + 1,
     sorter: (a, b) => a.key < b.key,
     sortOrder: sortedInfo.columnKey === 'key' && sortedInfo.order,
     fixed: 'left',
@@ -36,7 +40,6 @@ export default (
   {
     title: formatMessage(messages.nameTitle),
     dataIndex: 'name',
-    key: 'name',
     editable: true,
     sorter: (a, b) => a.name.localeCompare(b.name),
     sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
@@ -44,15 +47,33 @@ export default (
   {
     title: 'Email',
     dataIndex: 'email',
-    key: 'email',
     editable: true,
     sorter: (a, b) => a.email.localeCompare(b.email),
     sortOrder: sortedInfo.columnKey === 'email' && sortedInfo.order,
   },
   {
+    title: formatMessage(messages.genderTitle),
+    dataIndex: 'gender',
+    editable: true,
+    render: gender => (
+      <span>
+        <Tag color={colorTag(gender)}>
+          {formatMessage(messages[gender.toLowerCase()])}
+        </Tag>
+      </span>
+    ),
+    filters: [
+      { text: formatMessage(messages.male), value: 'male' },
+      { text: formatMessage(messages.female), value: 'female' },
+    ],
+    filteredValue: filteredInfo.gender || null,
+    onFilter: (value, record) => record.gender === value,
+    sorter: (a, b) => a.gender.localeCompare(b.gender),
+    sortOrder: sortedInfo.columnKey === 'gender' && sortedInfo.order,
+  },
+  {
     title: formatMessage(messages.roleTitle),
     dataIndex: 'role',
-    key: 'role',
     editable: true,
     render: role => (
       <span>
@@ -73,7 +94,6 @@ export default (
   {
     title: formatMessage(messages.dateTitle),
     dataIndex: 'date',
-    key: 'date',
     sorter: (a, b) => new Date(b.date) - new Date(a.date),
     sortOrder: sortedInfo.columnKey === 'date' && sortedInfo.order,
     render: text => new Date(text).toLocaleString('vi-VN'),
@@ -82,7 +102,6 @@ export default (
     title: formatMessage(messages.actionTitle),
     dataIndex: 'action',
     width: 100,
-    key: 'action',
     align: 'center',
     render: (text, record) => {
       const editable = isEditing(record);

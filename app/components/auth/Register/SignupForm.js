@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Form, Input, Tooltip, Button, Modal } from 'antd';
+import { Form, Input, Tooltip, Button, Modal, Radio } from 'antd';
 import { withRouter } from 'react-router';
 import Captcha from './Captcha';
 import messages from './messages';
@@ -36,6 +36,7 @@ const initialState = {
   email: '',
   password: '',
   password2: '',
+  gender: 'male',
   errors: {},
 };
 
@@ -43,9 +44,7 @@ const initialState = {
 class SignupForm extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = initialState;
-
     this.formatMessage = this.props.intl.formatMessage;
   }
 
@@ -64,6 +63,7 @@ class SignupForm extends React.Component {
     const newUser = {
       name: this.state.name,
       email: this.state.email,
+      gender: this.state.gender,
       password: this.state.password,
       password2: this.state.password2,
     };
@@ -109,6 +109,7 @@ class SignupForm extends React.Component {
           <FormattedMessage {...messages.title} />
         </Title>
         <h1>{user && user.get('name')}</h1>
+
         <Form onSubmit={this.handleSubmit}>
           <FormItem
             {...styles.formItemLayout}
@@ -126,6 +127,7 @@ class SignupForm extends React.Component {
               onChange={this.onChange}
             />
           </FormItem>
+
           <FormItem
             {...styles.formItemLayout}
             label={this.formatMessage(messages.labelPassword)}
@@ -142,6 +144,7 @@ class SignupForm extends React.Component {
               onChange={this.onChange}
             />
           </FormItem>
+
           <FormItem
             {...styles.formItemLayout}
             label={this.formatMessage(messages.labelPassword2)}
@@ -159,6 +162,7 @@ class SignupForm extends React.Component {
               onChange={this.onChange}
             />
           </FormItem>
+
           <FormItem
             {...styles.formItemLayout}
             label={
@@ -181,6 +185,32 @@ class SignupForm extends React.Component {
               onChange={this.onChange}
             />
           </FormItem>
+
+          <FormItem
+            {...styles.formItemLayout}
+            label={
+              <Tooltip title={this.formatMessage(messages.titleGender)}>
+                <span>
+                  <FormattedMessage {...messages.gender} />
+                </span>
+              </Tooltip>
+            }
+          >
+            <Radio.Group
+              defaultValue="male"
+              name="gender"
+              onChange={this.onChange}
+            >
+              <Radio value="male">
+                <FormattedMessage {...messages.maleOpt} />
+              </Radio>
+
+              <Radio value="female">
+                <FormattedMessage {...messages.femaleOpt} />
+              </Radio>
+            </Radio.Group>
+          </FormItem>
+
           <FormItem
             {...styles.formItemLayout}
             label="Captcha"
@@ -202,6 +232,7 @@ class SignupForm extends React.Component {
               onChange={this.onChange}
             />
           </FormItem>
+
           <FormItem {...styles.tailFormItemLayout}>
             <Button
               type="primary"

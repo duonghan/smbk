@@ -30,4 +30,29 @@ export default defineMessages({
     id: `${scope}.errMessage`,
     defaultMessage: 'Bạn vui lòng hoàn thành toàn bộ câu hỏi',
   },
+
+  genderSelectTitle: {
+    id: `${scope}.genderSelectTitle`,
+    defaultMessage: 'Chọn giới tính',
+  },
+
+  genderSelectContent: {
+    id: `${scope}.genderSelectContent`,
+    defaultMessage: 'Để kết quả được tốt nhất, vui lòng chọn giới tính của bạn',
+  },
+
+  maleOpt: {
+    id: `${scope}.maleOpt`,
+    defaultMessage: 'Nam',
+  },
+
+  femaleOpt: {
+    id: `${scope}.femaleOpt`,
+    defaultMessage: 'Nữ',
+  },
+
+  cancel: {
+    id: `${scope}.cancel`,
+    defaultMessage: 'Hủy',
+  },
 });

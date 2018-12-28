@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import { Table, Modal, Input, Icon, Form, AutoComplete } from 'antd';
+import { Table, Modal, Input, Icon, Form, message } from 'antd';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import config from 'utils/validation/config';
@@ -9,6 +9,7 @@ import messages from './messages';
 import EditableCell, { EditableContext } from './EditableCell';
 import { styles } from './styles';
 import columnOptions from './columnOptions';
+import AccountForm from './AccountForm';
 
 const { Search } = Input;
 
@@ -28,8 +29,8 @@ class AccountTable extends React.Component {
       filteredInfo: null,
       sortedInfo: null,
       data: [],
+      visible: false,
       editingKey: '',
-      searchText: '',
       loading: false,
     }; // Check here to configure the default column
   }
@@ -37,6 +38,54 @@ class AccountTable extends React.Component {
   componentDidMount() {
     this.fetchUser();
   }
+
+  // Handle with Account Form
+  showModal = () => {
+    this.setState({ visible: true });
+  };
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
+
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+
+  handleCreate = () => {
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      axios
+        .post(
+          '/api/users/addUser',
+          {
+            ...values,
+          },
+          config,
+        )
+        .then(res => {
+          if (res.data.success) {
+            message.success(
+              this.props.intl.formatMessage(messages.addUserSuccessMsg),
+            );
+            this.fetchUser();
+          } else {
+            message.error(
+              this.props.intl.formatMessage(messages.addUserFailedMsg),
+            );
+          }
+        });
+
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  };
+
+  // -- End Handle
 
   handleChange = (pagination, filters, sorter) => {
     this.setState({
@@ -55,21 +104,18 @@ class AccountTable extends React.Component {
       })
       .then(res => {
         if (res.data.success) {
+          message.success(
+            this.props.intl.formatMessage(messages.deleteSuccessContent),
+          );
           this.fetchUser();
-          Modal.success({
-            title: this.props.intl.formatMessage(messages.successTitle),
-            content: this.props.intl.formatMessage(
-              messages.deleteSuccessContent,
-            ),
-          });
         }
       });
   };
 
   isEditing = record => record.key === this.state.editingKey;
 
-  edit = key => {
-    this.setState({ editingKey: key });
+  edit = record => {
+    this.setState({ editingKey: record });
   };
 
   save = (form, id) => {
@@ -92,12 +138,9 @@ class AccountTable extends React.Component {
         )
         .then(res => {
           if (res.data.success) {
-            Modal.success({
-              title: this.props.intl.formatMessage(messages.successTitle),
-              content: this.props.intl.formatMessage(
-                messages.updateSuccessContent,
-              ),
-            });
+            message.success(
+              this.props.intl.formatMessage(messages.updateSuccessContent),
+            );
             this.fetchUser();
             this.setState({ loading: false });
           }
@@ -118,7 +161,7 @@ class AccountTable extends React.Component {
       .then(res => {
         this.setState({
           data: res.data.map((account, i) => ({
-            key: i + 1,
+            key: i,
             ...account,
           })),
           loading: false,
@@ -149,13 +192,19 @@ class AccountTable extends React.Component {
       }
       return {
         ...col,
-        onCell: record => ({
-          record,
-          inputType: col.dataIndex === 'role' ? 'select' : 'text',
-          dataIndex: col.dataIndex,
-          title: col.title,
-          editing: this.isEditing(record),
-        }),
+        onCell: record => {
+          let inputType = 'text';
+          if (col.dataIndex === 'role') inputType = 'role';
+          if (col.dataIndex === 'gender') inputType = 'gender';
+
+          return {
+            record,
+            inputType,
+            dataIndex: col.dataIndex,
+            title: col.title,
+            editing: this.isEditing(record),
+          };
+        },
       };
     });
 
@@ -168,28 +217,32 @@ class AccountTable extends React.Component {
           />
         </Helmet>
 
-        {/* <div style={styles.tableOperations}> */}
-        {/* <Search */}
-        {/* placeholder={formatMessage(messages.searchInput)} */}
-        {/* onSearch={value => */}
-        {/* this.setState({ */}
-        {/* searchText: value, */}
-        {/* }) */}
-        {/* } */}
-        {/* style={{ ...styles.button }} */}
-        {/* /> */}
-        {/* </div> */}
-
         <Table
           components={components}
           bordered
           rowKey={record => record.id}
           dataSource={this.state.data}
           loading={this.state.loading}
+          title={() => (
+            <h3 style={{ color: '#FA541C' }}>
+              <strong>{formatMessage(messages.header)}</strong>
+              <a onClick={this.showModal} style={{ float: 'right' }}>
+                <Icon type="plus" style={{ fontSize: 20, color: '#FA541C' }} />
+              </a>
+            </h3>
+          )}
           columns={columns}
           onChange={this.handleChange}
           size="middle"
           scroll={{ x: 715 }}
+        />
+
+        <AccountForm
+          wrappedComponentRef={this.saveFormRef}
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          onCreate={this.handleCreate}
+          account={this.state.editingKey}
         />
       </div>
     );

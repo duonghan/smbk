@@ -11,7 +11,7 @@ export const scope = 'app.modules.admin.components.AccountPage';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'Tài khoản người dùng',
+    defaultMessage: 'Danh sách tài khoản',
   },
 
   clearFiltersBtn: {
@@ -32,6 +32,11 @@ export default defineMessages({
   nameTitle: {
     id: `${scope}.nameTitle`,
     defaultMessage: 'Họ tên',
+  },
+
+  genderTitle: {
+    id: `${scope}.genderTitle`,
+    defaultMessage: 'Giới tính',
   },
 
   roleTitle: {
@@ -74,6 +79,11 @@ export default defineMessages({
     defaultMessage: 'Hủy',
   },
 
+  add: {
+    id: `${scope}.add`,
+    defaultMessage: 'Thêm tài khoản mới',
+  },
+
   save: {
     id: `${scope}.save`,
     defaultMessage: 'Lưu',
@@ -92,6 +102,16 @@ export default defineMessages({
   admin: {
     id: `${scope}.admin`,
     defaultMessage: 'Quản trị viên',
+  },
+
+  male: {
+    id: `${scope}.male`,
+    defaultMessage: 'Nam',
+  },
+
+  female: {
+    id: `${scope}.female`,
+    defaultMessage: 'Nữ',
   },
 
   reset: {
@@ -127,5 +147,62 @@ export default defineMessages({
   deleteSuccessContent: {
     id: `${scope}.deleteSuccessContent`,
     defaultMessage: 'Xóa người dùng thành công',
+  },
+
+  // form fields
+
+  passwordLabel: {
+    id: `${scope}.passwordLabel`,
+    defaultMessage: 'Mật khẩu',
+  },
+
+  validateEmail: {
+    id: `${scope}.validateEmail`,
+    defaultMessage: 'Email đã nhập không hợp lệ',
+  },
+
+  requiredEmail: {
+    id: `${scope}.requiredEmail`,
+    defaultMessage: 'Vui lòng nhập email',
+  },
+
+  existedEmail: {
+    id: `${scope}.existedEmail`,
+    defaultMessage: 'Email đã tồn tại',
+  },
+
+  requiredPassword: {
+    id: `${scope}.requiredPassword`,
+    defaultMessage: 'Vui lòng nhập mật khẩu',
+  },
+
+  validatePassword: {
+    id: `${scope}.validatePassword`,
+    defaultMessage: 'Mật khẩu phải chứa tối thiểu 6 kí tự',
+  },
+
+  validateName: {
+    id: `${scope}.validateName`,
+    defaultMessage: 'Tên phải chứa từ 2 đến 30 kí tự',
+  },
+
+  addUserSuccessMsg: {
+    id: `${scope}.addUserSuccessMsg`,
+    defaultMessage: 'Thêm tài khoản thành công',
+  },
+
+  addUserFailedMsg: {
+    id: `${scope}.addUserFailedMsg`,
+    defaultMessage: 'Thêm tài khoản thất bại',
+  },
+
+  updateAccount: {
+    id: `${scope}.updateAccount`,
+    defaultMessage: 'Cập nhật tài khoản',
+  },
+
+  resetPasswordLabel: {
+    id: `${scope}.resetPasswordLabel`,
+    defaultMessage: 'Khôi phục mật khẩu mặc định',
   },
 });

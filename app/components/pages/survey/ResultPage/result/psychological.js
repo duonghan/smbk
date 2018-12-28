@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 
 // import styled from 'styled-components';
 
-import { Row, Col, Tag, Table } from 'antd';
+import { Row, Col, Tag, Table, Button } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Line } from 'react-chartjs-2';
 import messages from '../messages';
@@ -159,6 +159,10 @@ class PsychologicResult extends React.Component {
             <Table bordered columns={columns} dataSource={data} />
           </Col>
         </Row>
+
+        <Button type="primary" onClick={() => this.props.history.replace('/')}>
+          <FormattedMessage {...messages.backHomeBtn} />
+        </Button>
       </div>
     );
   }

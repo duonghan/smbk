@@ -113,152 +113,141 @@ router.post(
   '/submit',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    Response.findById(req.body.id).then(response => {
-      Survey.findById(response.survey).then(survey => {
-        switch (survey.name) {
-          case 'psychological':
-            const resultScore = resultPsychologic(req.body.answers);
-            QuestionGroup.find({ survey: survey._id, parent: null })
-              .select('childs name')
-              .then(groups => {
-                const result = [];
+    console.log(req.body);
 
-                groups.map(group => {
-                  const resultItem = {
-                    name: group.name,
-                  };
+    Survey.findById(req.body.surveyId).then(survey => {
+      switch (survey.name) {
+        case 'psychological':
+          const resultScore = resultPsychologic(req.body.response.answers);
 
-                  if (!resultScore[group._id]) {
-                    resultItem.score = -1;
-                  }
+          QuestionGroup.find({ survey: survey._id, parent: null })
+            .select('childs name')
+            .then(groups => {
+              const result = [];
 
-                  if (group.childs.length > 0) {
-                    resultItem.score = group.childs.reduce(
-                      (acc, cur) => acc + resultScore[cur._id],
-                      0,
-                    );
-                  }
+              groups.map(group => {
+                const resultItem = {
+                  name: group.name,
+                };
 
-                  if (group.childs.length === 0 && resultScore[group._id]) {
-                    resultItem.score = resultScore[group._id];
-                  }
+                if (!resultScore[group._id]) {
+                  resultItem.score = -1;
+                }
 
-                  const i = _.findIndex(
-                    psychologicIndex,
-                    obj => obj.name === group.name,
+                if (group.childs.length > 0) {
+                  resultItem.score = group.childs.reduce(
+                    (acc, cur) => acc + resultScore[cur._id],
+                    0,
                   );
+                }
 
-                  const lower = psychologicIndex[i].m + psychologicIndex[i].sd;
-                  const upper =
-                    psychologicIndex[i].m + 2 * psychologicIndex[i].sd;
+                if (group.childs.length === 0 && resultScore[group._id]) {
+                  resultItem.score = resultScore[group._id];
+                }
 
-                  if (resultItem.score < 0) {
-                    resultItem.description = 'Bạn chưa trả lời';
-                  } else if (resultItem.score < lower) {
-                    resultItem.description = 'Không gặp vấn đề';
-                  } else if (resultItem.score > upper) {
-                    resultItem.description = 'Nguy cơ';
-                  } else {
-                    resultItem.description = 'Nên gặp chuyên gia';
-                  }
+                const i = _.findIndex(
+                  psychologicIndex,
+                  obj => obj.name === group.name,
+                );
 
-                  result.push({
-                    ...resultItem,
-                    lower,
-                    upper,
-                    value: resultItem.score,
-                  });
+                const lower = psychologicIndex[i].m + psychologicIndex[i].sd;
+                const upper =
+                  psychologicIndex[i].m + 2 * psychologicIndex[i].sd;
+
+                if (resultItem.score < 0) {
+                  resultItem.description = 'Bạn chưa trả lời';
+                } else if (resultItem.score < lower) {
+                  resultItem.description = 'Không gặp vấn đề';
+                } else if (resultItem.score > upper) {
+                  resultItem.description = 'Nguy cơ';
+                } else {
+                  resultItem.description = 'Nên gặp chuyên gia';
+                }
+
+                result.push({
+                  ...resultItem,
+                  lower,
+                  upper,
+                  value: resultItem.score,
                 });
+              });
 
-                // update response information
-                Response.findByIdAndUpdate(
-                  response._id,
-                  {
-                    $set: {
-                      results: result.map(item => ({
-                        item: item.name,
-                        value: item.description,
-                      })),
-                    },
-                  },
-                  { new: true },
-                ).then(() =>
+              // update response information
+              new Response({
+                user: mongoose.Types.ObjectId(req.body.userId),
+                survey: mongoose.Types.ObjectId(req.body.surveyId),
+                results: result.map(item => ({
+                  item: item.name,
+                  value: item.description,
+                })),
+              })
+                .save()
+                .then(() =>
                   res.json({
                     result: { name: 'psychological', result },
                   }),
                 );
-              });
+            });
 
-            break;
+          break;
 
-          // return res.json(resultPsychologic(req.body.answers, survey._id));
-          case 'neo':
-            QuestionGroup.findOne({ survey: survey._id }).then(group => {
-              const calculatedResult = resultNEO(req.body.answers[group._id]);
-              const results = [
-                ...calculatedResult.male.map(item => ({
-                  item: item.name,
-                  value: item.level.text,
-                  gender: 'male',
-                })),
-                ...calculatedResult.female.map(item => ({
-                  item: item.name,
-                  value: item.level.text,
-                  gender: 'female',
-                })),
-              ];
+        // return res.json(resultPsychologic(req.body.answers, survey._id));
+        case 'neo':
+          QuestionGroup.findOne({ survey: survey._id }).then(group => {
+            const calculatedResult = resultNEO(
+              req.body.response.answers[group._id],
+              req.body.gender,
+            );
 
-              Response.findByIdAndUpdate(
-                response._id,
-                {
-                  $set: {
-                    results,
-                  },
-                },
-                { new: true },
-              ).then(() =>
+            new Response({
+              user: mongoose.Types.ObjectId(req.body.userId),
+              survey: mongoose.Types.ObjectId(req.body.surveyId),
+              results: _.values(calculatedResult).map(item => ({
+                item: item.name,
+                value: item.level.text,
+              })),
+            })
+              .save()
+              .then(() =>
+                res.json({ result: { ...calculatedResult, name: 'neo' } }),
+              );
+          });
+          break;
+        case 'riasec':
+          QuestionGroup.findOne({ survey: survey._id }).then(group => {
+            const results = resultRIASEC(req.body.response.answers[group._id]);
+
+            new Response({
+              user: mongoose.Types.ObjectId(req.body.userId),
+              survey: mongoose.Types.ObjectId(req.body.surveyId),
+              results: results.orderedKeys.map((item, index) => ({
+                item: results.resultIndex[item].name,
+                value: index + 1,
+              })),
+            })
+              .save()
+              .then(() =>
                 res.json({
-                  result: calculatedResult,
+                  result: resultRIASEC(req.body.response.answers[group._id]),
                 }),
               );
-            });
-            break;
-          case 'riasec':
-            QuestionGroup.findOne({ survey: survey._id }).then(group => {
-              const results = resultRIASEC(req.body.answers[group._id]);
+            // end
+          });
 
-              Response.findByIdAndUpdate(
-                response._id,
-                {
-                  $set: {
-                    results: results.orderedKeys.map((item, index) => ({
-                      item: results.resultIndex[item].name,
-                      value: index + 1,
-                    })),
-                  },
-                },
-                { new: true },
-              ).then(() =>
-                res.json({
-                  result: resultRIASEC(req.body.answers[group._id]),
-                }),
-              );
-            });
-            break;
-          case 'moc':
-          case 'moc2':
-            Response.findByIdAndUpdate(
-              req.body.id,
-              {
-                $set: { answers: resultMOC(req.body.answers) },
-              },
-              { new: true },
-            ).then(() => {});
-            return res.json({ result: resultMOC(req.body.answers) });
-          default:
-            return res.json({ result: false });
-        }
-      });
+          break;
+        case 'moc':
+        case 'moc2':
+          Response.findByIdAndUpdate(
+            req.body.id,
+            {
+              $set: { answers: resultMOC(req.body.response.answers) },
+            },
+            { new: true },
+          ).then(() => {});
+          return res.json({ result: resultMOC(req.body.response.answers) });
+        default:
+          return res.json({ result: false });
+      }
     });
   },
 );
@@ -268,52 +257,19 @@ router.post(
   '/init',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    if (req.body.userId && req.body.surveyId) {
-      Response.findOne({
-        user: req.body.userId.trim(),
-        survey: req.body.surveyId,
-      }).then(response => {
-        // Get total question of current survey
-        QuestionGroup.find({
-          survey: req.body.surveyId,
-          childs: [],
-        }).then(groups => {
-          let numofQuestion = 0;
+    // Get total question of current survey
+    QuestionGroup.find({
+      survey: req.body.surveyId,
+      childs: [],
+    }).then(groups => {
+      let numofQuestion = 0;
 
-          groups.map(group => {
-            numofQuestion += group.questions.length;
-          });
-
-          // if not, create response document
-          const initialResponse = {
-            survey: mongoose.Types.ObjectId(req.body.surveyId),
-            user: mongoose.Types.ObjectId(req.body.userId),
-          };
-
-          // using in moc survey to handleUpdate user profile
-          if (req.body.profile) {
-            initialResponse.profile = mongoose.Types.ObjectId(req.body.profile);
-          }
-
-          // if response exist
-          if (response) {
-            return res.json({
-              id: response._id.toString(),
-              total: numofQuestion,
-            });
-          }
-
-          new Response(initialResponse).save().then(newResponse =>
-            res.json({
-              id: newResponse._id.toString(),
-              total: numofQuestion,
-            }),
-          );
-        });
+      groups.map(group => {
+        numofQuestion += group.questions.length;
       });
-    } else {
-      res.status(400).json({ message: 'surveyId and userId is required' });
-    }
+
+      return res.json({ total: numofQuestion });
+    });
   },
 );
 

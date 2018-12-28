@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-// https://grokonez.com/node-js/mongoose-many-to-many-related-models-with-nodejs-express-mongodb
-
 // Create new schema
 const MOCProfileSchema = new Schema({
   name: {

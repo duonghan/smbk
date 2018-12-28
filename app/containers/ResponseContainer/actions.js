@@ -48,7 +48,13 @@ export const addAnswer = answer => ({
 });
 
 // submit reponse
-export const submitResponse = response => ({ type: SUBMIT_RESPONSE, response });
+export const submitResponse = (response, gender, surveyId, userId) => ({
+  type: SUBMIT_RESPONSE,
+  response,
+  gender,
+  surveyId,
+  userId,
+});
 
 export const submitSuccess = data => ({ type: SUBMIT_SUCCESS, data });
 

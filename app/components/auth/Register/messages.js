@@ -19,6 +19,26 @@ export default defineMessages({
     defaultMessage: 'Họ tên ',
   },
 
+  gender: {
+    id: `${scope}.gender`,
+    defaultMessage: 'Giới tính ',
+  },
+
+  titleGender: {
+    id: `${scope}.titleGender`,
+    defaultMessage: 'Nhập giới tính của bạn',
+  },
+
+  maleOpt: {
+    id: `${scope}.maleOpt`,
+    defaultMessage: 'Nam',
+  },
+
+  femaleOpt: {
+    id: `${scope}.femaleOpt`,
+    defaultMessage: 'Nữ',
+  },
+
   submitBtn: {
     id: `${scope}.submitBtn`,
     defaultMessage: 'Đăng ký',

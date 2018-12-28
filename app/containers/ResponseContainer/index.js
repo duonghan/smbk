@@ -17,14 +17,16 @@ import saga from './saga';
 import { initResponse, setCurrentProfile, submitResponse } from './actions';
 
 const mapStateToProps = state => ({
-  userId: state.getIn(['auth', 'user', 'id']),
+  user: state.getIn(['auth', 'user']),
+  gender: state.getIn(['auth', 'user', 'gender']),
   response: state.get('response'),
   errors: state.getIn(['response', 'errors']),
 });
 
 const mapDispatchToProps = dispatch => ({
   initResponse: (surveyId, userId) => dispatch(initResponse(surveyId, userId)),
-  submitResponse: response => dispatch(submitResponse(response)),
+  submitResponse: (response, gender, surveyId, userId) =>
+    dispatch(submitResponse(response, gender, surveyId, userId)),
   setCurrentProfile: profileId => dispatch(setCurrentProfile(profileId)),
 });
 

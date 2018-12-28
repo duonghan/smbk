@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-// https://grokonez.com/node-js/mongoose-many-to-many-related-models-with-nodejs-express-mongodb
-
 // Create new schema
 const UserSchema = new Schema({
   name: {
@@ -28,6 +26,15 @@ const UserSchema = new Schema({
     trim: true,
     uppercase: true,
     enum: ['ADMIN', 'DEFAULT', 'GUEST'],
+    default: 'DEFAULT',
+  },
+
+  gender: {
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true,
+    enum: ['male', 'female'],
   },
 
   avatar: {

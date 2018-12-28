@@ -10,7 +10,7 @@ export const EditableContext = React.createContext();
 
 class EditableCell extends React.Component {
   getInput = () => {
-    if (this.props.inputType === 'select') {
+    if (this.props.inputType === 'role') {
       return (
         <Select>
           <Option value="ADMIN">
@@ -18,6 +18,19 @@ class EditableCell extends React.Component {
           </Option>
           <Option value="DEFAULT">
             <FormattedMessage {...messages.default} />
+          </Option>
+        </Select>
+      );
+    }
+
+    if (this.props.inputType === 'gender') {
+      return (
+        <Select>
+          <Option value="male">
+            <FormattedMessage {...messages.male} />
+          </Option>
+          <Option value="female">
+            <FormattedMessage {...messages.female} />
           </Option>
         </Select>
       );

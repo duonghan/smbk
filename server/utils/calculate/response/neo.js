@@ -102,19 +102,16 @@ const level = {
   },
 };
 
-const resultNEO = answers => {
+const resultNEO = (answers, gender) => {
   // reverse
   const newResponse = Object.values(answers).map(item => {
     if (reverseIndex.includes(item.orderNum)) item.score = 4 - item.score;
     return item;
   });
 
-  const resultScore = {
-    female: compareWithIndex(newResponse, 'female'),
-    male: compareWithIndex(newResponse, 'male'),
-  };
+  const resultScore = compareWithIndex(newResponse, gender);
 
-  return { name: 'neo', ...resultScore };
+  return resultScore;
 };
 
 const sumOfScore = (answers, type) =>

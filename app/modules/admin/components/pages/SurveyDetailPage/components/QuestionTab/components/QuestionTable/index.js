@@ -227,10 +227,6 @@ const mapStateToProps = state => ({
   groupName: state.getIn(['surveyDetail', 'groupName']),
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   setCurrentGroup: groupId => dispatch(setCurrentGroup(groupId)),
-// });
-
 export default connect(
   mapStateToProps,
   // mapDispatchToProps,

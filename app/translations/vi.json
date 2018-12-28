@@ -287,7 +287,7 @@
   "app.modules.admin.components.AccountPage.deleteToolTip": "Xóa",
   "app.modules.admin.components.AccountPage.editToolTip": "Sửa",
   "app.modules.admin.components.AccountPage.guest": "Khách",
-  "app.modules.admin.components.AccountPage.header": "Trang quản trị",
+  "app.modules.admin.components.AccountPage.header": "Danh sách tài khoản",
   "app.modules.admin.components.AccountPage.nameTitle": "Họ tên",
   "app.modules.admin.components.AccountPage.reset": "Khôi phục mặc định",
   "app.modules.admin.components.AccountPage.roleTitle": "Loại tài khoản",

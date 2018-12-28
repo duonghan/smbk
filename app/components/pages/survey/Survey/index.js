@@ -27,6 +27,7 @@ import config from 'utils/validation/config';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
+import GenderSelectDialog from './GenderSelectDialog';
 
 const { Panel } = Collapse;
 
@@ -42,6 +43,7 @@ class Survey extends React.Component {
       surveyTitle: '',
       surveyDescription: '',
       activeKey: '0',
+      visible: false,
     };
   }
 
@@ -98,6 +100,36 @@ class Survey extends React.Component {
     });
   };
 
+  // Modal
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
+
+  handleCreate = () => {
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      console.log('Received values of form: ', values.gender);
+      this.props.submitResponse(
+        this.props.response,
+        values.gender,
+        this.props.location.state.surveyId,
+        this.props.user.get('id'),
+      );
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  };
+
+  saveFormRef = formRef => {
+    this.formRef = formRef;
+  };
+
+  // -- end
+
   onChange = key => {
     this.setState({ activeKey: key });
   };
@@ -121,8 +153,15 @@ class Survey extends React.Component {
       this.setState({
         submitting: false,
       });
+    } else if (this.props.user.get('role') !== 'GUEST') {
+      this.props.submitResponse(
+        this.props.response,
+        this.props.gender,
+        this.props.location.state.surveyId,
+        this.props.user.get('id'),
+      );
     } else {
-      this.props.submitResponse(this.props.response);
+      this.setState({ visible: true });
     }
   };
 
@@ -201,6 +240,13 @@ class Survey extends React.Component {
             </Button>
           </Col>
 
+          <GenderSelectDialog
+            wrappedComponentRef={this.saveFormRef}
+            visible={this.state.visible}
+            onCancel={this.handleCancel}
+            onCreate={this.handleCreate}
+          />
+
           <BackTop />
         </Spin>
       </Row>
@@ -212,7 +258,7 @@ Survey.propTypes = {
   initResponse: PropTypes.func.isRequired,
   submitResponse: PropTypes.func.isRequired,
   setCurrentProfile: PropTypes.func.isRequired,
-  userId: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
   response: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 };

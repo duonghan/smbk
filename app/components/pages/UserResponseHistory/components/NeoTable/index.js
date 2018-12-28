@@ -24,7 +24,6 @@ class NeoTable extends React.Component {
   state = {
     loading: true,
     data: [],
-    gender: 'male',
   };
 
   componentDidMount() {
@@ -41,38 +40,34 @@ class NeoTable extends React.Component {
             date: i.date,
           };
 
-          i.results
-            .filter(item => item.gender === this.state.gender)
-            .map(it => {
-              switch (it.item.toUpperCase()) {
-                case 'DỄ CHẤP NHẬN':
-                  eachRow.ezAccept = it.value;
-                  break;
-                case 'TẬN TÂM':
-                  eachRow.conscientious = it.value;
-                  break;
-                case 'CỞI MỞ, HAM HỌC HỎI':
-                  eachRow.openMinded = it.value;
-                  break;
-                case 'NHIỄU TÂM':
-                  eachRow.noise = it.value;
-                  break;
-                case 'HƯỚNG NGOẠI':
-                  eachRow.outward = it.value;
-                  break;
-                default:
-                  break;
-              }
-            });
+          i.results.map(it => {
+            switch (it.item) {
+              case 'Dễ chấp nhận':
+                eachRow.ezAccept = it.value;
+                break;
+              case 'Tận tâm':
+                eachRow.conscientious = it.value;
+                break;
+              case 'Cởi mở, ham học hỏi':
+                eachRow.openMinded = it.value;
+                break;
+              case 'Nhiễu tâm':
+                eachRow.noise = it.value;
+                break;
+              case 'Hướng ngoại':
+                eachRow.outward = it.value;
+                break;
+              default:
+                break;
+            }
+          });
+
+          console.log(eachRow);
 
           return eachRow;
         });
         this.setState({ data, loading: false });
       });
-  };
-
-  onChange = e => {
-    this.setState({ gender: e.target.value });
   };
 
   render() {
@@ -90,18 +85,6 @@ class NeoTable extends React.Component {
         title={() => (
           <h3 style={{ color: '#FA541C' }}>
             <strong>{formatMessage(messages.header)}</strong>
-            <RadioGroup
-              onChange={this.onChange}
-              value={this.state.gender}
-              style={{ float: 'right' }}
-            >
-              <Radio value="male">
-                <FormattedMessage {...messages.male} />
-              </Radio>
-              <Radio value="female">
-                <FormattedMessage {...messages.female} />
-              </Radio>
-            </RadioGroup>
           </h3>
         )}
         size="middle"

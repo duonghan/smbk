@@ -22,12 +22,6 @@ const ResponseSchema = new Schema({
     {
       item: String,
       value: String,
-      gender: {
-        type: String,
-        default: 'male',
-        enum: ['male', 'female'],
-        lowercase: true,
-      },
     },
   ],
 

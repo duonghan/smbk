@@ -64,6 +64,7 @@ router.post('/register', (req, res) => {
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
+      gender: req.body.gender,
       avatar,
       password: req.body.password,
       role: roles.default,
@@ -194,6 +195,7 @@ router.post('/login', (req, res) => {
           const payload = {
             id: user.id,
             name: user.name,
+            gender: user.gender,
             avatar: user.avatar,
             role: user.role,
           }; // Create JWT payload
@@ -247,6 +249,7 @@ router.put(
         const updatedUser = {
           email: req.body.email,
           name: req.body.name,
+          gender: req.body.gender,
         };
 
         // when admin update user info
@@ -278,6 +281,7 @@ router.put(
                         const payload = {
                           id: newUser.id,
                           name: newUser.name,
+                          gender: newUser.gender,
                           avatar: newUser.avatar,
                           role: newUser.role,
                         }; // Create JWT payload
@@ -318,6 +322,7 @@ router.put(
               const payload = {
                 id: newUser.id,
                 name: newUser.name,
+                gender: newUser.gender,
                 avatar: newUser.avatar,
                 role: newUser.role,
               }; // Create JWT payload
@@ -383,6 +388,9 @@ router.get(
         role: {
           $ne: 'GUEST',
         },
+        email: {
+          $ne: 'admin@admin.com',
+        },
       })
         .sort({ date: -1 })
         .then(users =>
@@ -390,6 +398,7 @@ router.get(
             users.map(user => ({
               id: user.id,
               name: user.name,
+              gender: user.gender,
               email: user.email,
               role: user.role,
               date: user.date,
@@ -399,6 +408,45 @@ router.get(
         .catch(err => res.status(404).json(err));
     } else {
       res.status(403).send('You have no rights to visit this page');
+    }
+  },
+);
+
+router.post(
+  '/addUser',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.user.role === 'ADMIN') {
+      const avatar = gravatar.url(req.body.email, {
+        s: '200', // Size
+        r: 'pg', // Rating
+        d: 'mm', // Default
+      });
+
+      const newUser = new User({
+        name: req.body.name,
+        email: req.body.email,
+        gender: req.body.gender,
+        confirmed: true,
+        avatar,
+        password: req.body.password,
+      });
+
+      bcrypt.genSalt(10, (e, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.password = hash;
+
+          // then handleUpdate new user into db
+          newUser.save().then(() => {
+            res.json({
+              success: true,
+            });
+          });
+        });
+      });
+    } else {
+      return res.json({ success: false });
     }
   },
 );

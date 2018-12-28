@@ -8,11 +8,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { withRouter } from 'react-router';
-
-import { Row, Col, Tag, Radio, Button } from 'antd';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+// import { FormattedMessage } from 'react-intl';
+// import messages from './messages';
 import NeoResult from './result/neo';
 import RiasecResult from './result/riasec';
 import PsychologicResult from './result/psychological';
@@ -30,7 +27,7 @@ class ResultPage extends React.Component {
       case 'psychological':
         return <PsychologicResult result={result} />;
       default:
-        return <div>{JSON.stringify(result)}</div>;
+        return <div>...</div>;
     }
   }
 }
