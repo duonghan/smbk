@@ -47,13 +47,8 @@ export default defineMessages({
     defaultMessage: 'Tận tâm',
   },
 
-  male: {
-    id: `${scope}.male`,
-    defaultMessage: 'Nam',
-  },
-
-  female: {
-    id: `${scope}.female`,
-    defaultMessage: 'Nữ',
+  dateLabel: {
+    id: `${scope}.dateLabel`,
+    defaultMessage: 'Ngày trả lời',
   },
 });

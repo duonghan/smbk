@@ -143,9 +143,7 @@ class PsychologicTable extends React.Component {
         { data },
         { ...config, responseType: 'blob' },
       )
-      .then(res =>
-        download(res.data, `${this.props.surveyName}_response_table.xlsx`),
-      );
+      .then(res => download(res.data, 'Thong_ke_khao_sat_tam_ly_hs_thpt.xlsx'));
   };
 
   render() {

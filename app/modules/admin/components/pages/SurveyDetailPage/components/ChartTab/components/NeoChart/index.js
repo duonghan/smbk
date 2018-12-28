@@ -10,6 +10,9 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import { Icon } from 'antd';
+import download from 'downloadjs';
+import axios from 'axios';
+import config from 'utils/validation/config';
 import { HorizontalBar } from 'react-chartjs-2';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
@@ -34,8 +37,40 @@ const data = {
   ],
 };
 
+const options = {
+  scales: {
+    xAxes: [
+      {
+        scaleLabel: {
+          display: true,
+          labelString: 'Số lượng',
+        },
+      },
+    ],
+    yAxes: [
+      {
+        scaleLabel: {
+          display: true,
+          labelString: 'Kiểu nhân cách',
+        },
+        barThickness: 'flex',
+      },
+    ],
+  },
+};
+
 /* eslint-disable react/prefer-stateless-function */
 class NeoChart extends React.Component {
+  downloadExcelFile = () => {
+    axios
+      .post(
+        '/api/excel/neo/chart',
+        { data: this.props.fetchedData },
+        { ...config, responseType: 'blob' },
+      )
+      .then(res => download(res.data, `Bieu_do_du_doan_nhan_cach.xlsx`));
+  };
+
   render() {
     return (
       <div>
@@ -48,7 +83,10 @@ class NeoChart extends React.Component {
         </h2>
 
         <br />
-        <HorizontalBar data={{ ...data, ...this.props.fetchedData }} />
+        <HorizontalBar
+          data={{ ...data, ...this.props.fetchedData }}
+          options={options}
+        />
       </div>
     );
   }

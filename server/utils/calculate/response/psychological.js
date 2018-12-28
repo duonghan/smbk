@@ -52,7 +52,9 @@ const exportPsychologicalExcel = data => {
     });
 
   data.labels.map((item, index) => {
-    ws.cell(3, 1 + index).string(item);
+    ws.cell(3, 1 + index)
+      .string(item)
+      .style({ font: { bold: true } });
   });
 
   data.values.map((eachRow, i) => {

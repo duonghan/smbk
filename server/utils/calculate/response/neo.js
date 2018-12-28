@@ -1,5 +1,8 @@
 const _ = require('lodash');
+const xl = require('excel4node');
 const indexName = require('../index/neo');
+
+const { workbookConfig } = require('../../../config/excel');
 
 const reverseIndex = [
   2,
@@ -158,4 +161,29 @@ const initialChartValues = () => {
   return initialData;
 };
 
-module.exports = { resultNEO, initialChartValues };
+const exportNeoExcel = data => {
+  const wb = new xl.Workbook(workbookConfig);
+
+  const ws = wb.addWorksheet('Thống kê phản hồi');
+
+  // Set title
+  ws.cell(1, 2)
+    .string(`Thống kê phản hồi về khảo sát "Trắc nghiệm dự đoán nhân cách"`)
+    .style({ font: { bold: true, size: 18 } });
+
+  data.labels.map((item, index) => {
+    ws.cell(3, 1 + index)
+      .string(item)
+      .style({ font: { bold: true } });
+  });
+
+  data.values.map((eachRow, i) => {
+    eachRow.map((item, j) => {
+      ws.cell(4 + i, 1 + j).string(item);
+    });
+  });
+
+  return wb;
+};
+
+module.exports = { resultNEO, initialChartValues, exportNeoExcel };

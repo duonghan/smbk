@@ -51,4 +51,9 @@ export default defineMessages({
     id: `${scope}.societyLabel`,
     defaultMessage: 'Xã hội',
   },
+
+  dateLabel: {
+    id: `${scope}.dateLabel`,
+    defaultMessage: 'Ngày trả lời',
+  },
 });

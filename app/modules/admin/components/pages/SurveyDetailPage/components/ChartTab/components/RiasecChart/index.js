@@ -34,6 +34,28 @@ const data = {
   ],
 };
 
+const options = {
+  scales: {
+    xAxes: [
+      {
+        scaleLabel: {
+          display: true,
+          labelString: 'Số lượng',
+        },
+      },
+    ],
+    yAxes: [
+      {
+        scaleLabel: {
+          display: true,
+          labelString: 'Lĩnh vực',
+        },
+        barThickness: 'flex',
+      },
+    ],
+  },
+};
+
 /* eslint-disable react/prefer-stateless-function */
 class RiasecChart extends React.Component {
   downloadExcelFile = () => {
@@ -43,7 +65,12 @@ class RiasecChart extends React.Component {
         { data: this.props.fetchedData },
         { ...config, responseType: 'blob' },
       )
-      .then(res => download(res.data, `psychological_chart.xlsx`));
+      .then(res =>
+        download(
+          res.data,
+          `Bieu_do_khao_sat_trac_nghiem_tu_van_nghe_nghiep.xlsx`,
+        ),
+      );
   };
 
   render() {
@@ -58,7 +85,10 @@ class RiasecChart extends React.Component {
         </h2>
 
         <br />
-        <HorizontalBar data={{ ...data, ...this.props.fetchedData }} />
+        <HorizontalBar
+          data={{ ...data, ...this.props.fetchedData }}
+          options={options}
+        />
       </div>
     );
   }

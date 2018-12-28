@@ -171,9 +171,16 @@ class GroupTable extends React.Component {
           title={() => (
             <h3 style={{ color: '#FA541C' }}>
               <strong>{formatMessage(messages.header)}</strong>
-              <a onClick={this.createParentGr} style={{ float: 'right' }}>
-                <Icon type="plus" style={{ fontSize: 20, color: '#FA541C' }} />
-              </a>
+
+              {this.props.surveyName !== 'neo' &&
+                this.props.surveyName !== 'riasec' && (
+                  <a onClick={this.createParentGr} style={{ float: 'right' }}>
+                    <Icon
+                      type="plus"
+                      style={{ fontSize: 20, color: '#FA541C' }}
+                    />
+                  </a>
+                )}
             </h3>
           )}
           size="middle"
@@ -197,10 +204,12 @@ GroupTable.propTypes = {
   intl: intlShape.isRequired,
   surveyId: PropTypes.string.isRequired,
   setCurrentGroup: PropTypes.func.isRequired,
+  surveyName: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   surveyId: state.getIn(['surveyDetail', 'surveyId']),
+  surveyName: state.getIn(['surveyDetail', 'surveyName']),
 });
 
 const mapDispatchToProps = dispatch => ({

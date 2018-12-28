@@ -121,4 +121,10 @@ export default formatMessage => [
     filters,
     onFilter: (value, record) => record.convince.indexOf(value) === 0,
   },
+  {
+    title: formatMessage(messages.dateLabel),
+    dataIndex: 'date',
+    render: text => new Date(text).toLocaleString('vi-VN'),
+    sorter: (a, b) => new Date(b.date) - new Date(a.date),
+  },
 ];

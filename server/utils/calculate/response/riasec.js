@@ -48,10 +48,14 @@ const exportRiasecExcel = data => {
       },
     });
 
-  wb.cell(3, 2).string('Chú thích: ');
+  ws.cell(3, 2).string(
+    'Chú thích: 1,2,3,4,5,6 là thứ tự thể hiện lĩnh vưc vượt trội từ cao xuống thấp',
+  );
 
   data.labels.map((item, index) => {
-    ws.cell(5, 1 + index).string(item);
+    ws.cell(5, 1 + index)
+      .string(item)
+      .style({ font: { bold: true } });
   });
 
   data.values.map((eachRow, i) => {

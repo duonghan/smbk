@@ -11,7 +11,9 @@ const {
 
 const {
   exportRiasecExcel,
-} = require('../../../utils/calculate/response/psychological');
+} = require('../../../utils/calculate/response/riasec');
+
+const { exportNeoExcel } = require('../../../utils/calculate/response/neo');
 
 router.post(
   '/psychological/response',
@@ -31,10 +33,21 @@ router.post(
   (req, res) => {
     if (req.user.role !== 'ADMIN') return res.status(403).end();
 
-    console.log(req.body.data);
-    // const wb = exportRiasecExcel(req.body.data);
+    const wb = exportRiasecExcel(req.body.data);
 
-    // return wb.write('ExcelFile.xlsx', res);
+    return wb.write('ExcelFile.xlsx', res);
+  },
+);
+
+router.post(
+  '/neo/response',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.user.role !== 'ADMIN') return res.status(403).end();
+
+    const wb = exportNeoExcel(req.body.data);
+
+    return wb.write('ExcelFile.xlsx', res);
   },
 );
 
@@ -52,6 +65,84 @@ router.post(
       fields: req.body.data.labels,
       data: {},
       chartTitle: 'Biểu đồ khảo sát trắc nghiệm tâm lý học sinh trung học',
+    };
+
+    req.body.data.datasets.map(item => {
+      opts.data[item.label] = {};
+      item.data.map((it, index) => {
+        opts.data[item.label][req.body.data.labels[index]] = it;
+      });
+    });
+
+    xlsxChart.generate(opts, (err, data) => {
+      if (err) {
+        console.error(err);
+      } else {
+        res.set({
+          'Content-Type': 'application/vnd.ms-excel',
+          'Content-Disposition': 'attachment; filename=chart.xlsx',
+          'Content-Length': data.length,
+        });
+
+        return res.status(200).send(data);
+      }
+    });
+  },
+);
+
+router.post(
+  '/neo/chart',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.user.role !== 'ADMIN') return res.status(403).end();
+
+    const xlsxChart = new XLSXChart();
+
+    const opts = {
+      chart: 'bar',
+      titles: req.body.data.datasets.map(item => item.label),
+      fields: req.body.data.labels,
+      data: {},
+      chartTitle: 'Biểu đồ khảo sát trắc nghiệm dự đoán nhân cách',
+    };
+
+    req.body.data.datasets.map(item => {
+      opts.data[item.label] = {};
+      item.data.map((it, index) => {
+        opts.data[item.label][req.body.data.labels[index]] = it;
+      });
+    });
+
+    xlsxChart.generate(opts, (err, data) => {
+      if (err) {
+        console.error(err);
+      } else {
+        res.set({
+          'Content-Type': 'application/vnd.ms-excel',
+          'Content-Disposition': 'attachment; filename=chart.xlsx',
+          'Content-Length': data.length,
+        });
+
+        return res.status(200).send(data);
+      }
+    });
+  },
+);
+
+router.post(
+  '/riasec/chart',
+  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
+  (req, res) => {
+    if (req.user.role !== 'ADMIN') return res.status(403).end();
+
+    const xlsxChart = new XLSXChart();
+
+    const opts = {
+      chart: 'bar',
+      titles: req.body.data.datasets.map(item => item.label),
+      fields: req.body.data.labels,
+      data: {},
+      chartTitle: 'Biểu đồ khảo sát tư vấn nghề nghiệp',
     };
 
     req.body.data.datasets.map(item => {

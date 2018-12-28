@@ -19,6 +19,20 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import columnOptions from './columnOptions';
 import messages from './messages';
 
+const excelData = {
+  labels: [
+    'nameLabel',
+    'convinceLabel',
+    'ruleLabel',
+    'discoverLabel',
+    'artLabel',
+    'realisticLabel',
+    'societyLabel',
+    'dateLabel',
+  ],
+  values: [],
+};
+
 /* eslint-disable react/prefer-stateless-function */
 class RiasecTable extends React.Component {
   state = {
@@ -41,32 +55,42 @@ class RiasecTable extends React.Component {
             date: i.date,
           };
 
+          const rowExcelData = new Array(8).fill(0);
+          rowExcelData[0] = i.userName;
+          rowExcelData[7] = new Date(i.date).toLocaleString('vi-VN');
+
           i.results.map(it => {
             switch (it.item) {
               case 'Thuyết phục':
                 eachRow.convince = it.value;
+                rowExcelData[1] = it.value;
                 break;
               case 'Quy tắc':
                 eachRow.rule = it.value;
+                rowExcelData[2] = it.value;
                 break;
               case 'Khám phá':
                 eachRow.discover = it.value;
+                rowExcelData[3] = it.value;
                 break;
               case 'Nghệ thuật':
                 eachRow.art = it.value;
+                rowExcelData[4] = it.value;
                 break;
               case 'Hiện thực':
                 eachRow.realistic = it.value;
+                rowExcelData[5] = it.value;
                 break;
               case 'Xã hội':
                 eachRow.society = it.value;
+                rowExcelData[6] = it.value;
                 break;
               default:
                 break;
             }
           });
           console.log(eachRow);
-
+          excelData.values.push(rowExcelData);
           return eachRow;
         });
 
@@ -75,19 +99,19 @@ class RiasecTable extends React.Component {
   };
 
   downloadExcelFile = formatMessage => {
-    // const data = {
-    //   ...excelData,
-    //   labels: excelData.labels.map(label => formatMessage(messages[label])),
-    // };
-    // axios
-    //   .post(
-    //     '/api/excel/psychological/response',
-    //     { data },
-    //     { ...config, responseType: 'blob' },
-    //   )
-    //   .then(res =>
-    //     download(res.data, `${this.props.surveyName}_response_table.xlsx`),
-    //   );
+    const data = {
+      ...excelData,
+      labels: excelData.labels.map(label => formatMessage(messages[label])),
+    };
+    axios
+      .post(
+        '/api/excel/riasec/response',
+        { data },
+        { ...config, responseType: 'blob' },
+      )
+      .then(res =>
+        download(res.data, 'Thong_ke_khao_sat_dinh_huong_nghe_nghiep.xlsx'),
+      );
   };
 
   render() {

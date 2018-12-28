@@ -12,9 +12,23 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import config from 'utils/validation/config';
 import { Icon, Table } from 'antd';
+import download from 'downloadjs';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import columnOptions from './columnOptions';
 import messages from './messages';
+
+const excelData = {
+  labels: [
+    'nameLabel',
+    'noiseLabel',
+    'outwardLabel',
+    'openMindedLabel',
+    'ezAcceptLabel',
+    'conscientiousLabel',
+    'dateLabel',
+  ],
+  values: [],
+};
 
 /* eslint-disable react/prefer-stateless-function */
 class NeoTable extends React.Component {
@@ -29,46 +43,68 @@ class NeoTable extends React.Component {
 
   fetchResponse = () => {
     axios.get(`/api/survey/responses?name=neo`, config).then(res => {
-      this.setState(prevState => ({
-        rawData: res.data,
+      const data = res.data.map((i, key) => {
+        const eachRow = {
+          name: i.userName,
+          key,
+          date: i.date,
+        };
+
+        const rowExcelData = new Array(7).fill(0);
+        rowExcelData[0] = i.userName;
+        rowExcelData[6] = new Date(i.date).toLocaleString('vi-VN');
+
+        i.results.map(it => {
+          switch (it.item) {
+            case 'Dễ chấp nhận':
+              eachRow.ezAccept = it.value;
+              rowExcelData[1] = it.value;
+              break;
+            case 'Tận tâm':
+              eachRow.conscientious = it.value;
+              rowExcelData[2] = it.value;
+              break;
+            case 'Cởi mở, ham học hỏi':
+              eachRow.openMinded = it.value;
+              rowExcelData[3] = it.value;
+              break;
+            case 'Nhiễu tâm':
+              eachRow.noise = it.value;
+              rowExcelData[4] = it.value;
+              break;
+            case 'Hướng ngoại':
+              eachRow.outward = it.value;
+              rowExcelData[5] = it.value;
+              break;
+            default:
+              break;
+          }
+        });
+
+        excelData.values.push(rowExcelData);
+        return eachRow;
+      });
+
+      this.setState({
         loading: false,
-        data: this.refineData(prevState.gender, res.data),
-      }));
+        data,
+      });
     });
   };
 
-  refineData = (gender, rawData) => {
-    return rawData.map((i, key) => {
-      const eachRow = {
-        name: i.userName,
-        key,
-        date: i.date,
-      };
+  downloadExcelFile = formatMessage => {
+    const data = {
+      ...excelData,
+      labels: excelData.labels.map(label => formatMessage(messages[label])),
+    };
 
-      i.results.map(it => {
-        switch (it.item) {
-          case 'Dễ chấp nhận':
-            eachRow.ezAccept = it.value;
-            break;
-          case 'Tận tâm':
-            eachRow.conscientious = it.value;
-            break;
-          case 'Cởi mở, ham học hỏi':
-            eachRow.openMinded = it.value;
-            break;
-          case 'Nhiễu tâm':
-            eachRow.noise = it.value;
-            break;
-          case 'Hướng ngoại':
-            eachRow.outward = it.value;
-            break;
-          default:
-            break;
-        }
-      });
-
-      return eachRow;
-    });
+    axios
+      .post(
+        '/api/excel/neo/response',
+        { data },
+        { ...config, responseType: 'blob' },
+      )
+      .then(res => download(res.data, 'Thong_ke_trac_nghiem_nhan_cach.xlsx'));
   };
 
   render() {
@@ -106,6 +142,7 @@ class NeoTable extends React.Component {
 
 NeoTable.propTypes = {
   intl: intlShape.isRequired,
+  surveyName: PropTypes.string,
 };
 
 export default injectIntl(NeoTable);

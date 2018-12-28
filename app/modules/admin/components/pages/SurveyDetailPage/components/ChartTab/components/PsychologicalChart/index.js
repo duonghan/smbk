@@ -69,7 +69,7 @@ class PsychologicChart extends React.Component {
         { data: this.props.fetchedData },
         { ...config, responseType: 'blob' },
       )
-      .then(res => download(res.data, `psychological_chart.xlsx`));
+      .then(res => download(res.data, `Bieu_do_khao_sat_tam_ly_hs_thpt.xlsx`));
   };
 
   render() {
