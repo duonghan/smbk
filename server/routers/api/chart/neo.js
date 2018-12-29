@@ -18,16 +18,8 @@ router.get(
       Response.find({ survey: survey._id }).then(responses => {
         const data = initialChartValues();
 
-        console.log(data);
-
         responses.map(response => {
           response.results.map(result => {
-            console.log(result);
-
-            // const tempItem = result.item
-            //   .toLowerCase()
-            //   .replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
-
             if (data.get(result.value)) {
               const currentValue = data.get(result.value).get(result.item);
               data.get(result.value).set(result.item, currentValue + 1);

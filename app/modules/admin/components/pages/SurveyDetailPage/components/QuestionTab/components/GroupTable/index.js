@@ -11,9 +11,9 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Table, Skeleton, Icon, Modal } from 'antd';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import config from 'utils/validation/config';
+import { Table, Skeleton, Tooltip, Icon, Modal } from 'antd';
+import { injectIntl, intlShape } from 'react-intl';
+import { config } from 'utils/setAuthToken';
 import messages from './messages';
 import columnOptions from './columnOptions';
 import { setCurrentGroup } from '../../../../actions';
@@ -174,12 +174,14 @@ class GroupTable extends React.Component {
 
               {this.props.surveyName !== 'neo' &&
                 this.props.surveyName !== 'riasec' && (
-                  <a onClick={this.createParentGr} style={{ float: 'right' }}>
-                    <Icon
-                      type="plus"
-                      style={{ fontSize: 20, color: '#FA541C' }}
-                    />
-                  </a>
+                  <Tooltip title={formatMessage(messages.addGroup)}>
+                    <a onClick={this.createParentGr} style={{ float: 'right' }}>
+                      <Icon
+                        type="plus"
+                        style={{ fontSize: 20, color: '#FA541C' }}
+                      />
+                    </a>
+                  </Tooltip>
                 )}
             </h3>
           )}

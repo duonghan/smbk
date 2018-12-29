@@ -9,13 +9,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { Icon } from 'antd';
+import { Icon, Tooltip } from 'antd';
 import { HorizontalBar } from 'react-chartjs-2';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 import download from 'downloadjs';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 
 import messages from './messages';
 
@@ -74,14 +74,21 @@ class RiasecChart extends React.Component {
   };
 
   render() {
+    const { formatMessage } = this.props.intl;
+
     return (
       <div>
         <h2 style={{ textAlign: 'center' }}>
           <FormattedMessage {...messages.header} />
 
-          <a onClick={this.downloadExcelFile} style={{ float: 'right' }}>
-            <Icon type="download" style={{ fontSize: 20, color: '#FA541C' }} />
-          </a>
+          <Tooltip title={formatMessage(messages.download)}>
+            <a onClick={this.downloadExcelFile} style={{ float: 'right' }}>
+              <Icon
+                type="download"
+                style={{ fontSize: 20, color: '#FA541C' }}
+              />
+            </a>
+          </Tooltip>
         </h2>
 
         <br />
@@ -98,4 +105,4 @@ RiasecChart.propTypes = {
   fetchedData: PropTypes.object.isRequired,
 };
 
-export default RiasecChart;
+export default injectIntl(RiasecChart);

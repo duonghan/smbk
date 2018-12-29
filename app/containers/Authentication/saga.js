@@ -1,7 +1,7 @@
 import { call, all, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 import { fromJS } from 'immutable';
-import setAuthToken from 'utils/setAuthToken';
+import { setAuthToken } from 'utils/setAuthToken';
 import jwtDecode from 'jwt-decode';
 import Cookies from 'js-cookie';
 import { push } from 'connected-react-router/immutable';
@@ -9,7 +9,7 @@ import { SIGNIN_GUEST, SIGNIN_REQUEST, SIGNOUT_REQUEST } from './constants';
 import { signInFailed, setCurrentUser, signoutSuccess } from './actions';
 
 function* doSignOut() {
-  // remove token from localStorage
+  // remove token from Cookies
   Cookies.remove('token');
 
   // remove auth header for future request

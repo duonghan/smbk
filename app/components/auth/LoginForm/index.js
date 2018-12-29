@@ -35,6 +35,7 @@ class LoginForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    this.setState({ loading: true });
 
     // check captcha
     if (this.state.captcha !== this.state.captchaInput) {
@@ -50,7 +51,7 @@ class LoginForm extends React.Component {
       password: this.state.password,
       isRemember: this.state.isRemember,
     };
-    this.setState({ loading: true });
+
     this.props.onSignIn(user);
   };
 
@@ -188,7 +189,10 @@ class LoginForm extends React.Component {
 
             <FormItem {...formItemLayout}>
               <Button
-                loading={isEmpty(errors) && this.state.loading}
+                loading={
+                  isEmpty(errors.get('email')) &&
+                  (isEmpty(errors.get('password')) && this.state.loading)
+                }
                 type="primary"
                 htmlType="submit"
                 disabled={this.state.email === '' || this.state.password === ''}

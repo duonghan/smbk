@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import { Skeleton } from 'antd';
 
 import { Bar } from 'react-chartjs-2';
@@ -20,7 +20,7 @@ import messages from './messages';
 
 const plugins = [
   {
-    beforeInit: function(chart) {
+    beforeInit: chart => {
       chart.data.labels.forEach((e, i, a) => {
         if (/\n/.test(e)) {
           a[i] = e.split(/\n/);

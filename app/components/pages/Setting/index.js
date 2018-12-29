@@ -13,7 +13,7 @@ import Cookies from 'js-cookie';
 
 import { Form, Input, Switch, Button, Modal } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import { setCurrentUser } from 'containers/Authentication/actions';
 
 import styled from 'styled-components';
@@ -39,7 +39,7 @@ class SettingForm extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.fetchCurrentUser();
   }
 
@@ -100,7 +100,7 @@ class SettingForm extends React.Component {
 
   validateToNextPassword = (rule, value, callback) => {
     const { form } = this.props;
-    console.log(value);
+
     if (value && this.state.confirmDirty) {
       form.validateFields(['confirmNewPassword'], { force: true });
     }

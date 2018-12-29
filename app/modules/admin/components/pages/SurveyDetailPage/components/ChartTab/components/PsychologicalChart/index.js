@@ -10,12 +10,12 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import { HorizontalBar } from 'react-chartjs-2';
-import { Icon } from 'antd';
+import { Icon, Tooltip } from 'antd';
 import download from 'downloadjs';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import messages from './messages';
 
 const data = {
@@ -73,14 +73,21 @@ class PsychologicChart extends React.Component {
   };
 
   render() {
+    const { formatMessage } = this.props.intl;
+
     return (
       <div>
         <h2 style={{ textAlign: 'center' }}>
           <FormattedMessage {...messages.header} />
 
-          <a onClick={this.downloadExcelFile} style={{ float: 'right' }}>
-            <Icon type="download" style={{ fontSize: 20, color: '#FA541C' }} />
-          </a>
+          <Tooltip title={formatMessage(messages.download)}>
+            <a onClick={this.downloadExcelFile} style={{ float: 'right' }}>
+              <Icon
+                type="download"
+                style={{ fontSize: 20, color: '#FA541C' }}
+              />
+            </a>
+          </Tooltip>
         </h2>
 
         <br />
@@ -98,4 +105,4 @@ PsychologicChart.propTypes = {
   fetchedData: PropTypes.array.isRequired,
 };
 
-export default PsychologicChart;
+export default injectIntl(PsychologicChart);

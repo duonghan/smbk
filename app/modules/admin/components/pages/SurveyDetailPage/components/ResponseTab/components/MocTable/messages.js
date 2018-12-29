@@ -61,6 +61,11 @@ export default defineMessages({
     defaultMessage: 'Lưu',
   },
 
+  download: {
+    id: `${scope}.download`,
+    defaultMessage: 'Tải xuống',
+  },
+
   cancelPromtMsg: {
     id: `${scope}.cancelPromtMsg`,
     defaultMessage: 'Bạn chắc chắn muốn hủy?',

@@ -8,7 +8,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 // import styled from 'styled-components';
 
 import { Table } from 'antd';

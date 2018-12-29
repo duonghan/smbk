@@ -27,8 +27,6 @@ class AddGroupForm extends React.Component {
 
   handleChange = value => {
     this.setState({ current: value });
-
-    console.log(`selected ${value}`, this.state.isTextArea);
   };
 
   componentWillReceiveProps(nextProps) {

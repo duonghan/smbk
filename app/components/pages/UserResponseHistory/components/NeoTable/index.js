@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 import { Table, Radio } from 'antd';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';

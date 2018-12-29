@@ -167,8 +167,6 @@ router.put(
     if (!req.body.id)
       return res.status(400).json({ message: 'QuestionId not found' });
 
-    console.log(req.body);
-
     QuestionGroup.findByIdAndUpdate(
       req.body.id,
       {
@@ -217,8 +215,6 @@ router.delete(
               groups.map(group => group.questions),
             );
 
-            console.log(questions);
-
             // delete all question
             Question.deleteMany({ _id: { $in: questions } }, () => {
               // delete all child question group and this question group
@@ -231,7 +227,6 @@ router.delete(
         }
       });
     } catch (e) {
-      console.log(e);
       return res.status(404).json({ message: 'Error' });
     }
   },

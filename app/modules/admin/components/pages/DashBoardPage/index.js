@@ -10,7 +10,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Row, Col, Skeleton, Card } from 'antd';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 import NumberCard from './components/NumberCard';

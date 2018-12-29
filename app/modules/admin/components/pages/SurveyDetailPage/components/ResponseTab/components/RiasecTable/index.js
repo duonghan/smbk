@@ -8,13 +8,13 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import download from 'downloadjs';
 import axios from 'axios';
 
-import { Icon, Table } from 'antd';
+import { Icon, Table, Tooltip } from 'antd';
 
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 
 import columnOptions from './columnOptions';
 import messages from './messages';
@@ -89,7 +89,7 @@ class RiasecTable extends React.Component {
                 break;
             }
           });
-          console.log(eachRow);
+
           excelData.values.push(rowExcelData);
           return eachRow;
         });
@@ -130,15 +130,17 @@ class RiasecTable extends React.Component {
           <h3 style={{ color: '#FA541C' }}>
             <strong>{formatMessage(messages.header)}</strong>
 
-            <a
-              onClick={() => this.downloadExcelFile(formatMessage)}
-              style={{ float: 'right' }}
-            >
-              <Icon
-                type="download"
-                style={{ fontSize: 20, color: '#FA541C' }}
-              />
-            </a>
+            <Tooltip title={formatMessage(messages.download)}>
+              <a
+                onClick={() => this.downloadExcelFile(formatMessage)}
+                style={{ float: 'right' }}
+              >
+                <Icon
+                  type="download"
+                  style={{ fontSize: 20, color: '#FA541C' }}
+                />
+              </a>
+            </Tooltip>
           </h3>
         )}
         size="middle"

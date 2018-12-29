@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 
 import messages from '../messages';
 
@@ -110,8 +110,6 @@ class ResponseChart extends React.Component {
         res.data[0].monthlyusage.map(item => {
           data.datasets[1].data[item.month - 1] = item.count;
         });
-
-        console.log(res.data);
       }
     });
   };
@@ -122,8 +120,6 @@ class ResponseChart extends React.Component {
         res.data[0].monthlyusage.map(item => {
           data.datasets[0].data[item.month - 1] = item.count;
         });
-
-        console.log(res.data);
       }
     });
   };

@@ -1,22 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Form, Input, Select, Radio, Switch } from 'antd';
+import { Modal, Form, Input, Radio } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 
 const FormItem = Form.Item;
-const { Option } = Select;
 
 // eslint-disable-next-line
 class AccountForm extends React.Component {
-  state = {
-    isResetPass: false,
-  };
-
-  handleChange = value => {
-    console.log(`selected ${value}`);
-  };
-
   render() {
     const { visible, onCancel, onCreate, form } = this.props;
     const { getFieldDecorator } = form;

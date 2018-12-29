@@ -1,6 +1,6 @@
 import { call, all, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import { push } from 'connected-react-router/immutable';
 
 import { CREATE_PROFILE, FETCH_SURVEY } from './constants';

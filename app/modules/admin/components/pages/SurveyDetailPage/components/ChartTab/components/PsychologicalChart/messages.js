@@ -15,4 +15,9 @@ export default defineMessages({
     id: `${scope}.header`,
     defaultMessage: 'Biểu đồ khảo sát trắc nghiệm tâm lý học sinh trung học',
   },
+
+  download: {
+    id: `${scope}.download`,
+    defaultMessage: 'Tải xuống',
+  },
 });

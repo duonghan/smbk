@@ -1,17 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 
-import { Table, Modal, Input, Icon, Form, message } from 'antd';
+import { Table, Tooltip, Icon, Form, message } from 'antd';
 import { Helmet } from 'react-helmet';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import config from 'utils/validation/config';
+import { injectIntl, intlShape } from 'react-intl';
+import { config } from 'utils/setAuthToken';
 import messages from './messages';
 import EditableCell, { EditableContext } from './EditableCell';
-import { styles } from './styles';
 import columnOptions from './columnOptions';
 import AccountForm from './AccountForm';
-
-const { Search } = Input;
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -210,12 +207,7 @@ class AccountTable extends React.Component {
 
     return (
       <div>
-        <Helmet title={formatMessage(messages.header)}>
-          <meta
-            name="description"
-            content="Description of AccountTableContainer"
-          />
-        </Helmet>
+        <Helmet title={formatMessage(messages.header)} />
 
         <Table
           components={components}
@@ -226,9 +218,14 @@ class AccountTable extends React.Component {
           title={() => (
             <h3 style={{ color: '#FA541C' }}>
               <strong>{formatMessage(messages.header)}</strong>
-              <a onClick={this.showModal} style={{ float: 'right' }}>
-                <Icon type="plus" style={{ fontSize: 20, color: '#FA541C' }} />
-              </a>
+              <Tooltip title={formatMessage(messages.add)}>
+                <a onClick={this.showModal} style={{ float: 'right' }}>
+                  <Icon
+                    type="plus"
+                    style={{ fontSize: 20, color: '#FA541C' }}
+                  />
+                </a>
+              </Tooltip>
             </h3>
           )}
           columns={columns}

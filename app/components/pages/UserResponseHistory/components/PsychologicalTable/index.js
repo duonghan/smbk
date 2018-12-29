@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Table } from 'antd';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 
 import { injectIntl, intlShape } from 'react-intl';
 import messages from './messages';

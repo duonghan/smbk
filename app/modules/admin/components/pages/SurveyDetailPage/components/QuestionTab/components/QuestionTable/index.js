@@ -11,9 +11,9 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Table, Skeleton, Icon, Modal } from 'antd';
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import config from 'utils/validation/config';
+import { Table, Skeleton, Icon, Tooltip, Modal } from 'antd';
+import { injectIntl, intlShape } from 'react-intl';
+import { config } from 'utils/setAuthToken';
 import messages from './messages';
 import EditableFormRow from '../../../../../../utils/EditableFormRow';
 import EditableCell from '../../../../../../utils/EditableCell';
@@ -193,9 +193,15 @@ class QuestionTable extends React.Component {
           title={() => (
             <h3 style={{ color: '#FA541C' }}>
               <strong>{formatMessage(messages.header)}</strong>
-              <a onClick={this.showModal} style={{ float: 'right' }}>
-                <Icon type="plus" style={{ fontSize: 20, color: '#FA541C' }} />
-              </a>
+
+              <Tooltip title={formatMessage(messages.addQuestion)}>
+                <a onClick={this.showModal} style={{ float: 'right' }}>
+                  <Icon
+                    type="plus"
+                    style={{ fontSize: 20, color: '#FA541C' }}
+                  />
+                </a>
+              </Tooltip>
             </h3>
           )}
           size="middle"

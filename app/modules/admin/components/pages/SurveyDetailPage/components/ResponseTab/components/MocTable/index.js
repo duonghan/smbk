@@ -11,10 +11,10 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Icon, Skeleton, Table, Row, Col, Divider, Modal } from 'antd';
+import { Icon, Skeleton, Table, Tooltip, Row, Col, Divider, Modal } from 'antd';
 import download from 'downloadjs';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import messages from './messages';
 import columnOptions from './columnOptions';
 import { fetchResponse } from '../../../../actions';
@@ -77,7 +77,6 @@ class MocTable extends React.Component {
       })
       .then(res => {
         download(res.data, 'report.xlsx');
-        console.log(res.data);
       });
   };
 
@@ -101,18 +100,24 @@ class MocTable extends React.Component {
             title={() => (
               <h3 style={{ color: '#FA541C' }}>
                 <strong>{formatMessage(messages.header)}</strong>
-                <a onClick={this.downloadExcelFile} style={{ float: 'right' }}>
-                  <Icon
-                    type="download"
-                    style={{ fontSize: 20, color: '#FA541C' }}
-                  />
-                </a>
+                <Tooltip title={formatMessage(messages.download)}>
+                  <a
+                    onClick={this.downloadExcelFile}
+                    style={{ float: 'right' }}
+                  >
+                    <Icon
+                      type="download"
+                      style={{ fontSize: 20, color: '#FA541C' }}
+                    />
+                  </a>
+                </Tooltip>
               </h3>
             )}
             size="middle"
             rowClassName="editable-row"
           />
         </Skeleton>
+
         <Row gutter={24} style={{ margin: 5 }}>
           <Divider>
             {this.state.current > -1 && (
@@ -121,6 +126,7 @@ class MocTable extends React.Component {
               </h3>
             )}
           </Divider>
+
           {this.state.current > -1 &&
             Object.entries(this.state.data[this.state.current].profile)
               .filter(entry => entry[0] !== '_id' && entry[0] !== '__v')

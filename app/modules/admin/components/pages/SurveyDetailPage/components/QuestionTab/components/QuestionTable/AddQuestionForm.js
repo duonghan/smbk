@@ -5,14 +5,9 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 
 const FormItem = Form.Item;
-const { Option } = Select;
 
 // eslint-disable-next-line
 class AddQuestionForm extends React.Component {
-  handleChange = value => {
-    console.log(`selected ${value}`);
-  };
-
   render() {
     const { visible, onCancel, onCreate, form } = this.props;
     const { getFieldDecorator } = form;

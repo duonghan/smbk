@@ -1,6 +1,6 @@
 import { call, all, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import { push } from 'connected-react-router';
 
 import { initSucess, initFailed } from './actions';
@@ -42,7 +42,6 @@ function* submitResponse(data) {
     );
   } catch (err) {
     console.log(err);
-    // yield put(initFailed(err));
   }
 }
 

@@ -56,4 +56,9 @@ export default defineMessages({
     id: `${scope}.dateLabel`,
     defaultMessage: 'Ngày trả lời',
   },
+
+  download: {
+    id: `${scope}.download`,
+    defaultMessage: 'Tải xuống',
+  },
 });

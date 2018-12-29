@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider, Icon, Input, Popconfirm, Tag, Tooltip } from 'antd';
+import { Divider, Icon, Popconfirm, Tag, Tooltip } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import { EditableContext } from './EditableCell';
 import messages from './messages';

@@ -9,12 +9,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Icon, Skeleton, Table } from 'antd';
+import { Icon, Skeleton, Tooltip, Table } from 'antd';
 import download from 'downloadjs';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { injectIntl, intlShape } from 'react-intl';
 import columnOptions from './columnOptions';
 import messages from './messages';
 
@@ -160,15 +160,18 @@ class PsychologicTable extends React.Component {
           title={() => (
             <h3 style={{ color: '#FA541C' }}>
               <strong>{formatMessage(messages.header)}</strong>
-              <a
-                onClick={() => this.downloadExcelFile(formatMessage)}
-                style={{ float: 'right' }}
-              >
-                <Icon
-                  type="download"
-                  style={{ fontSize: 20, color: '#FA541C' }}
-                />
-              </a>
+
+              <Tooltip title={formatMessage(messages.download)}>
+                <a
+                  onClick={() => this.downloadExcelFile(formatMessage)}
+                  style={{ float: 'right' }}
+                >
+                  <Icon
+                    type="download"
+                    style={{ fontSize: 20, color: '#FA541C' }}
+                  />
+                </a>
+              </Tooltip>
             </h3>
           )}
           size="middle"

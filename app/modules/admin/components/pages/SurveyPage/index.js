@@ -8,11 +8,12 @@
 import React from 'react';
 import { Table } from 'antd';
 import axios from 'axios';
+import { Helmet } from 'react-helmet';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import { injectIntl, intlShape } from 'react-intl';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import messages from './messages';
 import columnOptions from './columnOptions';
 import EditableFormRow from '../../utils/EditableFormRow';
@@ -116,21 +117,24 @@ class SurveyTable extends React.Component {
     });
 
     return (
-      <Table
-        bordered
-        components={components}
-        rowKey={record => record.id}
-        loading={this.state.loading}
-        dataSource={this.state.data}
-        columns={columns}
-        title={() => (
-          <h3 style={{ color: '#FA541C', textAlign: 'center' }}>
-            <strong>{formatMessage(messages.header)}</strong>
-          </h3>
-        )}
-        size="middle"
-        rowClassName="editable-row"
-      />
+      <div>
+        <Helmet title={formatMessage(messages.header)} />
+        <Table
+          bordered
+          components={components}
+          rowKey={record => record.id}
+          loading={this.state.loading}
+          dataSource={this.state.data}
+          columns={columns}
+          title={() => (
+            <h3 style={{ color: '#FA541C', textAlign: 'center' }}>
+              <strong>{formatMessage(messages.header)}</strong>
+            </h3>
+          )}
+          size="middle"
+          rowClassName="editable-row"
+        />
+      </div>
     );
   }
 }

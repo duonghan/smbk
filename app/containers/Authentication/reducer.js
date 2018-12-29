@@ -20,10 +20,7 @@ const authorize = (state = initialState, action) => {
     case SIGNIN_FAILURE:
       return state.set('errors', action.err);
     case SIGNOUT_SUCCESS:
-      return state.mergeDeep({
-        isAuthorized: !isEmpty(action.payload),
-        user: action.payload,
-      });
+      return state.set('isAuthorized', false).set('user', {});
     default:
       return state;
   }

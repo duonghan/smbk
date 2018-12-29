@@ -14,7 +14,7 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 
 import PsychologicalChart from './components/PsychologicalChart/Loadable';
 import NeoChart from './components/NeoChart/Loadable';
@@ -48,9 +48,6 @@ class ChartTab extends React.Component {
 
   fetchData = surveyName => {
     axios.get(`/api/chart/${surveyName}`, config).then(res => {
-      console.log(
-        `${surveyName} has fetched data is ${res.data.datasets[1].data}`,
-      );
       this.setState({ fetchedData: res.data });
     });
   };

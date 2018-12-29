@@ -23,7 +23,7 @@ import {
   Modal,
   message,
 } from 'antd';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
@@ -112,7 +112,6 @@ class Survey extends React.Component {
         return;
       }
 
-      console.log('Received values of form: ', values.gender);
       this.props.submitResponse(
         this.props.response,
         values.gender,

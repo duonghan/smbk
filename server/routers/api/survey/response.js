@@ -113,8 +113,6 @@ router.post(
   '/submit',
   passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
   (req, res) => {
-    console.log(req.body);
-
     Survey.findById(req.body.surveyId).then(survey => {
       switch (survey.name) {
         case 'psychological':

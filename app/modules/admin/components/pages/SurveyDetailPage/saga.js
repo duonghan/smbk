@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 import { fetchResponseFailed, fetchResponseSucceed } from './actions';
 import { FETCH_RESPONSE } from './constants';
 

@@ -15,4 +15,9 @@ export default defineMessages({
     id: `${scope}.header`,
     defaultMessage: 'Biểu đồ thống kê trắc nghiệm dự đoán nhân cách',
   },
+
+  download: {
+    id: `${scope}.download`,
+    defaultMessage: 'Tải xuống',
+  },
 });

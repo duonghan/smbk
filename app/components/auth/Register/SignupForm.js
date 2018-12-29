@@ -50,7 +50,6 @@ class SignupForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    // console.log('Received values of form: ', values);
 
     this.setState({ loading: true });
 

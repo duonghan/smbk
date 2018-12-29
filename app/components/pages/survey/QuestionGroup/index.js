@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios';
 import { Spin } from 'antd';
-import config from 'utils/validation/config';
+import { config } from 'utils/setAuthToken';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 import Question from '../Question';
