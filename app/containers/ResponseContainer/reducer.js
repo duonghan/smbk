@@ -11,13 +11,11 @@ import {
   INIT_FAILED,
   ADD_ANSWER,
   SUBMIT_FAILED,
-  SET_CURRENT_PROFILE,
 } from './constants';
 
 export const initialState = fromJS({
   id: '',
   total: 0,
-  profileId: '',
   answers: {},
   errors: {},
 });
@@ -32,9 +30,6 @@ function responseContainerReducer(state = initialState, action) {
 
     case INIT_FAILED:
       return state.set('errors', action.err);
-
-    case SET_CURRENT_PROFILE:
-      return state.set('profileId', action.profileId);
 
     case SUBMIT_FAILED:
       return state.set('errors', action.err);

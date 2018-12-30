@@ -1,22 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
 // import styled from 'styled-components';
 
-import { Row, Col, Tag, Radio, Button } from 'antd';
+import { Row, Col, Tag, Button } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
 
-const RadioGroup = Radio.Group;
-
 class NeoResult extends React.Component {
-  onSelectGender = e => {
-    this.setState({
-      gender: e.target.value,
-    });
-  };
-
   render() {
     return (
       <Row

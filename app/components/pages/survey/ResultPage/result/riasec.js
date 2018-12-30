@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { Radar } from 'react-chartjs-2';
 // import styled from 'styled-components';

@@ -14,7 +14,7 @@ import injectReducer from 'utils/injectReducer';
 import Survey from 'components/pages/survey/Survey';
 import reducer from './reducer';
 import saga from './saga';
-import { initResponse, setCurrentProfile, submitResponse } from './actions';
+import { initResponse, submitResponse } from './actions';
 
 const mapStateToProps = state => ({
   user: state.getIn(['auth', 'user']),
@@ -25,9 +25,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   initResponse: (surveyId, userId) => dispatch(initResponse(surveyId, userId)),
-  submitResponse: (response, gender, surveyId, userId) =>
-    dispatch(submitResponse(response, gender, surveyId, userId)),
-  setCurrentProfile: profileId => dispatch(setCurrentProfile(profileId)),
+  submitResponse: (response, gender, surveyId, userId, profileId) =>
+    dispatch(submitResponse(response, gender, surveyId, userId, profileId)),
 });
 
 const withConnect = connect(

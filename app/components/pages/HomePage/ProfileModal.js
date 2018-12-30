@@ -16,7 +16,7 @@ class ProfileModal extends React.Component {
 
   handleChange = value => {
     this.setState({
-      data:
+      dataSource:
         !value || value.indexOf('@') >= 0
           ? []
           : [

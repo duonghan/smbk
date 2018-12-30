@@ -235,14 +235,24 @@ router.post(
           break;
         case 'moc':
         case 'moc2':
-          Response.findByIdAndUpdate(
-            req.body.id,
-            {
-              $set: { answers: resultMOC(req.body.response.answers) },
-            },
-            { new: true },
-          ).then(() => {});
-          return res.json({ result: resultMOC(req.body.response.answers) });
+          new Response({
+            user: mongoose.Types.ObjectId(req.body.userId),
+            profile: mongoose.Types.ObjectId(req.body.profileId),
+            survey: mongoose.Types.ObjectId(req.body.userId),
+            answers: resultMOC(req.body.response.answers),
+          })
+            .save()
+            .then(() =>
+              res.json({
+                result: {
+                  name: 'moc',
+                  success: true,
+                },
+              }),
+            );
+
+          break;
+
         default:
           return res.json({ result: false });
       }

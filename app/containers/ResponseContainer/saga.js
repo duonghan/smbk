@@ -31,9 +31,12 @@ function* submitResponse(data) {
         gender: data.gender,
         surveyId: data.surveyId,
         userId: data.userId,
+        profileId: data.profileId,
       },
       config,
     );
+
+    console.log(res.data);
 
     yield put(
       push(`/survey-result`, {

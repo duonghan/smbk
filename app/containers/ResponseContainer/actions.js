@@ -15,7 +15,6 @@ import {
   FETCH_QUESTION_GROUP,
   FETCH_SURVEY_INFO,
   SUBMIT_FAILED,
-  SET_CURRENT_PROFILE,
 } from './constants';
 
 export const initResponse = initialValue => ({
@@ -34,11 +33,6 @@ export const initSucess = (responseId, totalQuestions) => ({
   totalQuestions,
 });
 
-export const setCurrentProfile = profileId => ({
-  type: SET_CURRENT_PROFILE,
-  profileId,
-});
-
 export const initFailed = err => ({ type: INIT_FAILED, err });
 
 // add and update answer
@@ -48,12 +42,19 @@ export const addAnswer = answer => ({
 });
 
 // submit reponse
-export const submitResponse = (response, gender, surveyId, userId) => ({
+export const submitResponse = (
+  response,
+  gender,
+  surveyId,
+  userId,
+  profileId,
+) => ({
   type: SUBMIT_RESPONSE,
   response,
   gender,
   surveyId,
   userId,
+  profileId,
 });
 
 export const submitSuccess = data => ({ type: SUBMIT_SUCCESS, data });

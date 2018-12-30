@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import axios from 'axios';
 import Helmet from 'react-helmet';
+import Cookies from 'js-cookie';
 
 import {
   Row,
@@ -20,11 +21,10 @@ import {
   Button,
   Progress,
   Affix,
-  Modal,
   message,
 } from 'antd';
 import { config } from 'utils/setAuthToken';
-import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import messages from './messages';
 import QuestionGroup from '../QuestionGroup';
 import GenderSelectDialog from './GenderSelectDialog';
@@ -41,6 +41,7 @@ class Survey extends React.Component {
       loading: true,
       submitting: false,
       surveyTitle: '',
+      surveyName: '',
       surveyDescription: '',
       activeKey: '0',
       visible: false,
@@ -55,12 +56,7 @@ class Survey extends React.Component {
       userId: this.props.userId,
     };
 
-    if (this.props.location.state.profileId)
-      initialResponse.profile = this.props.location.state.profileId;
-
     this.props.initResponse(initialResponse);
-
-    this.props.setCurrentProfile(this.props.location.state.profileId);
   }
 
   // set percent of completed answers for progress bar
@@ -95,6 +91,7 @@ class Survey extends React.Component {
     axios.get(`/api/survey?id=${surveyId}`, config).then(res => {
       this.setState({
         surveyTitle: res.data.title,
+        surveyName: res.data.name,
         surveyDescription: res.data.description,
       });
     });
@@ -146,6 +143,23 @@ class Survey extends React.Component {
 
     // total questions
     const total = this.props.response.get('total');
+
+    // when survey as moc and moc2
+    if (this.state.surveyName === 'moc' || this.state.surveyName === 'moc2') {
+      const profileId = Cookies.get('profileId');
+      debugger;
+      this.props.submitResponse(
+        this.props.response,
+        this.props.gender,
+        this.props.location.state.surveyId,
+        this.props.user.get('id'),
+        profileId,
+      );
+
+      debugger;
+
+      return;
+    }
 
     if (numCompleted < total) {
       message.error(this.props.intl.formatMessage(messages.errMessage));
@@ -256,7 +270,6 @@ class Survey extends React.Component {
 Survey.propTypes = {
   initResponse: PropTypes.func.isRequired,
   submitResponse: PropTypes.func.isRequired,
-  setCurrentProfile: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   response: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,

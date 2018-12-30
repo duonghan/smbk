@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 import NeoResult from './result/neo';
 import RiasecResult from './result/riasec';
 import PsychologicResult from './result/psychological';
+import Default from './result/default';
 
 /* eslint-disable react/prefer-stateless-function */
 class ResultPage extends React.Component {
@@ -27,7 +28,7 @@ class ResultPage extends React.Component {
       case 'psychological':
         return <PsychologicResult result={result} />;
       default:
-        return <div>...</div>;
+        return <Default />;
     }
   }
 }

@@ -4,6 +4,8 @@ import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import Helmet from 'react-helmet';
+
 import Captcha from 'components/auth/Register/Captcha';
 import isEmpty from 'utils/validation/isEmpty';
 import messages from './messages';
@@ -105,9 +107,12 @@ class LoginForm extends React.Component {
 
     return (
       <Row>
+        <Helmet title={formatMessage(messages.header)} />
+
         <Title>
           <FormattedMessage {...messages.title} />
         </Title>
+
         <Col>
           <Form onSubmit={this.handleSubmit}>
             <FormItem

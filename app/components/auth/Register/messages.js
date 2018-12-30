@@ -11,7 +11,7 @@ export const scope = 'app.components.SignupForm';
 export default defineMessages({
   header: {
     id: `${scope}.header`,
-    defaultMessage: 'This is the SignupForm component !',
+    defaultMessage: 'Đăng ký',
   },
 
   name: {
