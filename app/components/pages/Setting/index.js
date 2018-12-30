@@ -5,16 +5,19 @@
  *
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import Cookies from 'js-cookie';
 
-import { Form, Input, Switch, Button, Modal } from 'antd';
+import { Form, Input, Switch, Button, Radio, message } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { config } from 'utils/setAuthToken';
 import { setCurrentUser } from 'containers/Authentication/actions';
+import isEmpty from 'utils/validation/isEmpty';
 
 import styled from 'styled-components';
 import messages from './messages';
@@ -25,7 +28,7 @@ const Title = styled.h1`
   display: block;
   text-align: center;
   font-size: 36px;
-  font-weight: 600;
+  font-family: 'Farsan', cursive;
   margin-bottom: 25px;
 `;
 
@@ -36,15 +39,21 @@ class SettingForm extends React.Component {
       confirmDirty: false,
       isChangePass: false,
       current: {},
+      loading: false,
     };
   }
 
   componentDidMount() {
-    this.fetchCurrentUser();
+    this.setState({
+      current: jwtDecode(Cookies.get('token').replace('%20', ' ')),
+    });
   }
 
   handleSubmit = e => {
     e.preventDefault();
+
+    this.setState({ loading: true });
+
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const doSetCurrentUser = this.props.setCurrentUser;
@@ -54,6 +63,8 @@ class SettingForm extends React.Component {
           email: values.email,
           name: values.name,
         };
+
+        if (!isEmpty(values.gender)) newProfile.gender = values.gender;
 
         if (this.state.isChangePass) {
           newProfile.currentPassword = values.currentPassword;
@@ -66,21 +77,15 @@ class SettingForm extends React.Component {
             Cookies.set('token', res.data.token);
             const userInfo = jwtDecode(res.data.token);
             doSetCurrentUser(userInfo);
-            debugger;
 
-            Modal.success({
-              title: this.props.intl.formatMessage(messages.updateSuccessLabel),
-              content: this.props.intl.formatMessage(
-                messages.updateSuccessContent,
-              ),
-            });
+            this.props.history.push('/');
+            message.success(
+              this.props.intl.formatMessage(messages.updateSuccessContent),
+            );
           } else {
-            Modal.error({
-              title: this.props.intl.formatMessage(messages.updateFailedLabel),
-              content: this.props.intl.formatMessage(
-                messages[res.data.message],
-              ),
-            });
+            message.error(
+              this.props.intl.formatMessage(messages[res.data.message]),
+            );
           }
         });
 
@@ -109,13 +114,6 @@ class SettingForm extends React.Component {
 
   toggleChangePassword = checked => {
     this.setState({ isChangePass: checked });
-  };
-
-  fetchCurrentUser = () => {
-    axios
-      .get('/api/users/current', config)
-      .then(res => this.setState({ current: res.data }))
-      .catch(errors => this.setState({ errors }));
   };
 
   render() {
@@ -157,22 +155,24 @@ class SettingForm extends React.Component {
             <FormattedMessage {...messages.title} />
           </Title>
 
-          <FormItem {...formItemLayout} label="E-mail">
-            {getFieldDecorator('email', {
-              rules: [
-                {
-                  type: 'email',
-                  message: formatMessage(messages.validateEmail),
-                },
-                {
-                  required: true,
-                  message: formatMessage(messages.requiredEmail),
-                },
-              ],
+          {this.props.role === 'DEFAULT' && (
+            <FormItem {...formItemLayout} label="E-mail">
+              {getFieldDecorator('email', {
+                rules: [
+                  {
+                    type: 'email',
+                    message: formatMessage(messages.validateEmail),
+                  },
+                  {
+                    required: true,
+                    message: formatMessage(messages.requiredEmail),
+                  },
+                ],
 
-              initialValue: this.state.current.email,
-            })(<Input />)}
-          </FormItem>
+                initialValue: this.state.current.email,
+              })(<Input />)}
+            </FormItem>
+          )}
 
           <FormItem {...formItemLayout} label={formatMessage(messages.name)}>
             {getFieldDecorator('name', {
@@ -185,6 +185,27 @@ class SettingForm extends React.Component {
               initialValue: this.state.current.name,
             })(<Input />)}
           </FormItem>
+
+          {this.props.role === 'DEFAULT' && (
+            <FormItem
+              {...formItemLayout}
+              label={formatMessage(messages.gender)}
+            >
+              {getFieldDecorator('gender', {
+                initialValue: this.state.current.gender,
+              })(
+                <Radio.Group>
+                  <Radio value="male">
+                    <FormattedMessage {...messages.maleOpt} />
+                  </Radio>
+
+                  <Radio value="female">
+                    <FormattedMessage {...messages.femaleOpt} />
+                  </Radio>
+                </Radio.Group>,
+              )}
+            </FormItem>
+          )}
 
           <FormItem
             {...formItemLayout}
@@ -260,7 +281,11 @@ class SettingForm extends React.Component {
           </div>
 
           <FormItem {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={this.state.loading}
+            >
               <FormattedMessage {...messages.btnSubmit} />
             </Button>
           </FormItem>
@@ -272,13 +297,18 @@ class SettingForm extends React.Component {
 
 SettingForm.propTypes = {
   intl: intlShape.isRequired,
+  role: PropTypes.string.isRequired,
 };
+
+const mapStateToProps = state => ({
+  role: state.getIn(['auth', 'user', 'role']),
+});
 
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: userInfo => dispatch(setCurrentUser(userInfo)),
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
-)(Form.create()(injectIntl(SettingForm)));
+)(Form.create()(injectIntl(withRouter(SettingForm))));

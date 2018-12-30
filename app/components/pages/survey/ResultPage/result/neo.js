@@ -3,7 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 
 // import styled from 'styled-components';
-
+import TaskCompleted from 'images/task-complete.png';
 import { Row, Col, Tag, Button } from 'antd';
 import { FormattedMessage } from 'react-intl';
 import messages from '../messages';
@@ -22,17 +22,20 @@ class NeoResult extends React.Component {
         justify="center"
       >
         <div style={{ textAlign: 'center' }}>
-          <h2>
+          <h1 className="task-completed">
             <FormattedMessage {...messages.thanks} />
-          </h2>
-          <h2>
+          </h1>
+          <img src={TaskCompleted} alt="task-completed-icon" />
+
+          <br />
+          <h3 className="task-completed">
             <FormattedMessage {...messages.resultTitle} />
-          </h2>
+          </h3>
         </div>
 
         {Object.values(this.props.result)
           .filter((_, index, arr) => index < arr.length - 1)
-          .map(item => (
+          .map((item, index) => (
             <Col
               style={{
                 border: '1px solid #2db7f5',
@@ -40,13 +43,14 @@ class NeoResult extends React.Component {
                 padding: 20,
                 borderRadius: 3,
               }}
+              key={index}
             >
-              <p>
-                <strong>{item.name}</strong>
-                <Tag color={item.level.color} style={{ marginLeft: 10 }}>
-                  {item.level.text}
-                </Tag>
-              </p>
+              <strong>{item.name}</strong>
+              <Tag color={item.level.color} style={{ marginLeft: 10 }}>
+                {item.level.text}
+              </Tag>
+
+              <br />
 
               <i>{item.description}</i>
             </Col>

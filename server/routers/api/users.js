@@ -219,23 +219,6 @@ router.post('/login', (req, res) => {
 });
 
 /**
- * @function: GET /api/users/current
- * @desc: Return current user
- * @access: private
- */
-router.get(
-  '/current',
-  passport.authenticate('jwt', { session: false, failureRedirect: '/login' }),
-  (req, res) => {
-    res.json({
-      id: req.user.id,
-      name: req.user.name,
-      email: req.user.email,
-    });
-  },
-);
-
-/**
  * @function: POST /api/users/update
  * @desc: Update user info
  * @access: private
@@ -247,13 +230,14 @@ router.put(
     try {
       User.findById(req.body.id).then(user => {
         const updatedUser = {
-          email: req.body.email,
           name: req.body.name,
-          gender: req.body.gender,
         };
 
+        if (req.body.gender) updatedUser.gender = req.body.gender;
+        if (req.body.email) updatedUser.email = req.body.email;
+
         // when admin update user info
-        if (req.user.role === 'ADMIN') {
+        if (req.user.role === 'ADMIN' && req.body.role) {
           updatedUser.role = req.body.role;
         }
 

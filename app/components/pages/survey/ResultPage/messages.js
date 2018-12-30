@@ -21,6 +21,12 @@ export default defineMessages({
     defaultMessage: 'Cảm ơn bạn đã tham gia khảo sát',
   },
 
+  mocDescription: {
+    id: `${scope}.mocDescription`,
+    defaultMessage:
+      'Kết quả trả lời của bạn đã được hệ thống lưu trữ lại. Bạn có thể quay trở lại trang chủ để tham gia các cuộc khảo sát khác.',
+  },
+
   resultTitle: {
     id: `${scope}.resultTitle`,
     defaultMessage: 'KẾT QUẢ KHẢO SÁT',

@@ -22,8 +22,8 @@ const FormItem = Form.Item;
 const Title = styled.h1`
   display: block;
   text-align: center;
-  font-size: 36px;
-  font-weight: 600;
+  font-size: 3em;
+  font-family: 'Farsan', cursive;
   margin-bottom: 25px;
 `;
 

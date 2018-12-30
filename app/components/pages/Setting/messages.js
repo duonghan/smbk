@@ -26,6 +26,21 @@ export default defineMessages({
     defaultMessage: 'Họ tên',
   },
 
+  gender: {
+    id: `${scope}.gender`,
+    defaultMessage: 'Giới tính',
+  },
+
+  maleOpt: {
+    id: `${scope}.maleOpt`,
+    defaultMessage: 'Nam',
+  },
+
+  femaleOpt: {
+    id: `${scope}.femaleOpt`,
+    defaultMessage: 'Nữ',
+  },
+
   changePassword: {
     id: `${scope}.changePassword`,
     defaultMessage: 'Đổi mật khẩu',
@@ -101,19 +116,8 @@ export default defineMessages({
     defaultMessage: 'Cập nhật',
   },
 
-  updateSuccessLabel: {
-    id: `${scope}.updateSuccessLabel`,
-    defaultMessage: 'Thành công',
-  },
-
-  updateFailedLabel: {
-    id: `${scope}.updateFailedLabel`,
-    defaultMessage: 'Lỗi',
-  },
-
   updateSuccessContent: {
     id: `${scope}.updateSuccessContent`,
-    defaultMessage:
-      'Cập nhật thông tin thành công, vui lòng quay lại trang chủ để tiếp tục',
+    defaultMessage: 'Cập nhật thông tin thành công',
   },
 });

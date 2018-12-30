@@ -35,7 +35,7 @@ class Register extends React.Component {
             <img
               alt="logo-banch"
               src={BackgroundImage}
-              style={{ maxWidth: '80%', height: 'auto', margin: '50' }}
+              style={{ maxWidth: '80%', height: 'auto', margin: 50 }}
             />
           </Col>
           <Col xs={24} md={12}>

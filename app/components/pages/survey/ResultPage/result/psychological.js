@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
 // import styled from 'styled-components';
-
+import TaskCompleted from 'images/task-complete.png';
 import { Row, Col, Tag, Table, Button } from 'antd';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Line } from 'react-chartjs-2';
@@ -137,12 +137,14 @@ class PsychologicResult extends React.Component {
 
     return (
       <div style={{ textAlign: 'center', backgroundColor: 'white' }}>
-        <h2>
+        <h1 className="task-completed">
           <FormattedMessage {...messages.thanks} />
-        </h2>
-        <h2>
+        </h1>
+        <img src={TaskCompleted} alt="task-completed-icon" />
+        <br />
+        <h3 className="task-completed">
           <FormattedMessage {...messages.resultTitle} />
-        </h2>
+        </h3>
 
         <br />
 

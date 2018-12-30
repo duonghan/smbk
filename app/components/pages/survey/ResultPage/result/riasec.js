@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { Radar } from 'react-chartjs-2';
 // import styled from 'styled-components';
-
+import TaskCompleted from 'images/task-complete.png';
 import { Row, Col, Button } from 'antd';
 
 import _ from 'lodash';
@@ -48,12 +48,14 @@ class RiasecResult extends React.Component {
         justify="center"
       >
         <div style={{ textAlign: 'center' }}>
-          <h2>
+          <h1 className="task-completed">
             <FormattedMessage {...messages.thanks} />
-          </h2>
-          <h2>
+          </h1>
+          <img src={TaskCompleted} alt="task-completed-icon" />
+          <br />
+          <h3 className="task-completed">
             <FormattedMessage {...messages.resultTitle} />
-          </h2>
+          </h3>
           <p>
             <FormattedMessage {...messages.riasecEntrytTitleBegin} />
             <strong>{` ${firstField.name} `}</strong>

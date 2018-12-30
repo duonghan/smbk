@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Charm|Farsan&subset=vietnamese');
+
 .dark {
   background-color: #000;
   color: rgba(255, 255, 255, 0.65);
@@ -71,14 +73,13 @@
   bottom: 26px;
 }
 
-.ant-carousel .slick-slide {
-  text-align: center;
-  min-height: 100%;
-  line-height: 160px;
-  background: #364d79;
-  overflow: hidden;
+h1.task-completed {
+  font-family: 'Farsan', cursive;
+  font-size: 3em;
 }
 
-.ant-carousel .slick-slide h3 {
-  color: #fff;
+h3.task-completed {
+  font-family: 'Charm', cursive;
+  font-size: 1.5em;
+  margin: 30px;
 }

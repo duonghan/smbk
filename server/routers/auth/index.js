@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const hbs = require('nodemailer-express-handlebars');
-const passport = require('passport');
 const _ = require('lodash');
 const transporter = require('../../utils/auth/sendMail');
 
