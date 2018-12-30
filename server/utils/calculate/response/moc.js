@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const xl = require('excel4node');
+const mongoose = require('mongoose');
 
 // Load question model
 const Response = require('../../../models/Response');
@@ -7,12 +8,22 @@ const Survey = require('../../../models/Survey');
 const Question = require('../../../models/Question');
 
 const resultMOC = answers => {
-  return Object.entries(answers).map(entry => {
-    const result = { questionId: entry[0] };
-    if (entry[1].score) result.value = entry[1].score;
-    else if (entry[1].text) result.text = entry[1].text;
-    return result;
+  const result = [];
+
+  _.values(answers).map(group => {
+    _.toPairs(group).map(question => {
+      const eachResult = { questionId: mongoose.Types.ObjectId(question[0]) };
+
+      if (typeof question[1].score === 'number')
+        eachResult.value = question[1].score;
+      else if (typeof question[1].score === 'string')
+        eachResult.text = question[1].score;
+
+      result.push(eachResult);
+    });
   });
+
+  return result;
 };
 
 const chartColor = {

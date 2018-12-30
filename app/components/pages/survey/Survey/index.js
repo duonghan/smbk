@@ -146,17 +146,13 @@ class Survey extends React.Component {
 
     // when survey as moc and moc2
     if (this.state.surveyName === 'moc' || this.state.surveyName === 'moc2') {
-      const profileId = Cookies.get('profileId');
-      debugger;
       this.props.submitResponse(
         this.props.response,
         this.props.gender,
         this.props.location.state.surveyId,
         this.props.user.get('id'),
-        profileId,
+        Cookies.get('profileId'),
       );
-
-      debugger;
 
       return;
     }

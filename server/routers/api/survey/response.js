@@ -5,7 +5,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const _ = require('lodash');
-const xl = require('excel4node');
 
 // Load question model
 const Response = require('../../../models/Response');
@@ -13,7 +12,6 @@ const Survey = require('../../../models/Survey');
 const QuestionGroup = require('../../../models/QuestionGroup');
 const Question = require('../../../models/Question');
 const User = require('../../../models/User');
-const MOCProfile = require('../../../models/MOCProfile');
 
 // Load result calculator method
 const { resultNEO } = require('../../../utils/calculate/response/neo');
@@ -238,7 +236,7 @@ router.post(
           new Response({
             user: mongoose.Types.ObjectId(req.body.userId),
             profile: mongoose.Types.ObjectId(req.body.profileId),
-            survey: mongoose.Types.ObjectId(req.body.userId),
+            survey: mongoose.Types.ObjectId(req.body.surveyId),
             answers: resultMOC(req.body.response.answers),
           })
             .save()
