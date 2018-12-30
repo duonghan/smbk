@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const xl = require('excel4node');
-const Quiche = require('quiche');
 
 // Load question model
 const Response = require('../../../models/Response');
