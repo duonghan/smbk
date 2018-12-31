@@ -31,7 +31,6 @@ class QuestionTable extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    debugger;
     if (nextProps.groupId) {
       this.fetchQuestion(nextProps.groupId);
     } else {

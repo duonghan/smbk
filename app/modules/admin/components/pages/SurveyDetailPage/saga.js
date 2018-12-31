@@ -6,7 +6,6 @@ import { FETCH_RESPONSE } from './constants';
 
 function* fetchResponse(data) {
   try {
-    debugger;
     const paramOpts = {
       survey: data.surveyId,
     };
