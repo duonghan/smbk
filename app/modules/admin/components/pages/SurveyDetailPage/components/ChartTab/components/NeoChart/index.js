@@ -14,7 +14,7 @@ import download from 'downloadjs';
 import axios from 'axios';
 import { config } from 'utils/setAuthToken';
 import { HorizontalBar } from 'react-chartjs-2';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import messages from './messages';
 
 const data = {
@@ -72,6 +72,7 @@ class NeoChart extends React.Component {
   };
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <div>
         <h2 style={{ textAlign: 'center' }}>
@@ -99,6 +100,7 @@ class NeoChart extends React.Component {
 
 NeoChart.propTypes = {
   fetchedData: PropTypes.object.isRequired,
+  intl: intlShape.isRequired,
 };
 
-export default NeoChart;
+export default injectIntl(NeoChart);
