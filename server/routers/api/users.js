@@ -195,6 +195,7 @@ router.post('/login', (req, res) => {
           const payload = {
             id: user.id,
             name: user.name,
+            email: user.email,
             gender: user.gender,
             avatar: user.avatar,
             role: user.role,
@@ -265,6 +266,7 @@ router.put(
                         const payload = {
                           id: newUser.id,
                           name: newUser.name,
+                          email: user.email,
                           gender: newUser.gender,
                           avatar: newUser.avatar,
                           role: newUser.role,
@@ -306,6 +308,7 @@ router.put(
               const payload = {
                 id: newUser.id,
                 name: newUser.name,
+                email: user.email,
                 gender: newUser.gender,
                 avatar: newUser.avatar,
                 role: newUser.role,
