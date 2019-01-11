@@ -8,10 +8,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
-
 import axios from 'axios';
-import { Table, Skeleton, Icon, Tooltip, Modal } from 'antd';
+import { Icon, message, Modal, Skeleton, Table, Tooltip } from 'antd';
 import { injectIntl, intlShape } from 'react-intl';
 import { config } from 'utils/setAuthToken';
 import messages from './messages';
@@ -19,6 +17,7 @@ import EditableFormRow from '../../../../../../utils/EditableFormRow';
 import EditableCell from '../../../../../../utils/EditableCell';
 import columnOptions from './columnOptions';
 import AddQuestionForm from './AddQuestionForm';
+// import styled from 'styled-components';
 
 /* eslint-disable react/prefer-stateless-function */
 class QuestionTable extends React.Component {
@@ -108,6 +107,12 @@ class QuestionTable extends React.Component {
   };
 
   handleDelete = id => {
+    if (this.props.surveyName === 'neo') {
+      message.error(this.props.intl.formatMessage(messages.neoErrorMsg));
+      return;
+    }
+    ;
+
     axios
       .delete('/api/survey/questions/', {
         ...config,
@@ -194,7 +199,9 @@ class QuestionTable extends React.Component {
               <strong>{formatMessage(messages.header)}</strong>
 
               <Tooltip title={formatMessage(messages.addQuestion)}>
-                <a onClick={this.showModal} style={{ float: 'right' }}>
+                <a
+                  onClick={() => this.props.surveyName !== 'neo' ? this.showModal : message.error(this.props.intl.formatMessage(messages.neoErrorMsg))}
+                  style={{ float: 'right' }}>
                   <Icon
                     type="plus"
                     style={{ fontSize: 20, color: '#FA541C' }}
@@ -230,6 +237,7 @@ QuestionTable.propTypes = {
 const mapStateToProps = state => ({
   groupId: state.getIn(['surveyDetail', 'groupId']),
   groupName: state.getIn(['surveyDetail', 'groupName']),
+  surveyName: state.getIn(['surveyDetail', 'surveyName']),
 });
 
 export default connect(

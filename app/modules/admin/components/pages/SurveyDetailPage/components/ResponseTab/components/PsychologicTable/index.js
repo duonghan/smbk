@@ -154,7 +154,7 @@ class PsychologicTable extends React.Component {
       <Skeleton loading={this.state.loading} active>
         <Table
           bordered
-          rowKey={record => record.name}
+          rowKey={record => record.key}
           dataSource={this.state.data}
           columns={columns}
           title={() => (

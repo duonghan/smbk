@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import axios from 'axios';
-import { Table, Skeleton, Tooltip, Icon, Modal } from 'antd';
+import { Table, Skeleton, message, Tooltip, Icon, Modal } from 'antd';
 import { injectIntl, intlShape } from 'react-intl';
 import { config } from 'utils/setAuthToken';
 import messages from './messages';
@@ -39,6 +39,11 @@ class GroupTable extends React.Component {
   };
 
   createPChildGr = parentId => {
+    if(this.props.surveyName === 'neo'){
+      message.error(this.props.intl.formatMessage(messages.neoErrorMsg));
+      return;
+    }
+
     this.setState({ visible: true, parentId, editingKey: {} });
   };
 
@@ -124,6 +129,11 @@ class GroupTable extends React.Component {
   };
 
   handleDelete = id => {
+    if(this.props.surveyName === 'neo'){
+      message.error(this.props.intl.formatMessage(messages.neoErrorMsg));
+      return;
+    }
+
     axios
       .delete('/api/survey/question-groups/', {
         ...config,

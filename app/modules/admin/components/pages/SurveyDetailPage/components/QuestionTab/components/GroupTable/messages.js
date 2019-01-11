@@ -171,4 +171,9 @@ export default defineMessages({
     id: `${scope}.rangeLabel`,
     defaultMessage: 'Số cấp độ',
   },
+
+  neoErrorMsg: {
+    id: `${scope}.neoErrorMsg`,
+    defaultMessage: 'Tính năng không hợp lệ cho khảo sát này',
+  },
 });

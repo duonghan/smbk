@@ -153,4 +153,9 @@ export default defineMessages({
     id: `${scope}.deleteSuccessContent`,
     defaultMessage: 'Xóa câu hỏi thành công',
   },
+
+  neoErrorMsg: {
+    id: `${scope}.neoErrorMsg`,
+    defaultMessage: 'Tính năng không hợp lệ cho khảo sát này',
+  },
 });
