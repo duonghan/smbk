@@ -135,7 +135,7 @@ class Survey extends React.Component {
       submitting: true,
     });
 
-    // number of completed response
+    // number of completed responses
     const numCompleted = this.props.response
       .get('answers')
       .valueSeq()
@@ -162,15 +162,18 @@ class Survey extends React.Component {
       this.setState({
         submitting: false,
       });
-    } else if (this.props.user.get('role') !== 'GUEST') {
+    } else if (
+      this.state.surveyName === 'neo' &&
+      this.props.user.get('role') === 'GUEST'
+    ) {
+      this.setState({ visible: true });
+    } else {
       this.props.submitResponse(
         this.props.response,
         this.props.gender,
         this.props.location.state.surveyId,
         this.props.user.get('id'),
       );
-    } else {
-      this.setState({ visible: true });
     }
   };
 
